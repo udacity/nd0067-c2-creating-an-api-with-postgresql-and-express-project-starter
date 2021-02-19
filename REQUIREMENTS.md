@@ -6,15 +6,15 @@ These are the notes from a meeting with the frontend developer that describe wha
 ## API Endpoints
 #### Products
 - Index 
-- Show (args: product id)
-- Create (args: Product)[token required]
+- Show
+- Create [token required]
 - [OPTIONAL] Top 5 most popular products 
 - [OPTIONAL] Products by category (args: product category)
 
 #### Users
 - Index [token required]
-- Show (args: id)[token required]
-- Create (args: User)[token required]
+- Show [token required]
+- Create N[token required]
 
 #### Orders
 - Current Order by user (args: user id)[token required]
