@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import productRoutes from './handlers/products';
 import userRoutes from './handlers/users';
+import orderRoutes from './handlers/orders';
 
 const app: express.Application = express()
 const address: string = "localhost:3000"
@@ -25,7 +26,10 @@ app.get('/test-cors', function (req, res) {
 
 productRoutes(app)
 userRoutes(app)
+orderRoutes(app)
 
 app.listen(3000, function () {
     console.log(`starting app on: ${address}`)
 })
+
+export default app;

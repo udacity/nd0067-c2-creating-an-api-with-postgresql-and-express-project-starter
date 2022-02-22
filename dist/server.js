@@ -8,6 +8,7 @@ var body_parser_1 = __importDefault(require("body-parser"));
 var cors_1 = __importDefault(require("cors"));
 var products_1 = __importDefault(require("./handlers/products"));
 var users_1 = __importDefault(require("./handlers/users"));
+var orders_1 = __importDefault(require("./handlers/orders"));
 var app = (0, express_1["default"])();
 var address = "localhost:3000";
 var corsOptions = {
@@ -24,6 +25,8 @@ app.get('/test-cors', function (req, res) {
 });
 (0, products_1["default"])(app);
 (0, users_1["default"])(app);
+(0, orders_1["default"])(app);
 app.listen(3000, function () {
     console.log("starting app on: ".concat(address));
 });
+exports["default"] = app;

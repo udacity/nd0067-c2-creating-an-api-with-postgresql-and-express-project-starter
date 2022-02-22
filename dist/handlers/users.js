@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 var user_1 = require("../models/user");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var auth_1 = require("../middlewares/auth");
 var store = new user_1.UserStore();
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var user, newUser, token, err_1;
@@ -64,8 +65,7 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 return [3 /*break*/, 4];
             case 3:
                 err_1 = _a.sent();
-                res.status(400);
-                res.json(err_1 + user);
+                res.status(400).json(err_1);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
@@ -82,6 +82,10 @@ var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0
                     lastname: req.body.lastname,
                     password: req.body.password
                 };
+                if (!(user.firstname && user.lastname && user.password)) {
+                    res.status(400).json("Please, give all needed informations");
+                    return [2 /*return*/];
+                }
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
@@ -93,15 +97,46 @@ var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0
                 return [3 /*break*/, 4];
             case 3:
                 error_1 = _a.sent();
-                res.status(401);
-                res.json({ error: error_1 });
+                res.status(401).json({ error: error_1 });
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); };
+var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var users;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, store.index()];
+            case 1:
+                users = _a.sent();
+                res.json(users);
+                return [2 /*return*/];
+        }
+    });
+}); };
+var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, user;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = parseInt(req.params.id);
+                if (isNaN(id)) {
+                    res.status(400).json("Please fill an integer as ID");
+                    return [2 /*return*/];
+                }
+                return [4 /*yield*/, store.show(id)];
+            case 1:
+                user = _a.sent();
+                res.json(user);
+                return [2 /*return*/];
+        }
+    });
+}); };
 var userRoutes = function (app) {
-    app.post('/signin', authenticate);
-    app.post('/signup', create);
+    app.post('/signin', authenticate),
+        app.post('/signup', create),
+        app.get('/users', auth_1.verifyAuthToken, index),
+        app.get('/users/:id', auth_1.verifyAuthToken, show);
 };
 exports["default"] = userRoutes;

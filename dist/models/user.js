@@ -85,15 +85,50 @@ var UserStore = /** @class */ (function () {
                         return [4 /*yield*/, conn.query(sql, [firstname, lastname])];
                     case 2:
                         result = _a.sent();
-                        console.log(password + pepper);
+                        conn.release();
                         if (result.rows.length) {
                             user = result.rows[0];
-                            console.log(user);
                             if (bcrypt_1["default"].compareSync(password + pepper, user.password_digest)) {
                                 return [2 /*return*/, user];
                             }
                         }
                         return [2 /*return*/, null];
+                }
+            });
+        });
+    };
+    UserStore.prototype.index = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = 'SELECT * from users';
+                        return [4 /*yield*/, conn.query(sql)];
+                    case 2:
+                        result = _a.sent();
+                        conn.release();
+                        return [2 /*return*/, result.rows];
+                }
+            });
+        });
+    };
+    UserStore.prototype.show = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = 'SELECT * from users WHERE id = ($1)';
+                        return [4 /*yield*/, conn.query(sql, [id])];
+                    case 2:
+                        result = _a.sent();
+                        conn.release();
+                        return [2 /*return*/, result.rows[0]];
                 }
             });
         });

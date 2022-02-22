@@ -3,7 +3,7 @@ import Client from '../database';
 export type Product = {
   id: Number;
   name: string;
-  price: Number;
+  price: string;
 }
 
 export class ProductStore {

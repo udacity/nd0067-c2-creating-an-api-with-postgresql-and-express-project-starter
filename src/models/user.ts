@@ -6,6 +6,7 @@ export type User = {
   firstname: string;
   lastname: string;
   password: string;
+  password_digest?: string
 }
 
 const pepper = process.env.BCRYPT_PASSWORD;
@@ -39,19 +40,32 @@ export class UserStore {
 
     const result = await conn.query(sql, [firstname, lastname])
 
-    console.log(password+pepper)
+    conn.release();
 
     if(result.rows.length) {
 
       const user = result.rows[0]
 
-      console.log(user)
-
       if (bcrypt.compareSync(password+pepper, user.password_digest)) {
         return user
       }
     }
-
     return null
+  }
+
+  async index(): Promise<User[]> {
+    const conn = await Client.connect();
+    const sql = 'SELECT * from users';
+    const result = await conn.query(sql);
+    conn.release();
+    return result.rows;
+  }
+
+  async show(id: number): Promise<User> {
+    const conn = await Client.connect();
+    const sql = 'SELECT * from users WHERE id = ($1)';
+    const result = await conn.query(sql, [id]);
+    conn.release();
+    return result.rows[0];
   }
 }
