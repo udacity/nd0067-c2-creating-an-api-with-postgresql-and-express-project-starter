@@ -28,3 +28,7 @@ SALT_ROUND=10
 POSTGRES_PASSWORD=password
 TOKEN_SECRET=secret
 ```
+
+## API Endpoints
+
+Please check the REQUIREMENTS.md file

@@ -1,10 +1,3 @@
--- CREATE TABLE mythical_weapons (name VARCHAR(100), type VARCHAR(50), weight INTEGER, id SERIAL PRIMARY KEY);
--- CREATE TABLE users (
---     id SERIAL PRIMARY KEY,
---     username VARCHAR(100),
---     password_digest VARCHAR
--- );
-
 CREATE TABLE Products (
 id SERIAL PRIMARY KEY NOT NULL,
 name VARCHAR NOT NULL UNIQUE,
