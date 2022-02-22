@@ -10,12 +10,12 @@ export type Order = {
 }
 
 export class OrderStore {
-  async current(id: number): Promise<Order[]> {
+  async current(id: number, completed: boolean): Promise<Order[]> {
     try {
       const conn = await Client.connect();
       const sql = 
-        "SELECT * from orders INNER JOIN order_product ON (orders.id = order_product.order_id) WHERE completed = false AND user_id = ($1);"
-      const result = await conn.query(sql, [id]);
+        "SELECT * from orders INNER JOIN order_product ON (orders.id = order_product.order_id) WHERE completed = $2 AND user_id = ($1);"
+      const result = await conn.query(sql, [id, completed]);
       let orders: Order[] = [];
       conn.release();
       result.rows.forEach(row => {

@@ -19,7 +19,12 @@ describe("Order Model", () => {
   })
 
   afterAll(async () => {
-    const result = await store.current(testOrder.id);
+    const result = await store.current(testOrder.id, false);
     expect(result).toEqual(result);
+  })
+
+  afterAll(async () => {
+    const result = await store.current(testOrder.id, true);
+    expect(result).toEqual([]);
   })
 })

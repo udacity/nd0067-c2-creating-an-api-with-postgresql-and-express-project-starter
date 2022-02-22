@@ -22,13 +22,20 @@ const create = async (req: Request, res: Response) => {
 
 const current = async (req: Request, res: Response) => {
   const userId = parseInt(req.params.id);
-  const orders = await store.current(userId);
+  const orders = await store.current(userId, false);
+  res.json(orders);
+}
+
+const completed = async (req: Request, res: Response) => {
+  const userId = parseInt(req.params.id);
+  const orders = await store.current(userId, true);
   res.json(orders);
 }
 
 const orderRoutes = (app: express.Application) => {
   app.post('/orders', verifyAuthToken, create)
-  app.get('/orders/:id', verifyAuthToken, current)
+  app.get('/orders/:id/active', verifyAuthToken, current)
+  app.get('/orders/:id/completed', verifyAuthToken, completed)
 }
 
 export default orderRoutes;

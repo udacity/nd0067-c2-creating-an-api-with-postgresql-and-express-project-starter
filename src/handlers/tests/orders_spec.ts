@@ -12,7 +12,14 @@ describe("Test orders endpoint responses", () => {
   });
 
   it("NOT gets the current endpoint", (done) => {
-    request.get("/orders/1").then((response: supertest.Response) => {
+    request.get("/orders/1/active").then((response: supertest.Response) => {
+      expect(response.status).toBe(401);
+      done();
+    });
+  });
+
+  it("NOT gets the completed endpoint", (done) => {
+    request.get("/orders/1/completed").then((response: supertest.Response) => {
       expect(response.status).toBe(401);
       done();
     });
