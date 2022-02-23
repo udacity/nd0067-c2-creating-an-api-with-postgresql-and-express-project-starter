@@ -29,22 +29,22 @@ The company stakeholders want to create an online storefront to showcase their g
 
 #### Product
 
-- id
-- name
-- price
-- [OPTIONAL] category
+- id: Number
+- name: string
+- price: string
+- ~~[OPTIONAL] category~~
 
 #### User
 
-- id
-- firstName
-- lastName
-- password
+- id: Number
+- firstName: string
+- lastName: string
+- password: string
 
 #### Orders
 
-- id
-- id of each product in the order
-- quantity of each product in the order
-- user_id
-- status of order (active or complete)
+- id: number
+- id of each product in the order: Map `<KEY>`
+- quantity of each product in the order: Map `<VALUE>`
+- user_id: User
+- status of order (active or complete): boolean
