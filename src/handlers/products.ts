@@ -1,12 +1,17 @@
 import express, { Request, Response } from 'express'
 import { Product, ProductStore } from '../models/product'
 import { verifyAuthToken } from '../middlewares/auth';
+import { json } from 'body-parser';
 
 const store = new ProductStore();
 
 const index = async (_req: Request, res: Response) => {
-  const products = await store.index()
-  res.json(products)
+  try {
+    const products = await store.index()
+    res.json(products)
+  } catch(e) {
+    res.status(500).json(e)
+  }
 }
 
 const show = async (req: Request, res: Response) => {
@@ -15,8 +20,12 @@ const show = async (req: Request, res: Response) => {
     res.status(400).json("Please fill an integer as ID");
     return
   }
-   const product = await store.show(id)
-   res.json(product)
+   try {
+    const product = await store.show(id)
+    res.json(product)  
+   } catch(e) {
+    res.status(500).json(e)
+   }
 }
 
 const create = async (req: Request, res: Response) => {

@@ -3,7 +3,7 @@ import { User, UserStore } from '../user';
 const store = new UserStore();
 
 export let testUser: User = {
-  id: 1,
+  id: 3,
   firstname: "Adel",
   lastname: "Malik",
   password: "password",
@@ -47,7 +47,7 @@ describe("User Model", () => {
 
   afterAll(async () => {
     const result1 = await store.index();
-    const result = await store.show(2);
+    const result = await store.show(3);
     expect(result.password_digest).toEqual(password_digest);
   })
 });

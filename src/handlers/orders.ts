@@ -21,15 +21,23 @@ const create = async (req: Request, res: Response) => {
 }
 
 const current = async (req: Request, res: Response) => {
-  const userId = parseInt(req.params.id);
-  const orders = await store.current(userId, false);
-  res.json(orders);
+  try {
+    const userId = parseInt(req.params.id);
+    const orders = await store.current(userId, false);
+    res.json(orders);
+  } catch(err) {
+    res.status(500).json(err);
+  }
 }
 
 const completed = async (req: Request, res: Response) => {
-  const userId = parseInt(req.params.id);
-  const orders = await store.current(userId, true);
-  res.json(orders);
+  try {
+    const userId = parseInt(req.params.id);
+    const orders = await store.current(userId, true);
+    res.json(orders);
+  } catch(err) {
+    res.status(500).json(err);
+  }
 }
 
 const orderRoutes = (app: express.Application) => {

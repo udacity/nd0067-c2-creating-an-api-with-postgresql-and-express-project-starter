@@ -42,8 +42,12 @@ const authenticate = async (req: Request, res: Response) => {
 }
 
 const index = async (_req: Request, res: Response) => {
-  const users = await store.index()
-  res.json(users)
+  try {
+    const users = await store.index()
+    res.json(users)
+  } catch(e) {
+    res.status(500).json(e)
+  }
 }
 
 const show = async (req: Request, res: Response) => {
@@ -52,8 +56,12 @@ const show = async (req: Request, res: Response) => {
     res.status(400).json("Please fill an integer as ID");
     return
   }
-   const user = await store.show(id)
-   res.json(user)
+   try {
+    const user = await store.show(id)
+    res.json(user)
+   } catch(e) {
+     res.status(500).json(e)
+   }
 }
 
 const userRoutes = (app: express.Application) => {

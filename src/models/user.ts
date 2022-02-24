@@ -35,37 +35,49 @@ export class UserStore {
   }
 
   async authenticate(firstname: string, lastname: string, password: string): Promise<User | null> {
-    const conn = await Client.connect()
-    const sql = 'SELECT password_digest FROM users WHERE firstname=($1) AND lastname=($2)'
+    try {
+      const conn = await Client.connect()
+      const sql = 'SELECT password_digest FROM users WHERE firstname=($1) AND lastname=($2)'
 
-    const result = await conn.query(sql, [firstname, lastname])
+      const result = await conn.query(sql, [firstname, lastname])
 
-    conn.release();
+      conn.release();
 
-    if(result.rows.length) {
+      if(result.rows.length) {
 
-      const user = result.rows[0]
+        const user = result.rows[0]
 
-      if (bcrypt.compareSync(password+pepper, user.password_digest)) {
-        return user
+        if (bcrypt.compareSync(password+pepper, user.password_digest)) {
+          return user
+        }
       }
+      return null
+    } catch(err) {
+      throw new Error(`unable to auth user : ${err}`)
     }
-    return null
   }
 
   async index(): Promise<User[]> {
-    const conn = await Client.connect();
-    const sql = 'SELECT * from users';
-    const result = await conn.query(sql);
-    conn.release();
-    return result.rows;
+    try {
+      const conn = await Client.connect();
+      const sql = 'SELECT * from users';
+      const result = await conn.query(sql);
+      conn.release();
+      return result.rows;
+    } catch(e) {
+      throw new Error(`unable to get users : ${e}`)
+    }
   }
 
   async show(id: number): Promise<User> {
-    const conn = await Client.connect();
-    const sql = 'SELECT * from users WHERE id = ($1)';
-    const result = await conn.query(sql, [id]);
-    conn.release();
-    return result.rows[0];
+    try {
+      const conn = await Client.connect();
+      const sql = 'SELECT * from users WHERE id = ($1)';
+      const result = await conn.query(sql, [id]);
+      conn.release();
+      return result.rows[0];
+    } catch(e) {
+      throw new Error(`unable to get user : ${e}`)
+    }
   }
 }

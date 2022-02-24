@@ -10,14 +10,14 @@ Welcome to this Udacity Project foked and completed by my own.
 2. Install all depedencies thanks to `npm install`
 3. Configure the"database.json" file with your database credentials
 4. Launch your Postgres instance (you can use `docker-compose up`)
-5. Create the databases with these instructions into psql like this :
+5. Connect you to the postgres CLI with this example cmd : `psql -h localhost -p 5432 -U postgres`
+6. Create the databases with these instructions into psql like this :
    ```
    CREATE DATABASE store;
-   CREATE DATABASE store_test;
    ```
-6. Implement the schema with `db-migrate up`
-7. Compile the API with `npm run tsc`
-8. Enjoy with `npm run start`
+7. Implement the schema with `db-migrate up`
+8. Compile the API with `npm run tsc`
+9. Enjoy with `npm run start`
 
 ---
 

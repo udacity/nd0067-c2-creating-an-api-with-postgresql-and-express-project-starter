@@ -1,6 +1,6 @@
 import Client from '../database';
 import { Product } from './product';
-import { User } from './user';
+import { User, UserStore } from './user';
 
 export type Order = {
   id: number;
@@ -14,7 +14,7 @@ export class OrderStore {
     try {
       const conn = await Client.connect();
       const sql = 
-        "SELECT * from orders INNER JOIN order_product ON (orders.id = order_product.order_id) WHERE completed = $2 AND user_id = ($1);"
+        "SELECT * from orders FULL OUTER JOIN order_product ON (orders.id = order_product.order_id) WHERE completed = $2 AND user_id = ($1);"
       const result = await conn.query(sql, [id, completed]);
       let orders: Order[] = [];
       conn.release();
@@ -49,7 +49,7 @@ export class OrderStore {
     try {
       const sql = 'INSERT INTO orders (user_id) VALUES($1) RETURNING *;'
       const conn = await Client.connect();
-      const result = await conn.query(sql, [o.user]);
+      const result = await conn.query(sql, [o.user.id]);
       const id = result.rows[0].id;
       await Promise.all(Object.entries(o.products).map(async ([product, quantity]) => {
         await conn.query(

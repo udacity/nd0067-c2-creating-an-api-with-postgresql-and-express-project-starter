@@ -1,2 +1,1 @@
-DROP TABLE IF EXISTS Order_Product;
 DROP TABLE IF EXISTS Orders;
