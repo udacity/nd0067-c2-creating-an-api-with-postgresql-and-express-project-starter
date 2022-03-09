@@ -8,8 +8,9 @@
     "format": "prettier --ignore-path .gitignore --write **.ts",
     "start": "node src/server.ts",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
-    "test": "jasmine-ts",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "build": "npm run lint && npx tsc",
+    "test": "jasmine-ts"
   },
   "author": "Udacity",
   "license": "ISC",
@@ -29,7 +30,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "jasmine": "^3.6.4",
-    "jasmine-spec-reporter": "^6.0.0",
+    "jasmine-spec-reporter": "^7.0.0",
     "jasmine-ts": "^0.3.0",
     "prettier": "2.5.1",
     "ts-node": "^9.1.1",
