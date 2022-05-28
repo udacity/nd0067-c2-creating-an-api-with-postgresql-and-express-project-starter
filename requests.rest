@@ -1,0 +1,46 @@
+POST http://localhost:5000/create
+Content-Type: application/json
+
+{
+   "name": "Mona Khalid",
+   "email":"mona@email",
+   "password":"mona",
+   "account":7000,
+   "book_id":"2"
+}
+
+###
+
+GET http://localhost:5000/show/:id
+Content-Type: application/json
+
+{
+   "name": "Soha Khalid",
+   "email":"soha@email",
+   "password":"soha",
+   "account":5000.45,
+   
+
+}
+###
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+   "email":"soha@email",
+   "password":"soha"
+}
+###
+GET http://localhost:5000/show/:id
+Content-Type: application/json
+
+{
+   "name": "Soha Khalid",
+   "email":"soha@email",
+   "password":"soha",
+   "account": 5000.00,
+
+}
+###
+GET http://localhost:5000/
+Content-Type: application/json
