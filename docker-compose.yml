@@ -2,6 +2,7 @@ version: '3.9'
 
 services:
   postgres:
+    container_name: dev-postgres
     image: postgres
     ports:
       - '5432:5432'
