@@ -1,3 +1,4 @@
+CREATE TYPE mood AS ENUM ('active', 'complete');
 
 CREATE TABLE orders_table(
     id SERIAL PRIMARY KEY,

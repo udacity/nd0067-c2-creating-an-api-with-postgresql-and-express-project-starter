@@ -1,19 +1,32 @@
 import { Router, Request, Response} from 'express'
+import { ProductStore, Product } from '../models/productsModel'
+
+const productInstance = new ProductStore
 
 const createProductRouter = (app: Router) =>{
     const productRoute: Router = Router()
     app.use('/products', productRoute)
 
-    productRoute.get('/', function (req, res) {
-        res.send('Hello Products')
+    productRoute.get('/', async (_req: Request, res: Response) => {
+        const catalog: Product[] = await productInstance.showCatalog()
+        res.json(catalog)
     }) 
 
-    productRoute.get('/:id', function (req, res) {
-        res.send(req.params.id)
+    productRoute.get('/:id', async (req: Request, res: Response) => {
+        const productID: Number = parseInt(req.params.id)
+        const product: Product[] = await productInstance.showProduct(productID)
+        res.json(product)
     })
-    // - Create [token required] 
-    productRoute.post('/', function (_req, res) {
-        res.send('Create new product')
+    // Needs token auth as middleware
+    productRoute.post('/', async (req: Request, res: Response) => {
+        const newProduct: Product[] = await productInstance.createProduct(req.body)
+        res.json(newProduct)
+    })
+
+    productRoute.delete('/:id', async (req: Request, res: Response) => {
+        const productID: Number = parseInt(req.params.id)
+        const result = await productInstance.deleteProduct(productID)
+        res.json(result)
     })
     // - [OPTIONAL] Top 5 most popular products 
     // - [OPTIONAL] Products by category (args: product category)
