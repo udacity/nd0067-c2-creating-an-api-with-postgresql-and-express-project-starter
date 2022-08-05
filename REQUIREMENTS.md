@@ -19,7 +19,7 @@ These are the notes from a meeting with the frontend developer that describe wha
     - /users [GET]
 - Show [token required]
     - /users/:id [GET]
-- Create [token required]
+- Create
     - /users [POST]
 
 #### Orders
