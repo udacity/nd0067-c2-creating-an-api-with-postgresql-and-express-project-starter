@@ -1,6 +1,6 @@
 CREATE TABLE products_table (
     id SERIAL PRIMARY KEY,
     name VARCHAR(150),
-    price MONEY,
+    price REAL,
     category VARCHAR(100)
 );

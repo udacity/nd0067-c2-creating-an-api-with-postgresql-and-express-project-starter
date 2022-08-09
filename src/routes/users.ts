@@ -6,7 +6,7 @@ import verifyToken from '../lib/auth'
 
 const userInstance = new UserStore()
 
-// Needs token auth added as middleware
+
 const createUserRouter = (app: Router) => {
     const userRoute: Router = Router()
     app.use('/Users', userRoute)

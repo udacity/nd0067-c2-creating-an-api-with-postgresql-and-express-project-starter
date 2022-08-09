@@ -13,7 +13,6 @@ export type User = {
 export class UserStore {
     async createUser(u: User): Promise<User> {
         try {
-        // @ts-ignore
         const sql = 'INSERT INTO users_table (first_name, last_name, pass_word) VALUES($1, $2, $3) RETURNING *'
         const conn = await client.connect()
         const pw_hash = bcrypt.hashSync(
@@ -50,6 +49,18 @@ export class UserStore {
             return result.rows
         } catch (err) {
             throw new Error(`Could not get users. Error: ${err}`)
+        }
+    }
+
+    async truncateUser(): Promise<User[]> {
+        try {
+            const sql = `TRUNCATE users_table RESTART IDENTITY CASCADE`
+            const conn = await client.connect()
+            const result = await conn.query(sql)
+            conn.release()
+            return result.rows
+        } catch (err) {
+            throw new Error (`Could not truncate table. ${err}`)
         }
     }
 }

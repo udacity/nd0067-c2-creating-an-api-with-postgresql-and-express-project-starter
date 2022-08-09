@@ -1,14 +1,34 @@
 import {Router, Request, Response} from 'express'
+import { Order, OrderStore } from '../models/ordersModel'
+import verifyToken from '../lib/auth'
 
-// Needs token auth as middleware
+const orderInstance = new OrderStore
+
 const createOrderRouter = (app: Router) => {
     const orderRoute: Router = Router()
     app.use('/orders', orderRoute)
-// - Current Order by user (args: user id)[token required] /orders/:user_id
-    orderRoute.get('/:id', function (req: Request, res: Response) {
-    res.send('Here are your orders')
+
+    orderRoute.get('/:id', verifyToken, async (req: Request, res: Response) => {
+        const orderID = parseInt(req.params.id)
+        const orderQuery = await orderInstance.showOrder(orderID)
+        res.json(orderQuery)
 })
-// - [OPTIONAL] Completed Orders by user (args: user id)[token required]
+    orderRoute.get('/product/:id', async (req: Request, res: Response) => {
+        const productID = parseInt(req.params.id)
+        const orderQuery = await orderInstance.showOrderByProduct(productID)
+        res.json(orderQuery)
+    })
+
+    orderRoute.get('/user/:id', async (req: Request, res: Response) => {
+        const userID = parseInt(req.params.id)
+        const orderQuery = await orderInstance.showOrderByUser(userID)
+        res.json(orderQuery)
+    })
+
+    orderRoute.post('/', async (req: Request, res: Response) => {
+        const orderQuery: Order[] = await orderInstance.createOrder(req.body)
+        res.json(orderQuery)
+    })    
 }
 
 export default createOrderRouter
