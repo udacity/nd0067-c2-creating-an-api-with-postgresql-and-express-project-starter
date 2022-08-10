@@ -3,18 +3,18 @@ import client from "../database"
 
 export type Order = {
     id?: number,
+    order_id: number,
     product_id: number,
-    qty: number,
+    quantity: number,
     user_id: number,
-    status: string
 }
 
 export class OrderStore {
     async showOrder(id: number): Promise<Order[]> {
     try {
-        const sql = `SELECT * FROM orders_table WHERE id=${id}`
+        const sql = `SELECT * FROM orders_table WHERE order_id=($1)`
         const conn = await client.connect()
-        const result = await conn.query(sql)
+        const result = await conn.query(sql, [id])
         conn.release()
         return result.rows[0]
     } catch (err) {
@@ -23,9 +23,10 @@ export class OrderStore {
 }
     async createOrder(order: Order): Promise<Order[]> {
         try {
-            const sql = `INSERT INTO orders_table (product_id, qty, user_id, status) VALUES ($1, $2, $3, $4) RETURNING *`
+            const sql = `INSERT INTO orders_table (order_id, product_id, quantity, user_id) VALUES
+            ($1, (SELECT id FROM products_table WHERE product_id=($2)), $3, (SELECT id FROM users_table WHERE user_id=($4))) RETURNING *`
             const conn = await client.connect()
-            const result = await conn.query(sql, [order.product_id, order.qty, order.user_id, order.status])
+            const result = await conn.query(sql, [order.order_id, order.product_id, order.quantity, order.user_id])
             conn.release()
             return result.rows
         } catch (err) {
@@ -35,7 +36,7 @@ export class OrderStore {
 
     async showOrderByUser(id: number): Promise<Order[]> {
         try {
-            const sql = `SELECT * FROM orders_table WHERE user_id=${id}`
+            const sql = `SELECT * FROM orders_table WHERE user_id=($1)`
             const conn = await client.connect()
             const result = await conn.query(sql, [id])
             conn.release()
@@ -47,13 +48,25 @@ export class OrderStore {
 
     async showOrderByProduct(id: number): Promise<Order[]> {
         try {
-            const sql = `SELECT * FROM orders_table WHERE product_id=${id}`
+            const sql = `SELECT * FROM orders_table WHERE product_id=($1)`
             const conn = await client.connect()
             const result = await conn.query(sql, [id])
             conn.release()
             return result.rows
         } catch (err) {
             throw new Error (`Could not retrieve order. ${err}`)
+        }
+    }
+
+    async truncateOrder():Promise<Order[]> {
+        try {
+            const sql = `TRUNCATE orders_table RESTART IDENTITY CASCADE`
+            const conn = await client.connect()
+            const result = await conn.query(sql)
+            conn.release()
+            return result.rows
+        } catch (err) {
+            throw new Error (`Could not truncate table. ${err}`)
         }
     }
 }

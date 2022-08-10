@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken'
 
 export type User = {
     id?: number,
+    user_id: number,
     first_name: string,
     last_name: string,
     pass_word: string
@@ -13,13 +14,13 @@ export type User = {
 export class UserStore {
     async createUser(u: User): Promise<User> {
         try {
-        const sql = 'INSERT INTO users_table (first_name, last_name, pass_word) VALUES($1, $2, $3) RETURNING *'
+        const sql = 'INSERT INTO users_table (user_id, first_name, last_name, pass_word) VALUES($1, $2, $3, $4) RETURNING *'
         const conn = await client.connect()
         const pw_hash = bcrypt.hashSync(
             u.pass_word + (process.env.BCRYPT_PASSWORD!), 
             parseInt(process.env.SALT_ROUNDS!)
         );
-        const result = await conn.query(sql, [u.first_name, u.last_name, pw_hash])
+        const result = await conn.query(sql, [u.user_id, u.first_name, u.last_name, pw_hash])
         const user: User = result.rows[0]
         conn.release()
         return user
@@ -30,7 +31,7 @@ export class UserStore {
 
     async showUser(id: Number): Promise<User> {
         try {
-            const sql = 'SELECT * FROM users_table WHERE id=($1)'
+            const sql = 'SELECT * FROM users_table WHERE user_id=($1)'
             const conn = await client.connect()
             const result = await conn.query(sql, [id])
             conn.release()

@@ -1,9 +1,31 @@
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0LCJmaXJzdF9uYW1lIjoiRGFuaWVsIiwibGFzdF9uYW1lIjoiTWFzc2V5IiwicGFzc193b3JkIjoiJDJiJDEwJFFINlhUN0kyOE93ZzhVelpOcWNFMS4ySE54VWs5bDIyaHEuMW1KbVlKcGNiVDNIME9oaDBhIn0sImlhdCI6MTY1OTYzMDk1MH0.rf4CUCFQ-ltrdQZ2NNzWxt_tarS44WCFtFq1P4O8UK8"
 
-    "dev": {
-      "driver": "pg",
-      "host": "127.0.0.1",
-      "database": "storefront",
-      "user": "root",
-      "password": "password"
-    },
+&& jasmine && db-migrate --env test reset
+
+
+    it('Should create a new user', async () => {
+        const result = await store.createUser({
+            first_name: 'CreateUser',
+            last_name: 'Userson',
+            pass_word: 'Jimothy123'
+        })
+        expect(!!result).toBe(true)
+        const userField = Object.keys(result)
+        expect(userField.length).toBe(4)
+    })
+
+
+    it('create method should add a Product', async () => {
+        const result = await store.createProduct({
+          name: 'ProductSpec1',
+          price: 11.99,
+          category: 'Tools'
+        });
+        expect(result[0]).toEqual({
+          id: 1,
+          name: 'ProductSpec1',
+          price: 11.99,
+          category: 'Tools'
+        });
+      });
+    

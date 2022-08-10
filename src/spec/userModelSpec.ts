@@ -5,23 +5,18 @@ import { env } from 'process'
 const store = new UserStore
 
 describe('User Store Functionality', () => {
-    beforeAll(async function() {
+    beforeEach(async function() {
         await store.truncateUser();
+        await store.createUser({
+            user_id: 1,
+            first_name: 'userSpec',
+            last_name: 'testUser',
+            pass_word: 'Jimothy123'
+        })
     })
 
     it('Index route should be defined', async () => {
         expect(store.showAllUsers).toBeDefined
-    })
-
-    it('Should create a new user', async () => {
-        const result = await store.createUser({
-            first_name: 'Danny',
-            last_name: 'Dannyson',
-            pass_word: 'Jimothy123'
-        })
-        expect(!!result).toBe(true)
-        const userField = Object.keys(result)
-        expect(userField.length).toBe(4)
     })
 
     it('Should show a single user', async () => {

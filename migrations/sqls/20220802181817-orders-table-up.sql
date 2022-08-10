@@ -1,6 +1,7 @@
 
 CREATE TABLE orders_table(
     id SERIAL PRIMARY KEY,
+    order_id INTEGER,
     product_id INTEGER,
     quantity INTEGER DEFAULT 1,
     user_id INTEGER,

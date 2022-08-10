@@ -3,6 +3,7 @@ import client from '../database'
 
 export type Product = {
     id?: number,
+    product_id: number,
     name: string,
     price: number,
     category: string
@@ -22,7 +23,7 @@ export class ProductStore {
 }
     async showProduct(id: number): Promise<Product[]> {
         try {
-            const sql = 'SELECT * FROM products_table WHERE id=($1)'
+            const sql = 'SELECT * FROM products_table WHERE product_id=($1)'
             const conn = await client.connect()
             const result = await conn.query(sql, [id])
             conn.release()
@@ -34,9 +35,9 @@ export class ProductStore {
 
     async createProduct(p: Product): Promise<Product[]> {
         try {
-            const sql = 'INSERT INTO products_table (name, price, category) VALUES ($1, $2, $3) RETURNING *'
+            const sql = 'INSERT INTO products_table (product_id, name, price, category) VALUES ($1, $2, $3, $4) RETURNING *'
             const conn = await client.connect()
-            const result = await conn.query(sql, [p.name, p.price, p.category])
+            const result = await conn.query(sql, [p.product_id, p.name, p.price, p.category])
             conn.release()
             return result.rows
         } catch (err) {
@@ -58,7 +59,7 @@ export class ProductStore {
 
     async deleteProduct(id: number): Promise<Product[]> {
         try {
-            const sql = `DELETE FROM products_table WHERE id=$1`
+            const sql = `DELETE FROM products_table WHERE product_id=$1`
             const conn = await client.connect()
             const result = await conn.query(sql, [id])
             conn.release()
