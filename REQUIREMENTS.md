@@ -5,47 +5,58 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 #### Products
-- Index
+- Index (showCatalog)
     - /products [GET]
-- Show
+- Show (showProduct)
     - /products/:id [GET]
-- Create [token required]
+- Create (createProduct) [token required]
     - /products [POST]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
+- Delete (deleteProduct)
+`   - /products/:id [DELETE]
+- Truncate (truncateProduct) [token required]
+    -/products/trunc/ [DELETE]
 
 #### Users
-- Index [token required]
+- Index (showAllUsers) [token required]
     - /users [GET]
-- Show [token required]
+- Show (showUser) [token required]
     - /users/:id [GET]
-- Create
+- Create (createUser)
     - /users [POST]
+- Truncate (truncateUser) [token required]
+    - /users/trunc/ [DELETE]
 
 #### Orders
-- Current Order by user (args: user id)[token required]
-    - /order [GET]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+- Order by ID (showOrder)
+    - /orders/:id [GET]
+- Order by UserID (showOrderByUser) [token required]
+    - /orders/user/:id [GET]
+- Order by ProductID (showOrderByProduct)
+    - /orders/product/:id [GET]
+- Order creation (createOrder) [token required]
+    - /orders/ [POST]
+- Truncate (truncateOrder) [token required]
+    - /orders/trunc/ [DELETE]
+
 
 ## Data Shapes
 #### Product
 -  id
 - name
 - price
-- [OPTIONAL] category
-- Table: products_table (id:serial key, name:string, price:number, category:string)
+- category
+- Table: products_table (id:serial key, product_id: number, name:string, price:number, category:string)
 
 #### User
 - id
 - firstName
 - lastName
 - password
-- Table: users_table (id:serial key, first_name:string, last_name:string, pass_word:string)
+- Table: users_table (id:serial key, user_id: number, first_name:string, last_name:string, pass_word:string)
 
 #### Orders
 - id
 - id of each product in the order
 - quantity of each product in the order
 - user_id
-- status of order (active or complete)
-- Table: orders_table (id:serial key, product_id:foreign key, product_qty:number, user_id: foreign key, status:mood)
+- Table: orders_table (id:serial key, product_id:foreign key, product_qty:number, user_id: foreign key)

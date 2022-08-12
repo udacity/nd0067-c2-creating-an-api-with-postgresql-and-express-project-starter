@@ -24,6 +24,12 @@ const createProductRouter = (app: Router) =>{
         res.json(newProduct)
     })
 
+    productRoute.get('/cat/:category', async (req: Request, res: Response) => {
+        const searchParam = req.params.category
+        const productQuery: Product[] = await productInstance.showProductByCat(searchParam)
+        res.json(productQuery)
+    })
+
     productRoute.delete('/trunk', verifyToken, async (req: Request, res: Response) => {
         const deletedTable = await productInstance.truncateProduct()
         res.json(deletedTable)

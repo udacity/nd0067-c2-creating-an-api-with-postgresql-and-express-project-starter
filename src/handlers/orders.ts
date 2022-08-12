@@ -19,18 +19,18 @@ const createOrderRouter = (app: Router) => {
         res.json(orderQuery)
     })
 
-    orderRoute.get('/user/:id', async (req: Request, res: Response) => {
+    orderRoute.get('/user/:id', verifyToken, async (req: Request, res: Response) => {
         const userID = parseInt(req.params.id)
         const orderQuery = await orderInstance.showOrderByUser(userID)
         res.json(orderQuery)
     })
 
-    orderRoute.post('/', async (req: Request, res: Response) => {
+    orderRoute.post('/', verifyToken, async (req: Request, res: Response) => {
         const orderQuery: Order[] = await orderInstance.createOrder(req.body)
         res.json(orderQuery)
     })
     
-    orderRoute.delete('/truncate/', async (req: Request, res: Response) => {
+    orderRoute.delete('/trunc/', async (req: Request, res: Response) => {
         const deleted = await orderInstance.truncateOrder()
         res.json(deleted)
     })

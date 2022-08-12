@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express'
 import bodyParser from 'body-parser'
 import cors from 'express'
-import createProductRouter from './routes/products'
-import createOrderRouter from './routes/orders'
-import createUserRouter from './routes/users'
+import createProductRouter from './handlers/products'
+import createOrderRouter from './handlers/orders'
+import createUserRouter from './handlers/users'
 
 const app: express.Application = express()
 const address: string = "0.0.0.0:3000"

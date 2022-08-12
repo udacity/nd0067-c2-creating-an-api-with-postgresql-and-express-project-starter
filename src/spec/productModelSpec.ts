@@ -14,11 +14,11 @@ describe("Product Store Functionality", () => {
     })
   })
 
-  it('index route should be defined', async () => {
+  it('showCatalog (index) route should be defined', async () => {
     expect(store.showCatalog).toBeDefined
   })
 
-  it('Should return a single product', async () => {
+  it('showProduct should return a single product', async () => {
     const result = await store.showProduct(1)
     expect(result[0]).toEqual({
       id: 1,
@@ -29,13 +29,25 @@ describe("Product Store Functionality", () => {
     })
   })
 
-  it('Should return empty array for the deleted product', async () => {
+  it('deleteProduct should return empty array for the deleted product', async () => {
     const result = await store.deleteProduct(1)
     expect(result[0]).toBeUndefined
   })
 
-  it('Should reset the table identity', async () => {
+  it('showByCategory should return product Product', async () => {
+    const result = await store.showProductByCat("Tools")
+    expect(result[0]).toEqual({
+      id: 1,
+      product_id: 1,
+      name: 'Test Product',
+      price: 11.99,
+      category: 'Tools'
+    })
+  })
+
+  it('truncateProduct should reset the table identity', async () => {
     await store.truncateProduct()
     expect(await store.showProduct(1)).toThrow
   })
+
 })

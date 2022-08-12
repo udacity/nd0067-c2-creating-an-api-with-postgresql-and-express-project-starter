@@ -4,11 +4,10 @@ import express from 'express'
 
 const verifyToken = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
-        const authorizationHeader = req.headers.authorization
-        if (authorizationHeader) {
-        const token = authorizationHeader.split(' ')[1]
+        const authHeader: string | undefined = req.headers.authorization
+        const token = authHeader ? authHeader.split(' ')[1]: ''
         const decoded = jwt.verify(token, process.env.TOKEN_SECRET!)
-        }
+        res.locals.userData = decoded
         next()
     } catch (err) {
         res.status(401)

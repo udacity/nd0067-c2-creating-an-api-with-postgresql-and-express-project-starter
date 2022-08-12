@@ -71,4 +71,27 @@ describe('Order Store Functionality', () => {
             user_id: 1
         })
     })
+
+    it('Should return orders organized by product', async () => {
+        const newOrder = {
+            order_id: 1,
+            product_id: 10,
+            quantity: 18,
+            user_id: 10
+        }
+        await o_store.createOrder(newOrder)
+        const result = await o_store.showOrderByProduct(1)
+        expect(result[0]).toEqual({
+            id: 1,
+            order_id: 1,
+            product_id: 1,
+            quantity: 18,
+            user_id: 1
+        })
+    })
+
+    it('truncateOrder should reset the table identity', async () => {
+        await o_store.truncateOrder()
+        expect(await o_store.showOrder(1)).toThrow
+      })
 })

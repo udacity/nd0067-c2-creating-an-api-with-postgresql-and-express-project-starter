@@ -2,7 +2,7 @@
 import client from '../database'
 
 export type Product = {
-    id?: number,
+    id?: number | undefined,
     product_id: number,
     name: string,
     price: number,
@@ -35,8 +35,11 @@ export class ProductStore {
 
     async createProduct(p: Product): Promise<Product[]> {
         try {
-            const sql = 'INSERT INTO products_table (product_id, name, price, category) VALUES ($1, $2, $3, $4) RETURNING *'
+            let sql = ''
             const conn = await client.connect()
+            if (p.product_id && p.name && p.price && p.category) {
+                sql = 'INSERT INTO products_table (product_id, name, price, category) VALUES ($1, $2, $3, $4) RETURNING *' 
+            }
             const result = await conn.query(sql, [p.product_id, p.name, p.price, p.category])
             conn.release()
             return result.rows
@@ -59,13 +62,25 @@ export class ProductStore {
 
     async deleteProduct(id: number): Promise<Product[]> {
         try {
-            const sql = `DELETE FROM products_table WHERE product_id=$1`
+            const sql = `DELETE FROM products_table WHERE product_id=$1 RETURNING *`
             const conn = await client.connect()
             const result = await conn.query(sql, [id])
             conn.release()
             return result.rows
         } catch (err) {
             throw new Error (`Could not delete product. ${err}`)
+        }
+    }
+
+    async showProductByCat(cat: string): Promise<Product[]> {
+        try {
+            const sql = `SELECT * FROM products_table WHERE category=$1`
+            const conn = await client.connect()
+            const result = await conn.query(sql, [cat])
+            conn.release()
+            return result.rows
+        } catch (err) {
+            throw new Error (`Could not get products. ${err}`)
         }
     }
 }

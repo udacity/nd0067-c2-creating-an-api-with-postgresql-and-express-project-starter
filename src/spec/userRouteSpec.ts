@@ -6,12 +6,12 @@ const server = supertest(app)
 const store = new UserStore
 
 describe('Endpoint Test', () => {
-    it('Responds with 200 for index', async () => {
+    it('Responds with 401 for index without token', async () => {
         const response = await server.get('/users/')
-        expect(response.status).toBe(200)
+        expect(response.status).toBe(401)
     })
 
-    it('Responds status 200 for GET on existing user', async () => {
+    it('Responds status 401 for GET without token', async () => {
         await store.createUser({
             user_id: 1,
             first_name: 'Testy',
@@ -19,7 +19,7 @@ describe('Endpoint Test', () => {
             pass_word: 'Jimothy123'
         })
         const response = await server.get('/users/1')
-        expect(response.status).toBe(200)
+        expect(response.status).toBe(401)
     })
 
 })

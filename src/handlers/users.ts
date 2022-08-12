@@ -32,6 +32,15 @@ const createUserRouter = (app: Router) => {
             res.json(err)
         }
 })
+
+    userRoute.delete('/trunk', verifyToken, async (req: Request, res: Response) => {
+        try {
+            const deletedTable = await userInstance.truncateUser()
+            res.json(deletedTable)
+        } catch (err) {
+            throw new Error (`Could not truncate table. ${err}`)
+        }
+    })
 }
 
 export default createUserRouter

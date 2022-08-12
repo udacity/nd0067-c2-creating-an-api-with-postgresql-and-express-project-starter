@@ -15,12 +15,17 @@ describe('User Store Functionality', () => {
         })
     })
 
-    it('Index route should be defined', async () => {
+    it('showAllUsers (index) route should be defined', async () => {
         expect(store.showAllUsers).toBeDefined
     })
 
-    it('Should show a single user', async () => {
+    it('showUser hould show a single user', async () => {
         const result = await store.showUser(1)
         expect(!!result).toBe(true)
-})
+    })
+
+    it('truncateUser should reset the table identity', async () => {
+        await store.truncateUser()
+        expect(await store.showUser(1)).toThrow
+      })
 })
