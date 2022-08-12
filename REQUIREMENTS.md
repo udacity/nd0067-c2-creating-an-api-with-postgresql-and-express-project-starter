@@ -4,6 +4,7 @@ The company stakeholders want to create an online storefront to showcase their g
 These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application. 
 
 ## API Endpoints
+- URL http://localhost:3000/
 #### Products
 - Index (showCatalog)
     - /products [GET]
