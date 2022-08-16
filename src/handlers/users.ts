@@ -11,13 +11,13 @@ const createUserRouter = (app: Router) => {
     const userRoute: Router = Router()
     app.use('/Users', userRoute)
 
-    userRoute.get('/', verifyToken, async (req: Request, res: Response) => {
+    userRoute.get('/', /*verifyToken,*/ async (req: Request, res: Response) => {
         const userCatalog: User[] = await userInstance.showAllUsers()
         res.json(userCatalog)
 })
 
     userRoute.get('/:id', verifyToken,  async (req: Request, res: Response) => {
-        const userID: Number = parseInt(req.params.id)
+        const userID: number = parseInt(req.params.id)
         const singleUser: User = await userInstance.showUser(userID)
         res.json(singleUser)
 })
@@ -25,6 +25,7 @@ const createUserRouter = (app: Router) => {
     userRoute.post('/', async (req: Request, res: Response) => {
         try {
             const createdUser: User = await userInstance.createUser(req.body)
+            console.log(createdUser)
             var token = jwt.sign({ user: createdUser }, (process.env.TOKEN_SECRET!))
             res.json(token)
         } catch (err) {

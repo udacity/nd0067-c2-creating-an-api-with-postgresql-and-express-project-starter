@@ -11,9 +11,9 @@ I worked with docker for the database container. The docker compose file is incl
     ```
     psql -U postgres
     ```
-- In psql run the following to create a user. I used the default of "root" for user but it should function for any username so long as the corresponding `.env` variable is changed accordingly.
+- In psql run the following to create a user. I used "full_stack_user" for user but it should function for any username so long as the corresponding `.env` variable is changed accordingly.
     ```
-    CREATE USER root WITH PASSWORD 'password';
+    CREATE USER full_stack_user WITH PASSWORD 'password123';
     ```
 - In psql run the following to create the dev and test database
     ```

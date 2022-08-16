@@ -2,8 +2,7 @@
 import client from '../database'
 
 export type Product = {
-    id?: number | undefined,
-    product_id: number,
+    ProductID: number | undefined,
     name: string,
     price: number,
     category: string
@@ -23,7 +22,7 @@ export class ProductStore {
 }
     async showProduct(id: number): Promise<Product[]> {
         try {
-            const sql = 'SELECT * FROM products_table WHERE product_id=($1)'
+            const sql = 'SELECT * FROM products_table WHERE ProductID=($1)'
             const conn = await client.connect()
             const result = await conn.query(sql, [id])
             conn.release()
@@ -33,18 +32,18 @@ export class ProductStore {
         }
     }
 
-    async createProduct(p: Product): Promise<Product[]> {
+    async createProduct(newProduct: Product): Promise<Product[]> {
         try {
             let sql = ''
             const conn = await client.connect()
-            if (p.product_id && p.name && p.price && p.category) {
-                sql = 'INSERT INTO products_table (product_id, name, price, category) VALUES ($1, $2, $3, $4) RETURNING *' 
+            if (newProduct.name && newProduct.price && newProduct.category) {
+                sql = 'INSERT INTO products_table (name, price, category) VALUES ($1, $2, $3) RETURNING *' 
             }
-            const result = await conn.query(sql, [p.product_id, p.name, p.price, p.category])
+            const result = await conn.query(sql, [newProduct.name, newProduct.price, newProduct.category])
             conn.release()
-            return result.rows
+            return result.rows[0]
         } catch (err) {
-            throw new Error(`Cannot create product ${p.name}. ${err}`)
+            throw new Error(`Cannot create product ${newProduct.name}. ${err}`)
         }
     }
 
@@ -62,11 +61,11 @@ export class ProductStore {
 
     async deleteProduct(id: number): Promise<Product[]> {
         try {
-            const sql = `DELETE FROM products_table WHERE product_id=$1 RETURNING *`
+            const sql = `DELETE FROM products_table WHERE ProductID=$1 RETURNING *`
             const conn = await client.connect()
             const result = await conn.query(sql, [id])
             conn.release()
-            return result.rows
+            return result.rows[0]
         } catch (err) {
             throw new Error (`Could not delete product. ${err}`)
         }

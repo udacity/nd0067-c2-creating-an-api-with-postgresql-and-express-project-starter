@@ -1,11 +1,6 @@
-
 CREATE TABLE orders_table(
-    id SERIAL PRIMARY KEY,
-    order_id INTEGER,
-    product_id INTEGER,
-    quantity INTEGER DEFAULT 1,
-    user_id INTEGER,
-
-    FOREIGN KEY (product_id) REFERENCES products_table(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users_table(id) ON DELETE CASCADE ON UPDATE CASCADE
+    OrderID int PRIMARY KEY,
+    status VARCHAR(10) DEFAULT 'pending',
+    UserID int,
+    FOREIGN KEY (UserID) REFERENCES users_table(UserID)
 );
