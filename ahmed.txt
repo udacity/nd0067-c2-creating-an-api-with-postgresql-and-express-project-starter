@@ -1,2 +1,6 @@
 //dev
 -you need which type you should make for the id in show method
+
+
+-problem in migrate down all (users are not deleted)
+-problem in creating the foreign key successfully

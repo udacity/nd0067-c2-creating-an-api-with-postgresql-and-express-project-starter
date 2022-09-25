@@ -14,7 +14,7 @@ const client = new Pool({
   host: HOST,
   database: usedDatabase,
   password: PASSWORD,
-  port: 3211,
+  port: 5432,
 });
 
 export default client;

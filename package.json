@@ -13,6 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "db-migrate": "^0.11.13",
+    "db-migrate-pg": "^1.2.2",
     "dotenv": "^16.0.2",
     "express": "^4.17.1",
     "pg": "^8.8.0",

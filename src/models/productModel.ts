@@ -40,7 +40,7 @@ export class ProductModel {
     try {
       const connnection = await client.connect();
       const sql =
-        "INSERT INTO products(name, price, category) VALUES ($1, $2, $3) RETURNING *";
+        "INSERT INTO products(name, price, category) VALUES ($1, $2, $3) RETURNING *;";
       const result = await connnection.query(sql, [
         product.name,
         product.price,
@@ -57,7 +57,7 @@ export class ProductModel {
   async fetchByCategory(category: string): Promise<Product[] | void> {
     try {
       const connnection = await client.connect();
-      const sql = "SELECT * FROM products WHERE category=$1";
+      const sql = "SELECT * FROM products WHERE category=$1;";
       const result = await connnection.query(sql, [category]);
       connnection.release();
       return result.rows[0];
@@ -71,7 +71,7 @@ export class ProductModel {
 //   async fetchMostPopularByNumber(numberLimit: number): Promise<Product[] | void> {
 //     try {
 //       const connnection = await client.connect();
-//       const sql = "SELECT * FROM products WHERE category=$1";
+//       const sql = "SELECT * FROM products WHERE category=$1;";
 //       const result = await connnection.query(sql, [numberLimit]);
 //       connnection.release();
 //       return result.rows[0];

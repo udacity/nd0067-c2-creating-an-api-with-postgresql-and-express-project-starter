@@ -39,7 +39,7 @@ export class UserModel {
     try {
       const connnection = await client.connect();
       const sql =
-        "INSERT INTO users(firstname, lastname, password) VALUES ($1, $2, $3) RETURNING *";
+        "INSERT INTO users(firstname, lastname, password) VALUES ($1, $2, $3) RETURNING *;";
       const result = await connnection.query(sql, [
         user.firstname,
         user.lastname,

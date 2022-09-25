@@ -13,6 +13,6 @@ var client = new pg_1.Pool({
     host: HOST,
     database: usedDatabase,
     password: PASSWORD,
-    port: 3211
+    port: 5432
 });
 exports["default"] = client;
