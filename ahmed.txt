@@ -1,0 +1,2 @@
+//dev
+-you need which type you should make for the id in show method

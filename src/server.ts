@@ -3,7 +3,6 @@ import bodyParser from 'body-parser'
 import client from './db/db'
 const app: Application = express()
 const address: string = "0.0.0.0:3000"
-
 app.use(bodyParser.json())
 
 app.get('/', function (req: Request, res: Response) {
