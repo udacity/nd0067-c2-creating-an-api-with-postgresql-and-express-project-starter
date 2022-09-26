@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { UserModel } from "../models/userModel";
 
 export const createToken = (userId: string): string => {
   try {
@@ -14,14 +15,27 @@ export const createToken = (userId: string): string => {
 export const createHash = (password: string): string => {
   try {
     const { SALT_ROUNDS, PEPPER } = process.env;
-    const salt = bcrypt.genSaltSync(parseInt(SALT_ROUNDS as string))
+    // const salt = bcrypt.genSaltSync(parseInt(SALT_ROUNDS as string))
     const hash = bcrypt.hashSync(
       (password + PEPPER) as string,
-      salt
+      parseInt(SALT_ROUNDS as string)
     );
+    console.log("hash", hash);
     return hash;
   } catch (err: unknown) {
     throw new Error(`err in creating the hash, ${err as string}`);
+  }
+};
+
+export const compareHash = async (password: string, hash: string): Promise<boolean> => {
+  try {
+    const { PEPPER } = process.env;
+    const result = bcrypt.compareSync(password+PEPPER as string, hash);
+    // console.log("result = ", result);
+    return result;
+  } catch (err: unknown) {
+    throw new Error(`email or password is not correct, ${err as string}`);
+    // return false
   }
 };
 

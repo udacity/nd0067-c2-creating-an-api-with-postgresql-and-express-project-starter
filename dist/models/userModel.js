@@ -46,26 +46,28 @@ var UserModel = /** @class */ (function () {
     }
     UserModel.prototype.create = function (user) {
         return __awaiter(this, void 0, void 0, function () {
-            var connnection, sql, result, err_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var connnection, sql, result, _a, id, firstname, lastname, email, err_1;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
+                        _b.trys.push([0, 3, , 4]);
                         return [4 /*yield*/, db_1["default"].connect()];
                     case 1:
-                        connnection = _a.sent();
-                        sql = "INSERT INTO users(firstname, lastname, hash) VALUES ($1, $2, $3) RETURNING *;";
+                        connnection = _b.sent();
+                        sql = "INSERT INTO users(firstname, lastname, hash, email) VALUES ($1, $2, $3, $4) RETURNING *;";
                         return [4 /*yield*/, connnection.query(sql, [
                                 user.firstname,
                                 user.lastname,
                                 user.hash,
+                                user.email
                             ])];
                     case 2:
-                        result = _a.sent();
+                        result = _b.sent();
                         connnection.release();
-                        return [2 /*return*/, result.rows[0]];
+                        _a = result.rows[0], id = _a.id, firstname = _a.firstname, lastname = _a.lastname, email = _a.email;
+                        return [2 /*return*/, { id: id, firstname: firstname, lastname: lastname, email: email }];
                     case 3:
-                        err_1 = _a.sent();
+                        err_1 = _b.sent();
                         console.log("err");
                         throw new Error("err in creating user, err: ".concat(err_1));
                     case 4: return [2 /*return*/];
@@ -123,7 +125,7 @@ var UserModel = /** @class */ (function () {
             });
         });
     };
-    UserModel.prototype.show = function (id) {
+    UserModel.prototype.show = function (email) {
         return __awaiter(this, void 0, void 0, function () {
             var connnection, sql, result, err_4;
             return __generator(this, function (_a) {
@@ -133,8 +135,8 @@ var UserModel = /** @class */ (function () {
                         return [4 /*yield*/, db_1["default"].connect()];
                     case 1:
                         connnection = _a.sent();
-                        sql = "SELECT * FROM users WHERE id=$1;";
-                        return [4 /*yield*/, connnection.query(sql, [id])];
+                        sql = "SELECT * FROM users WHERE email=$1;";
+                        return [4 /*yield*/, connnection.query(sql, [email])];
                     case 2:
                         result = _a.sent();
                         connnection.release();
@@ -142,7 +144,7 @@ var UserModel = /** @class */ (function () {
                     case 3:
                         err_4 = _a.sent();
                         console.log("err");
-                        throw new Error("err in fetching user with id ".concat(id, ", err: ").concat(err_4));
+                        throw new Error("err in fetching user with email ".concat(email, ", err: ").concat(err_4));
                     case 4: return [2 /*return*/];
                 }
             });

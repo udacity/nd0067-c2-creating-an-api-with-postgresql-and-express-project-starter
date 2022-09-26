@@ -1,6 +1,6 @@
 import { Application, Request, Response } from "express";
 import { UserModel } from "../models/userModel";
-import { createHash } from "../utilities/uthentication";
+import { compareHash, createHash } from "../utilities/uthentication";
 
 //needs return type
 const createUserHandler = async (
@@ -9,13 +9,14 @@ const createUserHandler = async (
 ): Promise<Response> => {
   try {
     console.log("hit users/signup");
-    const { firstname, lastname, password } = req.body;
+    const { firstname, lastname, password , email} = req.body;
     const User = new UserModel();
     const hash = createHash(password);
     const result = await User.create({
       firstname: firstname,
       lastname: lastname,
       hash,
+      email
     });
     return res.send({...result, token: 'sddsfsdfd'});
   } catch (err: unknown) {
@@ -23,7 +24,38 @@ const createUserHandler = async (
   }
 };
 
-const deleteUser = async (req: Request, res: Response): Promise<Response> => {
+const userLoginHandler = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    console.log("hit users/login");
+    const { email, password } = req.body;
+    const User = new UserModel()
+    //check if the returned value of show fit the code
+    const user = await User.show(email) 
+    if(!user){
+       return res.send('err: email doesn\'t exist');
+    }
+    const result = await compareHash(password, user.hash as string)
+    if(!result){
+        res.send('password is not correct')
+    }
+    const { id, firstname, lastname} = user;
+    return res.send({
+       id,
+       firstname,
+       lastname,
+       email 
+    });
+  } catch (err: unknown) {
+    return res.send(`err in creating user, ${err} `);
+  }
+};
+
+
+
+const deleteUserHandler = async (req: Request, res: Response): Promise<Response> => {
   try {
     console.log("hit users/delete/:userId");
     const User = new UserModel();
@@ -36,7 +68,7 @@ const deleteUser = async (req: Request, res: Response): Promise<Response> => {
   }
 };
 
-const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
+const getAllUsersHandler = async (req: Request, res: Response): Promise<Response> => {
   try {
     console.log("hit users/index");
     const User = new UserModel();
@@ -47,7 +79,7 @@ const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
   }
 };
 
-const getOneUserById = async (
+const getOneUserByIdHandler = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
@@ -68,9 +100,10 @@ const getOneUserById = async (
 
 const userRouter = (app: Application): void => {
   app.post("/users/signup", createUserHandler);
-  app.get("/users/delete/:userId", deleteUser);
-  app.get("/users/index", getAllUsers);
-  app.get("/users/show/:userId", getOneUserById);
+//   app.post("/users/login", userLoginHandler);
+  app.get("/users/delete/:userId", deleteUserHandler);
+  app.get("/users/index", getAllUsersHandler);
+  app.get("/users/show/:userId", getOneUserByIdHandler);
 };
 
 export default userRouter;

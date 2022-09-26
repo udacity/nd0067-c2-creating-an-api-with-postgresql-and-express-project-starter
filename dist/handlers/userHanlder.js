@@ -51,19 +51,20 @@ var userModel_1 = require("../models/userModel");
 var uthentication_1 = require("../utilities/uthentication");
 //needs return type
 var createUserHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, firstname, lastname, password, User, hash, result, err_1;
+    var _a, firstname, lastname, password, email, User, hash, result, err_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _b.trys.push([0, 2, , 3]);
                 console.log("hit users/signup");
-                _a = req.body, firstname = _a.firstname, lastname = _a.lastname, password = _a.password;
+                _a = req.body, firstname = _a.firstname, lastname = _a.lastname, password = _a.password, email = _a.email;
                 User = new userModel_1.UserModel();
                 hash = (0, uthentication_1.createHash)(password);
                 return [4 /*yield*/, User.create({
                         firstname: firstname,
                         lastname: lastname,
-                        hash: hash
+                        hash: hash,
+                        email: email
                     })];
             case 1:
                 result = _b.sent();
@@ -75,8 +76,43 @@ var createUserHandler = function (req, res) { return __awaiter(void 0, void 0, v
         }
     });
 }); };
-var deleteUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var User, result, err_2;
+var userLoginHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, email, password, User, user, result, id, firstname, lastname, err_2;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 3, , 4]);
+                console.log("hit users/login");
+                _a = req.body, email = _a.email, password = _a.password;
+                User = new userModel_1.UserModel();
+                return [4 /*yield*/, User.show(email)];
+            case 1:
+                user = _b.sent();
+                if (!user) {
+                    return [2 /*return*/, res.send('err: email doesn\'t exist')];
+                }
+                return [4 /*yield*/, (0, uthentication_1.compareHash)(password, user.hash)];
+            case 2:
+                result = _b.sent();
+                if (!result) {
+                    res.send('password is not correct');
+                }
+                id = user.id, firstname = user.firstname, lastname = user.lastname;
+                return [2 /*return*/, res.send({
+                        id: id,
+                        firstname: firstname,
+                        lastname: lastname,
+                        email: email
+                    })];
+            case 3:
+                err_2 = _b.sent();
+                return [2 /*return*/, res.send("err in creating user, ".concat(err_2, " "))];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+var deleteUserHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var User, result, err_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -88,14 +124,14 @@ var deleteUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                 result = _a.sent();
                 return [2 /*return*/, res.send(result)];
             case 2:
-                err_2 = _a.sent();
-                return [2 /*return*/, res.send("err in deleting user with id ".concat(req.params.userId, ", err: ").concat(err_2, " "))];
+                err_3 = _a.sent();
+                return [2 /*return*/, res.send("err in deleting user with id ".concat(req.params.userId, ", err: ").concat(err_3, " "))];
             case 3: return [2 /*return*/];
         }
     });
 }); };
-var getAllUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var User, result, err_3;
+var getAllUsersHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var User, result, err_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -107,14 +143,14 @@ var getAllUsers = function (req, res) { return __awaiter(void 0, void 0, void 0,
                 result = _a.sent();
                 return [2 /*return*/, res.send(result)];
             case 2:
-                err_3 = _a.sent();
-                return [2 /*return*/, res.send("err in getting all users, err: ".concat(err_3, " "))];
+                err_4 = _a.sent();
+                return [2 /*return*/, res.send("err in getting all users, err: ".concat(err_4, " "))];
             case 3: return [2 /*return*/];
         }
     });
 }); };
-var getOneUserById = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var User, result, err_4;
+var getOneUserByIdHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var User, result, err_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -129,16 +165,17 @@ var getOneUserById = function (req, res) { return __awaiter(void 0, void 0, void
                 }
                 return [2 /*return*/, res.send(result)];
             case 2:
-                err_4 = _a.sent();
-                return [2 /*return*/, res.send("err in getting user with Id ".concat(req.params.userId, ", err: ").concat(err_4, " "))];
+                err_5 = _a.sent();
+                return [2 /*return*/, res.send("err in getting user with Id ".concat(req.params.userId, ", err: ").concat(err_5, " "))];
             case 3: return [2 /*return*/];
         }
     });
 }); };
 var userRouter = function (app) {
     app.post("/users/signup", createUserHandler);
-    app.get("/users/delete/:userId", deleteUser);
-    app.get("/users/index", getAllUsers);
-    app.get("/users/show/:userId", getOneUserById);
+    //   app.post("/users/login", userLoginHandler);
+    app.get("/users/delete/:userId", deleteUserHandler);
+    app.get("/users/index", getAllUsersHandler);
+    app.get("/users/show/:userId", getOneUserByIdHandler);
 };
 exports["default"] = userRouter;
