@@ -46,27 +46,26 @@ var UserModel = /** @class */ (function () {
     }
     UserModel.prototype.create = function (user) {
         return __awaiter(this, void 0, void 0, function () {
-            var connnection, sql, result, _a, id, firstname, lastname, err_1;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var connnection, sql, result, err_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        _b.trys.push([0, 3, , 4]);
+                        _a.trys.push([0, 3, , 4]);
                         return [4 /*yield*/, db_1["default"].connect()];
                     case 1:
-                        connnection = _b.sent();
-                        sql = "INSERT INTO users(firstname, lastname, hash) VALUES ($1, $2, $3) RETURNING *;";
+                        connnection = _a.sent();
+                        sql = "INSERT INTO users(firstname, lastname, hash) VALUES ($1, $2, $3) RETURNING id, firstname, lastname;";
                         return [4 /*yield*/, connnection.query(sql, [
                                 user.firstname,
                                 user.lastname,
                                 user.hash,
                             ])];
                     case 2:
-                        result = _b.sent();
+                        result = _a.sent();
                         connnection.release();
-                        _a = result.rows[0], id = _a.id, firstname = _a.firstname, lastname = _a.lastname;
-                        return [2 /*return*/, { id: id, firstname: firstname, lastname: lastname }];
+                        return [2 /*return*/, result.rows[0]];
                     case 3:
-                        err_1 = _b.sent();
+                        err_1 = _a.sent();
                         console.log("err");
                         throw new Error("err in creating user, err: ".concat(err_1));
                     case 4: return [2 /*return*/];
@@ -89,6 +88,7 @@ var UserModel = /** @class */ (function () {
                     case 2:
                         result = _a.sent();
                         connnection.release();
+                        console.log('user delete result rows', result.rows.length);
                         return [2 /*return*/, result.rows];
                     case 3:
                         err_2 = _a.sent();
@@ -109,7 +109,7 @@ var UserModel = /** @class */ (function () {
                         return [4 /*yield*/, db_1["default"].connect()];
                     case 1:
                         connnection = _a.sent();
-                        sql = "SELECT * FROM users;";
+                        sql = "SELECT id, firstname, lastname FROM users;";
                         return [4 /*yield*/, connnection.query(sql)];
                     case 2:
                         result = _a.sent();
@@ -134,7 +134,7 @@ var UserModel = /** @class */ (function () {
                         return [4 /*yield*/, db_1["default"].connect()];
                     case 1:
                         connnection = _a.sent();
-                        sql = "SELECT * FROM users WHERE id=$1;";
+                        sql = "SELECT id, firstname, lastname FROM users WHERE id=$1;";
                         return [4 /*yield*/, connnection.query(sql, [userId])];
                     case 2:
                         result = _a.sent();

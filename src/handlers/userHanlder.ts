@@ -1,5 +1,5 @@
 import { Application, Request, Response } from "express";
-import { UserModel } from "../models/userModel";
+import { User, UserModel } from "../models/userModel";
 import { compareHash, createHash } from "../utilities/authentication";
 
 //needs return type
@@ -9,16 +9,16 @@ const createUserHandler = async (
 ): Promise<Response> => {
   try {
     console.log("hit users/signup");
-    const { firstname, lastname, password } = req.body;
+    const { firstname, lastname, password }: User = req.body;
     const User = new UserModel();
-    const hash = createHash(password);
-    const result = await User.create({
+    const hash = createHash(password as string);
+    const user = await User.create({
       firstname: firstname,
       lastname: lastname,
-      hash
+      hash,
     });
-    return res.send({ ...result, token: "sddsfsdfd" });
-    
+    //give a token
+    return res.send({ ...user, token: "" });
   } catch (err: unknown) {
     return res.send(`err in creating user, ${err} `);
   }
@@ -30,23 +30,19 @@ const userLoginHandler = async (
 ): Promise<Response> => {
   try {
     console.log("hit users/login");
-    const { email, password } = req.body;
+    const { password, userId } = req.body;
     const User = new UserModel();
-    //check if the returned value of show fit the code
-    const user = await User.show(email);
+    const user = await User.show(userId);
     if (!user) {
       return res.send("err: email doesn't exist");
     }
     const result = await compareHash(password, user.hash as string);
     if (!result) {
-      res.send("password is not correct");
+      return res.send("password is not correct");
     }
-    const { id, firstname, lastname } = user;
+    //give a token
     return res.send({
-      id,
-      firstname,
-      lastname,
-      email,
+      ...user,
       token: "",
     });
   } catch (err: unknown) {
@@ -61,8 +57,9 @@ const deleteUserHandler = async (
   try {
     console.log("hit users/delete/:userId");
     const User = new UserModel();
-    const result = await User.delete(req.params.userId);
-    return res.send(result);
+    await User.delete(req.params.userId);
+    //even if user doesn't exist this will return the deletion statement of the user like with id=1000
+    return res.send("user is deleted");
   } catch (err: unknown) {
     return res.send(
       `err in deleting user with id ${req.params.userId}, err: ${err} `
@@ -77,13 +74,12 @@ const getAllUsersHandler = async (
   try {
     console.log("hit users/index");
     const User = new UserModel();
-    const result = await User.index();
-    return res.send(result);
+    const users = await User.index();
+    return res.send(users);
   } catch (err: unknown) {
     return res.send(`err in getting all users, err: ${err} `);
   }
 };
-
 
 const getOneUserByIdHandler = async (
   req: Request,
@@ -108,7 +104,7 @@ const getOneUserByIdHandler = async (
 const userRouter = (app: Application): void => {
   app.post("/users/signup", createUserHandler);
   app.post("/users/login", userLoginHandler);
-  app.get("/users/delete/:userId", deleteUserHandler);
+  app.post("/users/delete/:userId", deleteUserHandler);
   app.get("/users/index", getAllUsersHandler);
   app.get("/users/show/:userId", getOneUserByIdHandler);
 };
