@@ -1,7 +1,7 @@
 import express, { Request, Response , Application} from 'express'
 import bodyParser from 'body-parser'
 import userRouter from './handlers/userHanlder'
-import { createHash, createToken } from './utilities/uthentication'
+import { createHash, createToken } from './utilities/authentication'
 const app: Application = express()
 const address: string = "0.0.0.0:3000"
 app.use(bodyParser.json())

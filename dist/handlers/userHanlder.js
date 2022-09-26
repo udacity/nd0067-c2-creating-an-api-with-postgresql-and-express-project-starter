@@ -48,27 +48,26 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var userModel_1 = require("../models/userModel");
-var uthentication_1 = require("../utilities/uthentication");
+var authentication_1 = require("../utilities/authentication");
 //needs return type
 var createUserHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, firstname, lastname, password, email, User, hash, result, err_1;
+    var _a, firstname, lastname, password, User, hash, result, err_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _b.trys.push([0, 2, , 3]);
                 console.log("hit users/signup");
-                _a = req.body, firstname = _a.firstname, lastname = _a.lastname, password = _a.password, email = _a.email;
+                _a = req.body, firstname = _a.firstname, lastname = _a.lastname, password = _a.password;
                 User = new userModel_1.UserModel();
-                hash = (0, uthentication_1.createHash)(password);
+                hash = (0, authentication_1.createHash)(password);
                 return [4 /*yield*/, User.create({
                         firstname: firstname,
                         lastname: lastname,
-                        hash: hash,
-                        email: email
+                        hash: hash
                     })];
             case 1:
                 result = _b.sent();
-                return [2 /*return*/, res.send(__assign(__assign({}, result), { token: 'sddsfsdfd' }))];
+                return [2 /*return*/, res.send(__assign(__assign({}, result), { token: "sddsfsdfd" }))];
             case 2:
                 err_1 = _b.sent();
                 return [2 /*return*/, res.send("err in creating user, ".concat(err_1, " "))];
@@ -89,20 +88,21 @@ var userLoginHandler = function (req, res) { return __awaiter(void 0, void 0, vo
             case 1:
                 user = _b.sent();
                 if (!user) {
-                    return [2 /*return*/, res.send('err: email doesn\'t exist')];
+                    return [2 /*return*/, res.send("err: email doesn't exist")];
                 }
-                return [4 /*yield*/, (0, uthentication_1.compareHash)(password, user.hash)];
+                return [4 /*yield*/, (0, authentication_1.compareHash)(password, user.hash)];
             case 2:
                 result = _b.sent();
                 if (!result) {
-                    res.send('password is not correct');
+                    res.send("password is not correct");
                 }
                 id = user.id, firstname = user.firstname, lastname = user.lastname;
                 return [2 /*return*/, res.send({
                         id: id,
                         firstname: firstname,
                         lastname: lastname,
-                        email: email
+                        email: email,
+                        token: ""
                     })];
             case 3:
                 err_2 = _b.sent();
@@ -150,7 +150,7 @@ var getAllUsersHandler = function (req, res) { return __awaiter(void 0, void 0, 
     });
 }); };
 var getOneUserByIdHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var User, result, err_5;
+    var User, user, id, firstname, lastname, err_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -159,11 +159,12 @@ var getOneUserByIdHandler = function (req, res) { return __awaiter(void 0, void 
                 User = new userModel_1.UserModel();
                 return [4 /*yield*/, User.show(req.params.userId)];
             case 1:
-                result = _a.sent();
-                if (!result) {
-                    return [2 /*return*/, res.send("no user found with this id")];
+                user = _a.sent();
+                if (!user) {
+                    return [2 /*return*/, res.send("no user found with this userId")];
                 }
-                return [2 /*return*/, res.send(result)];
+                id = user.id, firstname = user.firstname, lastname = user.lastname;
+                return [2 /*return*/, res.send({ id: id, firstname: firstname, lastname: lastname, token: "" })];
             case 2:
                 err_5 = _a.sent();
                 return [2 /*return*/, res.send("err in getting user with Id ".concat(req.params.userId, ", err: ").concat(err_5, " "))];
@@ -173,7 +174,7 @@ var getOneUserByIdHandler = function (req, res) { return __awaiter(void 0, void 
 }); };
 var userRouter = function (app) {
     app.post("/users/signup", createUserHandler);
-    //   app.post("/users/login", userLoginHandler);
+    app.post("/users/login", userLoginHandler);
     app.get("/users/delete/:userId", deleteUserHandler);
     app.get("/users/index", getAllUsersHandler);
     app.get("/users/show/:userId", getOneUserByIdHandler);

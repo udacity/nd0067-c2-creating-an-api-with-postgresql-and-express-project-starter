@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { UserModel } from "../models/userModel";
+
 
 export const createToken = (userId: string): string => {
   try {

@@ -6,7 +6,6 @@ type User = {
   id?: number;
   firstname: string;
   lastname: string;
-  email: string;
   password?: string;
   hash?: string;
 };
@@ -16,16 +15,15 @@ export class UserModel {
     try {
       const connnection = await client.connect();
       const sql =
-        "INSERT INTO users(firstname, lastname, hash, email) VALUES ($1, $2, $3, $4) RETURNING *;";
+        "INSERT INTO users(firstname, lastname, hash) VALUES ($1, $2, $3) RETURNING *;";
       const result = await connnection.query(sql, [
         user.firstname,
         user.lastname,
         user.hash,
-        user.email
       ]);
       connnection.release();
-      const { id, firstname, lastname ,email} = result.rows[0];
-      return { id, firstname, lastname , email};
+      const { id, firstname, lastname } = result.rows[0];
+      return { id, firstname, lastname };
     } catch (err: unknown) {
       console.log("err");
       throw new Error(`err in creating user, err: ${err as string}`);
@@ -58,17 +56,17 @@ export class UserModel {
     }
   }
 
-  async show(email: string): Promise<User | void> {
+  async show(userId: string): Promise<User | void> {
     try {
       const connnection = await client.connect();
-      const sql = "SELECT * FROM users WHERE email=$1;";
-      const result = await connnection.query(sql, [email]);
+      const sql = "SELECT * FROM users WHERE id=$1;";
+      const result = await connnection.query(sql, [userId]);
       connnection.release();
       return result.rows[0];
     } catch (err: unknown) {
       console.log("err");
       throw new Error(
-        `err in fetching user with email ${email}, err: ${err as string}`
+        `err in fetching user with userId ${userId}, err: ${err as string}`
       );
     }
   }
