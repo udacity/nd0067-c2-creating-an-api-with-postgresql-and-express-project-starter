@@ -1,6 +1,15 @@
 //dev
 -you need which type you should make for the id in show method
+-env problem (not recognizing username) for db.ts and db.json
+-add delete to each model
+-add file in models/table in database 
 
 
--problem in migrate down all (users are not deleted)
--problem in creating the foreign key successfully
+
+
+
+
+
+
+-related to hawwesh
+-error of period days works just well (not as the other two) when trying to confirm

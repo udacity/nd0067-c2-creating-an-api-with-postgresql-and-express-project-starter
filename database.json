@@ -9,14 +9,16 @@
     "schema": "public"
   },
   "test": {
-    "user": { "ENV": "USERNAME" },
-    "host": { "ENV": "localhost" },
-    "database": { "ENV": "DATABASE_TEST" },
+    "driver": "pg",
+    "user": "postgres",
+    "password": { "ENV": "PASSWORD" },
+    "host": "localhost",
+    "database": "udacity_store_test",
     "port": 5432,
-    "driver": "pg"
+    "schema": "public"
   },
   "prod": {
-    "user": { "ENV": "USERNAME" },
+    "user": "postgres",
     "password": { "ENV": "PASSWORD" },
     "host": { "ENV": "localhost" },
     "database": { "ENV": "DATABASE" },

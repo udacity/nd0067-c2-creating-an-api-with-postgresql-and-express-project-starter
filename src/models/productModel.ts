@@ -28,7 +28,7 @@ export class ProductModel {
       const result = await connnection.query(sql, [id]);
       connnection.release();
       return result.rows[0];
-    } catch (err) {
+    } catch (err: unknown) {
       console.log("err");
       throw new Error(
         `err in fetching product with id ${id}, err: ${err as string}`
@@ -48,12 +48,28 @@ export class ProductModel {
       ]);
       connnection.release();
       return result.rows[0];
-    } catch (err) {
+    } catch (err: unknown) {
       console.log("err");
       throw new Error(`err in creating product, err: ${err as string}`);
     }
   }
 
+  // [Extra] dangerous (ON DELETE CASCADE)
+  async delete(productId: string): Promise<Product[] | void> {
+    try {
+      const connnection = await client.connect();
+      const sql =
+        "DELETE FROM products where id=$1;";
+      const result = await connnection.query(sql, [productId]);
+      connnection.release();
+      return result.rows;
+    } catch (err: unknown) {
+      console.log("err");
+      throw new Error(`err in creating product, err: ${err as string}`);
+    }
+  }
+
+  //[Optional] 
   async fetchByCategory(category: string): Promise<Product[] | void> {
     try {
       const connnection = await client.connect();
@@ -61,7 +77,7 @@ export class ProductModel {
       const result = await connnection.query(sql, [category]);
       connnection.release();
       return result.rows[0];
-    } catch (err) {
+    } catch (err: unknown) {
       console.log("err");
       throw new Error(`err in fetching products by category, err: ${err as string}`);
     }
