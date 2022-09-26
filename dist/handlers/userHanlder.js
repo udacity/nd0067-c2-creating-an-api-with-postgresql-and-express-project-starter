@@ -49,9 +49,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var userModel_1 = require("../models/userModel");
 var authentication_1 = require("../utilities/authentication");
+var authorization_1 = require("../utilities/authorization");
 //needs return type
 var createUserHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, firstname, lastname, password, User, hash, user, err_1;
+    var _a, firstname, lastname, password, User, hash, user, accessToken, err_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -67,8 +68,8 @@ var createUserHandler = function (req, res) { return __awaiter(void 0, void 0, v
                     })];
             case 1:
                 user = _b.sent();
-                //give a token
-                return [2 /*return*/, res.send(__assign(__assign({}, user), { token: "" }))];
+                accessToken = (0, authentication_1.createToken)(user.id);
+                return [2 /*return*/, res.send(__assign(__assign({}, user), { accessToken: accessToken }))];
             case 2:
                 err_1 = _b.sent();
                 return [2 /*return*/, res.send("err in creating user, ".concat(err_1, " "))];
@@ -77,7 +78,7 @@ var createUserHandler = function (req, res) { return __awaiter(void 0, void 0, v
     });
 }); };
 var userLoginHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, password, userId, User, user, result, err_2;
+    var _a, password, userId, User, user, result, accessToken, id, firstname, lastname, err_2;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -89,16 +90,23 @@ var userLoginHandler = function (req, res) { return __awaiter(void 0, void 0, vo
             case 1:
                 user = _b.sent();
                 if (!user) {
-                    return [2 /*return*/, res.send("err: email doesn't exist")];
+                    return [2 /*return*/, res.send("err: user with this id doesn't exist")];
                 }
+                console.log("user", user);
                 return [4 /*yield*/, (0, authentication_1.compareHash)(password, user.hash)];
             case 2:
                 result = _b.sent();
                 if (!result) {
                     return [2 /*return*/, res.send("password is not correct")];
                 }
-                //give a token
-                return [2 /*return*/, res.send(__assign(__assign({}, user), { token: "" }))];
+                accessToken = (0, authentication_1.createToken)(userId);
+                id = user.id, firstname = user.firstname, lastname = user.lastname;
+                return [2 /*return*/, res.send({
+                        id: id,
+                        firstname: firstname,
+                        lastname: lastname,
+                        accessToken: accessToken
+                    })];
             case 3:
                 err_2 = _b.sent();
                 return [2 /*return*/, res.send("err in creating user, ".concat(err_2, " "))];
@@ -172,7 +180,7 @@ var userRouter = function (app) {
     app.post("/users/signup", createUserHandler);
     app.post("/users/login", userLoginHandler);
     app.post("/users/delete/:userId", deleteUserHandler);
-    app.get("/users/index", getAllUsersHandler);
+    app.get("/users/index", authorization_1.authorizationMiddleWare, getAllUsersHandler);
     app.get("/users/show/:userId", getOneUserByIdHandler);
 };
 exports["default"] = userRouter;

@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 
-export const createToken = (userId: string): string => {
+export const createToken = (userId: number): string => {
   try {
     // console.log("token secret", process.env.TOKEN_SECRET_KEY);
     const token = jwt.sign({ userId }, process.env.TOKEN_SECRET_KEY as string);
@@ -20,7 +20,7 @@ export const createHash = (password: string): string => {
       (password + PEPPER) as string,
       parseInt(SALT_ROUNDS as string)
     );
-    console.log("hash", hash);
+    // console.log("hash", hash);
     return hash;
   } catch (err: unknown) {
     throw new Error(`err in creating the hash, ${err as string}`);
@@ -34,7 +34,7 @@ export const compareHash = async (password: string, hash: string): Promise<boole
     // console.log("result = ", result);
     return result;
   } catch (err: unknown) {
-    throw new Error(`email or password is not correct, ${err as string}`);
+    throw new Error(`userId or password is not correct, ${err as string}`);
     // return false
   }
 };

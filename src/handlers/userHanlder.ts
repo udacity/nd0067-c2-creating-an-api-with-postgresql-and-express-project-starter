@@ -1,6 +1,11 @@
 import { Application, Request, Response } from "express";
 import { User, UserModel } from "../models/userModel";
-import { compareHash, createHash } from "../utilities/authentication";
+import {
+  compareHash,
+  createHash,
+  createToken,
+} from "../utilities/authentication";
+import { authorizationMiddleWare } from "../utilities/authorization";
 
 //needs return type
 const createUserHandler = async (
@@ -18,7 +23,8 @@ const createUserHandler = async (
       hash,
     });
     //give a token
-    return res.send({ ...user, token: "" });
+    const accessToken = createToken((user as User).id as number);
+    return res.send({ ...user, accessToken });
   } catch (err: unknown) {
     return res.send(`err in creating user, ${err} `);
   }
@@ -34,16 +40,21 @@ const userLoginHandler = async (
     const User = new UserModel();
     const user = await User.show(userId);
     if (!user) {
-      return res.send("err: email doesn't exist");
+      return res.send("err: user with this id doesn't exist");
     }
+    console.log("user", user);
     const result = await compareHash(password, user.hash as string);
     if (!result) {
       return res.send("password is not correct");
     }
     //give a token
+    const accessToken = createToken(userId);
+    const { id, firstname, lastname } = user;
     return res.send({
-      ...user,
-      token: "",
+      id,
+      firstname,
+      lastname,
+      accessToken,
     });
   } catch (err: unknown) {
     return res.send(`err in creating user, ${err} `);
@@ -105,7 +116,7 @@ const userRouter = (app: Application): void => {
   app.post("/users/signup", createUserHandler);
   app.post("/users/login", userLoginHandler);
   app.post("/users/delete/:userId", deleteUserHandler);
-  app.get("/users/index", getAllUsersHandler);
+  app.get("/users/index", authorizationMiddleWare, getAllUsersHandler);
   app.get("/users/show/:userId", getOneUserByIdHandler);
 };
 

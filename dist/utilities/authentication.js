@@ -58,7 +58,7 @@ var createHash = function (password) {
         var _a = process.env, SALT_ROUNDS = _a.SALT_ROUNDS, PEPPER = _a.PEPPER;
         // const salt = bcrypt.genSaltSync(parseInt(SALT_ROUNDS as string))
         var hash = bcrypt_1["default"].hashSync((password + PEPPER), parseInt(SALT_ROUNDS));
-        console.log("hash", hash);
+        // console.log("hash", hash);
         return hash;
     }
     catch (err) {
@@ -76,7 +76,7 @@ var compareHash = function (password, hash) { return __awaiter(void 0, void 0, v
             return [2 /*return*/, result];
         }
         catch (err) {
-            throw new Error("email or password is not correct, ".concat(err));
+            throw new Error("userId or password is not correct, ".concat(err));
             // return false
         }
         return [2 /*return*/];

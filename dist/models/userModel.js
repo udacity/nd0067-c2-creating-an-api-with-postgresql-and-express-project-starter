@@ -134,7 +134,7 @@ var UserModel = /** @class */ (function () {
                         return [4 /*yield*/, db_1["default"].connect()];
                     case 1:
                         connnection = _a.sent();
-                        sql = "SELECT id, firstname, lastname FROM users WHERE id=$1;";
+                        sql = "SELECT * FROM users WHERE id=$1;";
                         return [4 /*yield*/, connnection.query(sql, [userId])];
                     case 2:
                         result = _a.sent();

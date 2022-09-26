@@ -60,7 +60,7 @@ export class UserModel {
   async show(userId: string): Promise<User | void> {
     try {
       const connnection = await client.connect();
-      const sql = "SELECT id, firstname, lastname FROM users WHERE id=$1;";
+      const sql = "SELECT * FROM users WHERE id=$1;";
       const result = await connnection.query(sql, [userId]);
       connnection.release();
       return result.rows[0];
