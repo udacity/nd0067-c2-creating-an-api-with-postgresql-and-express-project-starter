@@ -16,6 +16,7 @@ export const authorizationMiddleWare = (
     //res.locals.userIdInToken will be used for functions that needs to know which user does this token has 
     //authority upon to update
     res.locals.userIdInToken = (data as JwtPayload).userId
+    
     next();
   } catch (err: unknown) {
     throw new Error(`err in authorizing user, err: ${err}`);
