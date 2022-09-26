@@ -18,6 +18,6 @@ export const authorizationMiddleWare = (
     res.locals.userIdInToken = (data as JwtPayload).userId
     next();
   } catch (err: unknown) {
-    throw new Error(`err in authorize user, err: ${err}`);
+    throw new Error(`err in authorizing user, err: ${err}`);
   }
 };

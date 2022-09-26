@@ -48,6 +48,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var productModel_1 = require("../models/productModel");
+var authorization_1 = require("../utilities/authorization");
 //needs return type
 var createProductHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, name_1, price, category, Product, product, err_1;
@@ -133,8 +134,7 @@ var createProductHandler = function (req, res) { return __awaiter(void 0, void 0
 //   }
 // };
 var productRouter = function (app) {
-    app.post("/products/create", createProductHandler);
-    //   app.post("/products/login", productLoginHandler);
+    app.post("/products/create", authorization_1.authorizationMiddleWare, createProductHandler);
     //   app.post("/products/delete/:productId", authorizationMiddleWare, deleteproductHandler);
     //   app.get("/products/index", authorizationMiddleWare, getAllproductsHandler);
     //   app.get(

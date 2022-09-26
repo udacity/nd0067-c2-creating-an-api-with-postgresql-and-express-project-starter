@@ -17,7 +17,7 @@ var authorizationMiddleWare = function (req, res, next) {
         next();
     }
     catch (err) {
-        throw new Error("err in authorize user, err: ".concat(err));
+        throw new Error("err in authorizing user, err: ".concat(err));
     }
 };
 exports.authorizationMiddleWare = authorizationMiddleWare;
