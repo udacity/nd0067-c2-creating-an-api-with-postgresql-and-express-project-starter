@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -37,25 +48,28 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var userModel_1 = require("../models/userModel");
+var uthentication_1 = require("../utilities/uthentication");
 //needs return type
 var createUserHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var User, result, err_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var _a, firstname, lastname, password, User, hash, result, err_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                console.log('hit users/signup');
+                _b.trys.push([0, 2, , 3]);
+                console.log("hit users/signup");
+                _a = req.body, firstname = _a.firstname, lastname = _a.lastname, password = _a.password;
                 User = new userModel_1.UserModel();
+                hash = (0, uthentication_1.createHash)(password);
                 return [4 /*yield*/, User.create({
-                        firstname: req.body.firstname,
-                        lastname: req.body.lastname,
-                        hash: req.body.hash
+                        firstname: firstname,
+                        lastname: lastname,
+                        hash: hash
                     })];
             case 1:
-                result = _a.sent();
-                return [2 /*return*/, res.send(result)];
+                result = _b.sent();
+                return [2 /*return*/, res.send(__assign(__assign({}, result), { token: 'sddsfsdfd' }))];
             case 2:
-                err_1 = _a.sent();
+                err_1 = _b.sent();
                 return [2 /*return*/, res.send("err in creating user, ".concat(err_1, " "))];
             case 3: return [2 /*return*/];
         }
@@ -67,7 +81,7 @@ var deleteUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                console.log('hit users/delete/:userId');
+                console.log("hit users/delete/:userId");
                 User = new userModel_1.UserModel();
                 return [4 /*yield*/, User["delete"](req.params.userId)];
             case 1:
@@ -86,7 +100,7 @@ var getAllUsers = function (req, res) { return __awaiter(void 0, void 0, void 0,
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                console.log('hit users/index');
+                console.log("hit users/index");
                 User = new userModel_1.UserModel();
                 return [4 /*yield*/, User.index()];
             case 1:
@@ -105,13 +119,13 @@ var getOneUserById = function (req, res) { return __awaiter(void 0, void 0, void
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                console.log('hit users/show/:userId');
+                console.log("hit users/show/:userId");
                 User = new userModel_1.UserModel();
                 return [4 /*yield*/, User.show(req.params.userId)];
             case 1:
                 result = _a.sent();
                 if (!result) {
-                    return [2 /*return*/, res.send('no user found with this id')];
+                    return [2 /*return*/, res.send("no user found with this id")];
                 }
                 return [2 /*return*/, res.send(result)];
             case 2:

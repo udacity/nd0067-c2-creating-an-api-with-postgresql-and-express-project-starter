@@ -11,12 +11,13 @@ export const createToken = (userId: string): string => {
   }
 };
 
-const createHash = (password: string): string => {
+export const createHash = (password: string): string => {
   try {
     const { SALT_ROUNDS, PEPPER } = process.env;
+    const salt = bcrypt.genSaltSync(parseInt(SALT_ROUNDS as string))
     const hash = bcrypt.hashSync(
       (password + PEPPER) as string,
-      SALT_ROUNDS as string
+      salt
     );
     return hash;
   } catch (err: unknown) {
