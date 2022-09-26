@@ -121,6 +121,9 @@ var deleteUserHandler = function (req, res) { return __awaiter(void 0, void 0, v
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 console.log("hit users/delete/:userId");
+                if (res.locals.userIdInToken != req.params.userId) {
+                    return [2 /*return*/, res.send("you don't have the authority to delete the user with id ".concat(req.params.userId))];
+                }
                 User = new userModel_1.UserModel();
                 return [4 /*yield*/, User["delete"](req.params.userId)];
             case 1:
@@ -160,6 +163,9 @@ var getOneUserByIdHandler = function (req, res) { return __awaiter(void 0, void 
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 console.log("hit users/show/:userId");
+                if (res.locals.userIdInToken != req.params.userId) {
+                    return [2 /*return*/, res.send("you don't have the authority to view the user with id ".concat(req.params.userId))];
+                }
                 User = new userModel_1.UserModel();
                 return [4 /*yield*/, User.show(req.params.userId)];
             case 1:
@@ -168,7 +174,7 @@ var getOneUserByIdHandler = function (req, res) { return __awaiter(void 0, void 
                     return [2 /*return*/, res.send("no user found with this userId")];
                 }
                 id = user.id, firstname = user.firstname, lastname = user.lastname;
-                return [2 /*return*/, res.send({ id: id, firstname: firstname, lastname: lastname, token: "" })];
+                return [2 /*return*/, res.send({ id: id, firstname: firstname, lastname: lastname })];
             case 2:
                 err_5 = _a.sent();
                 return [2 /*return*/, res.send("err in getting user with Id ".concat(req.params.userId, ", err: ").concat(err_5, " "))];
@@ -179,8 +185,8 @@ var getOneUserByIdHandler = function (req, res) { return __awaiter(void 0, void 
 var userRouter = function (app) {
     app.post("/users/signup", createUserHandler);
     app.post("/users/login", userLoginHandler);
-    app.post("/users/delete/:userId", deleteUserHandler);
+    app.post("/users/delete/:userId", authorization_1.authorizationMiddleWare, deleteUserHandler);
     app.get("/users/index", authorization_1.authorizationMiddleWare, getAllUsersHandler);
-    app.get("/users/show/:userId", getOneUserByIdHandler);
+    app.get("/users/show/:userId", authorization_1.authorizationMiddleWare, getOneUserByIdHandler);
 };
 exports["default"] = userRouter;

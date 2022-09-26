@@ -10,7 +10,7 @@ var authorizationMiddleWare = function (req, res, next) {
     try {
         var token = (_a = req.headers["authorization"]) === null || _a === void 0 ? void 0 : _a.split(" ")[1];
         var data = jsonwebtoken_1["default"].verify(token, process.env.TOKEN_SECRET_KEY);
-        console.log("data after verifying", data);
+        // console.log("data after verifying", data);
         //res.locals.userIdInToken will be used for functions that needs to know which user does this token has 
         //authority upon to update
         res.locals.userIdInToken = data.userId;

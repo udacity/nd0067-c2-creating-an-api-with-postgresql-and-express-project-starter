@@ -12,7 +12,7 @@ export const authorizationMiddleWare = (
       token as string,
       process.env.TOKEN_SECRET_KEY as string
     );
-    console.log("data after verifying", data);
+    // console.log("data after verifying", data);
     //res.locals.userIdInToken will be used for functions that needs to know which user does this token has 
     //authority upon to update
     res.locals.userIdInToken = (data as JwtPayload).userId
