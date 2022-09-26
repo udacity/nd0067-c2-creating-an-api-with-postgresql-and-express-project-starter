@@ -1,7 +1,7 @@
 import client from "../db/db";
 
-type Product = {
-  id: number;
+export type Product = {
+  id?: number;
   name: string;
   price: number;
   category: string;

@@ -11,9 +11,11 @@ var app = (0, express_1["default"])();
 var address = "0.0.0.0:3000";
 app.use(body_parser_1["default"].json());
 var dotenv_1 = __importDefault(require("dotenv"));
+var productHandler_1 = __importDefault(require("./handlers/productHandler"));
 dotenv_1["default"].config();
 (0, authentication_1.createHash)('1');
 (0, userHanlder_1["default"])(app);
+(0, productHandler_1["default"])(app);
 app.get('/', function (req, res) {
     res.send('Hello World!');
 });
