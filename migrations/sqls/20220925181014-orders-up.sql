@@ -1,6 +1,6 @@
 CREATE TABLE orders (
     id SERIAL PRIMARY KEY,
-    status VARCHAR(20) NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'active',
     userId INT NOT NULL,
     FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
 );

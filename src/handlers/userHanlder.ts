@@ -67,14 +67,16 @@ const deleteUserHandler = async (
 ): Promise<Response> => {
   try {
     console.log("hit users/delete/:userId");
-    if (res.locals.userIdInToken != req.params.userId) {
+    //I could have just deleted the user with userId in the token, but I wrote the function this way (with if statement)
+    //to allow for future if-else statements (like: if customer service decided to delete the user account)
+    if (res.locals.useridintoken != req.params.userid) {
       return res.send(
-        `you don\'t have the authority to delete the user with id ${req.params.userId}`
+        `you don\'t have the authority to delete the user with id ${req.params.userid}`
       );
     }
     const User = new UserModel();
     await User.delete(req.params.userId);
-    //even if user doesn't exist this will return the deletion statement of the user like with id=1000
+    //even if user doesn't exist this will return the deletion statement of the user like with userId=1000
     return res.send("user is deleted");
   } catch (err: unknown) {
     return res.send(
@@ -127,6 +129,8 @@ const userRouter = (app: Application): void => {
   app.post("/users/login", userLoginHandler);
   app.post("/users/delete/:userId", authorizationMiddleWare, deleteUserHandler);
   app.get("/users/index", authorizationMiddleWare, getAllUsersHandler);
+  //note (I made the user not allowed to view other users data in this route specifically, but I let him to do so 
+  //via the index route above -just for the proof of concept-)
   app.get(
     "/users/show/:userId",
     authorizationMiddleWare,

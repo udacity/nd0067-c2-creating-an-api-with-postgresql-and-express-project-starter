@@ -76,7 +76,7 @@ export class ProductModel {
       const sql = "SELECT * FROM products WHERE category=$1;";
       const result = await connnection.query(sql, [category]);
       connnection.release();
-      return result.rows[0];
+      return result.rows;
     } catch (err: unknown) {
       console.log("err");
       throw new Error(`err in fetching products by category, err: ${err as string}`);

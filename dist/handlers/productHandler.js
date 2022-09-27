@@ -96,51 +96,76 @@ var createProductHandler = function (req, res) { return __awaiter(void 0, void 0
 //     );
 //   }
 // };
-// const getAllproductsHandler = async (
-//   req: Request,
-//   res: Response
-// ): Promise<Response> => {
-//   try {
-//     console.log("hit products/index");
-//     const product = new productModel();
-//     const products = await product.index();
-//     return res.send(products);
-//   } catch (err: unknown) {
-//     return res.send(`err in getting all products, err: ${err} `);
-//   }
-// };
-// const getOneproductByIdHandler = async (
-//   req: Request,
-//   res: Response
-// ): Promise<Response> => {
-//   try {
-//     console.log("hit products/show/:productId");
-//     if (res.locals.productIdInToken != req.params.productId) {
-//       return res.send(
-//         `you don\'t have the authority to view the product with id ${req.params.productId}`
-//       );
-//     }
-//     const product = new productModel();
-//     const product = await product.show(req.params.productId);
-//     if (!product) {
-//       return res.send("no product found with this productId");
-//     }
-//     const { id, firstname, lastname } = product;
-//     return res.send({ id, firstname, lastname});
-//   } catch (err: unknown) {
-//     return res.send(
-//       `err in getting product with Id ${req.params.productId}, err: ${err} `
-//     );
-//   }
-// };
+var getAllProductsHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var product, products, err_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                console.log("hit products/index");
+                product = new productModel_1.ProductModel();
+                return [4 /*yield*/, product.index()];
+            case 1:
+                products = _a.sent();
+                return [2 /*return*/, res.send(products)];
+            case 2:
+                err_2 = _a.sent();
+                return [2 /*return*/, res.send("err in getting all products, err: ".concat(err_2, " "))];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+//[Optional]
+var getOneProductByIdHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var Product, product, err_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                console.log("hit products/show/:productId");
+                Product = new productModel_1.ProductModel();
+                return [4 /*yield*/, Product.show(req.params.productId)];
+            case 1:
+                product = _a.sent();
+                if (!product) {
+                    return [2 /*return*/, res.send("no product found with this productId")];
+                }
+                return [2 /*return*/, res.send(product)];
+            case 2:
+                err_3 = _a.sent();
+                return [2 /*return*/, res.send("err in getting product with Id ".concat(req.params.productId, ", err: ").concat(err_3, " "))];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+var getOneProductByCategoryHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var Product, product, err_4;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                console.log("hit products/categories/:category");
+                Product = new productModel_1.ProductModel();
+                return [4 /*yield*/, Product.fetchByCategory(req.params.category)];
+            case 1:
+                product = _a.sent();
+                if (!product) {
+                    return [2 /*return*/, res.send("no product found with this category")];
+                }
+                return [2 /*return*/, res.send(product)];
+            case 2:
+                err_4 = _a.sent();
+                return [2 /*return*/, res.send("err in getting product with category ".concat(req.params.productId, ", err: ").concat(err_4, " "))];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
 var productRouter = function (app) {
     app.post("/products/create", authorization_1.authorizationMiddleWare, createProductHandler);
     //   app.post("/products/delete/:productId", authorizationMiddleWare, deleteproductHandler);
-    //   app.get("/products/index", authorizationMiddleWare, getAllproductsHandler);
-    //   app.get(
-    //     "/products/show/:productId",
-    //     authorizationMiddleWare,
-    //     getOneproductByIdHandler
-    //   );
+    app.get("/products/index", getAllProductsHandler);
+    app.get("/products/show/:productId", getOneProductByIdHandler);
+    //[Optional]
+    app.get("/products/categories/:category", getOneProductByCategoryHandler);
 };
 exports["default"] = productRouter;

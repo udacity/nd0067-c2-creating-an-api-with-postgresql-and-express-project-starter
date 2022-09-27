@@ -1,19 +1,19 @@
 import client from "../db/db";
 
-type Order = {
-  id: number;
+export type Order = {
+  id?: number;
   userId: number;
-  status: string;
+  status?: string;
+  // when fetching associated products to an order
+  products?: { productId: number; quantity: number }[];
 };
 
 export class OrderModel {
-
   async create(order: Order): Promise<Order | void> {
     try {
       const connnection = await client.connect();
-      const sql =
-        "INSERT INTO orders (userId, status) VALUES ($1, $2) RETURNING *;";
-      const result = await connnection.query(sql, [order.userId, order.status]);
+      const sql = "INSERT INTO orders (userId) VALUES ($1) RETURNING *;";
+      const result = await connnection.query(sql, [order.userId]);
       connnection.release();
       return result.rows[0];
     } catch (err: unknown) {
@@ -22,7 +22,7 @@ export class OrderModel {
     }
   }
 
-  async getOrdersByUserId(userId: number): Promise<Order[] | void> {
+  async getOrderByUserId(userId: number): Promise<Order[] | void> {
     try {
       const connnection = await client.connect();
       const sql = "SELECT * FROM orders WHERE userId=$1;";
@@ -41,8 +41,7 @@ export class OrderModel {
   async delete(orderId: string): Promise<Order[] | void> {
     try {
       const connnection = await client.connect();
-      const sql =
-        "DELETE FROM orders where id=$1;";
+      const sql = "DELETE FROM orders where id=$1;";
       const result = await connnection.query(sql, [orderId]);
       connnection.release();
       return result.rows;
@@ -52,20 +51,20 @@ export class OrderModel {
     }
   }
 
-  async addorder(orderId: number, orderId: number, quantity: number): Promise<Order | void> {
-    try {
-      const connnection = await client.connect();
-      const sql =
-        "INSERT INTO orders_orders (orderId, orderId, quantity) VALUES ($1, $2, $3) RETURNING *;";
-      const result = await connnection.query(sql, [orderId, orderId, quantity]);
-      connnection.release();
-      return result.rows[0];
-    } catch (err: unknown) {
-      console.log("err");
-      throw new Error(`err in adding Order to an order, err: ${err as string}`);
-    }
-  }
-  
+  // async addOrder(orderId: number, orderId: number, quantity: number): Promise<Order | void> {
+  //   try {
+  //     const connnection = await client.connect();
+  //     const sql =
+  //       "INSERT INTO orders_orders (orderId, orderId, quantity) VALUES ($1, $2, $3) RETURNING *;";
+  //     const result = await connnection.query(sql, [orderId, orderId, quantity]);
+  //     connnection.release();
+  //     return result.rows[0];
+  //   } catch (err: unknown) {
+  //     console.log("err");
+  //     throw new Error(`err in adding Order to an order, err: ${err as string}`);
+  //   }
+  // }
+
   //optional method
   async getCompletedOrdersByUserId(userId: number): Promise<Order[] | void> {
     try {
@@ -83,7 +82,11 @@ export class OrderModel {
   }
 
   //optional method
-  async setOrderStatus(orderId: number, userId: number, status: string): Promise<Order | void> {
+  async setOrderStatus(
+    orderId: number,
+    userId: number,
+    status: string
+  ): Promise<Order | void> {
     try {
       const connnection = await client.connect();
       const sql = "UPDATE orders SET status=$1 WHERE orderId=$2 AND userId=$3;";
@@ -97,5 +100,4 @@ export class OrderModel {
       );
     }
   }
-
 }

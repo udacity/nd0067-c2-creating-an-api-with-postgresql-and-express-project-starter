@@ -19,6 +19,6 @@ export const authorizationMiddleWare = (
     
     next();
   } catch (err: unknown) {
-    throw new Error(`err in authorizing user, err: ${err}`);
+    throw new Error(`err in authorizing user (should provide a token), err: ${err}`);
   }
 };

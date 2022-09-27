@@ -4,6 +4,13 @@
 -add delete to each model
 -add file in models/table in database 
 
+-first related order to products
+
+//tests to make
+-for each endpoint
+-for models and their methods
+-add cors
+
 
 
 -related to hawwesh

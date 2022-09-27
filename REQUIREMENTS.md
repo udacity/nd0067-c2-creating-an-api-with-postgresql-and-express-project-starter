@@ -5,7 +5,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 
-#### Products
+#### Products (done)
 
 - Index
 - Show
@@ -13,7 +13,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 - [OPTIONAL] Top 5 most popular products
 - [OPTIONAL] Products by category (args: product category)
 
-#### Users
+#### Users (done)
 
 - Index [token required]
 - Show [token required]

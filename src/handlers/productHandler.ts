@@ -17,17 +17,16 @@ const createProductHandler = async (
     const { name, price, category }: Product = req.body;
     const Product = new ProductModel();
     const product = await Product.create({
-        name, 
-        price,
-        category
+      name,
+      price,
+      category,
     });
     //give a token
-    return res.send({ ...product});
+    return res.send({ ...product });
   } catch (err: unknown) {
     return res.send(`err in creating product, ${err} `);
   }
 };
-
 
 // const deleteproductHandler = async (
 //   req: Request,
@@ -51,54 +50,67 @@ const createProductHandler = async (
 //   }
 // };
 
-// const getAllproductsHandler = async (
-//   req: Request,
-//   res: Response
-// ): Promise<Response> => {
-//   try {
-//     console.log("hit products/index");
-//     const product = new productModel();
-//     const products = await product.index();
-//     return res.send(products);
-//   } catch (err: unknown) {
-//     return res.send(`err in getting all products, err: ${err} `);
-//   }
-// };
+const getAllProductsHandler = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    console.log("hit products/index");
+    const product = new ProductModel();
+    const products = await product.index();
+    return res.send(products);
+  } catch (err: unknown) {
+    return res.send(`err in getting all products, err: ${err} `);
+  }
+};
 
-// const getOneproductByIdHandler = async (
-//   req: Request,
-//   res: Response
-// ): Promise<Response> => {
-//   try {
-//     console.log("hit products/show/:productId");
-//     if (res.locals.productIdInToken != req.params.productId) {
-//       return res.send(
-//         `you don\'t have the authority to view the product with id ${req.params.productId}`
-//       );
-//     }
-//     const product = new productModel();
-//     const product = await product.show(req.params.productId);
-//     if (!product) {
-//       return res.send("no product found with this productId");
-//     }
-//     const { id, firstname, lastname } = product;
-//     return res.send({ id, firstname, lastname});
-//   } catch (err: unknown) {
-//     return res.send(
-//       `err in getting product with Id ${req.params.productId}, err: ${err} `
-//     );
-//   }
-// };
+//[Optional]
+const getOneProductByIdHandler = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    console.log("hit products/show/:productId");
+    const Product = new ProductModel();
+    const product = await Product.show(req.params.productId);
+    if (!product) {
+      return res.send("no product found with this productId");
+    }
+    return res.send(product);
+  } catch (err: unknown) {
+    return res.send(
+      `err in getting product with Id ${req.params.productId}, err: ${err} `
+    );
+  }
+};
+
+const getOneProductByCategoryHandler = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    console.log("hit products/categories/:category");
+    const Product = new ProductModel();
+    const product = await Product.fetchByCategory(req.params.category);
+    if (!product) {
+      return res.send("no product found with this category");
+    }
+    return res.send(product);
+  } catch (err: unknown) {
+    return res.send(
+      `err in getting product with category ${req.params.productId}, err: ${err} `
+    );
+  }
+};
+
 
 const productRouter = (app: Application): void => {
-  app.post("/products/create",authorizationMiddleWare, createProductHandler);
-//   app.post("/products/delete/:productId", authorizationMiddleWare, deleteproductHandler);
-//   app.get("/products/index", authorizationMiddleWare, getAllproductsHandler);
-//   app.get(
-//     "/products/show/:productId",
-//     authorizationMiddleWare,
-//     getOneproductByIdHandler
-//   );
+  app.post("/products/create", authorizationMiddleWare, createProductHandler);
+  //   app.post("/products/delete/:productId", authorizationMiddleWare, deleteproductHandler);
+  app.get("/products/index", getAllProductsHandler);
+  app.get("/products/show/:productId", getOneProductByIdHandler);
+  //[Optional]
+  app.get("/products/categories/:category", getOneProductByCategoryHandler);
 };
 
 export default productRouter;

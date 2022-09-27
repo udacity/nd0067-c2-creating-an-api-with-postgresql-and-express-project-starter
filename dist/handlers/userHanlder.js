@@ -121,14 +121,16 @@ var deleteUserHandler = function (req, res) { return __awaiter(void 0, void 0, v
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 console.log("hit users/delete/:userId");
-                if (res.locals.userIdInToken != req.params.userId) {
-                    return [2 /*return*/, res.send("you don't have the authority to delete the user with id ".concat(req.params.userId))];
+                //I could have just deleted the user with userId in the token, but I wrote the function this way (with if statement)
+                //to allow for future if-else statements (like: if customer service decided to delete the user account)
+                if (res.locals.useridintoken != req.params.userid) {
+                    return [2 /*return*/, res.send("you don't have the authority to delete the user with id ".concat(req.params.userid))];
                 }
                 User = new userModel_1.UserModel();
                 return [4 /*yield*/, User["delete"](req.params.userId)];
             case 1:
                 _a.sent();
-                //even if user doesn't exist this will return the deletion statement of the user like with id=1000
+                //even if user doesn't exist this will return the deletion statement of the user like with userId=1000
                 return [2 /*return*/, res.send("user is deleted")];
             case 2:
                 err_3 = _a.sent();
@@ -187,6 +189,8 @@ var userRouter = function (app) {
     app.post("/users/login", userLoginHandler);
     app.post("/users/delete/:userId", authorization_1.authorizationMiddleWare, deleteUserHandler);
     app.get("/users/index", authorization_1.authorizationMiddleWare, getAllUsersHandler);
+    //note (I made the user not allowed to view other users data in this route specifically, but I let him to do so 
+    //via the index route above -just for the proof of concept-)
     app.get("/users/show/:userId", authorization_1.authorizationMiddleWare, getOneUserByIdHandler);
 };
 exports["default"] = userRouter;
