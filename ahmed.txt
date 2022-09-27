@@ -3,8 +3,10 @@
 -env problem (not recognizing username) for db.ts and db.json
 -add delete to each model
 -add file in models/table in database 
+-I should provide a flow for the review in the app
 
--first related order to products
+-then get orders of a user with it's products
+
 
 //tests to make
 -for each endpoint

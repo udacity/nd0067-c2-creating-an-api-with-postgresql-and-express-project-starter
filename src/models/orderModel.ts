@@ -25,8 +25,9 @@ export class OrderModel {
   async getOrdersByUserId(userId: string): Promise<Order[] | void> {
     try {
       const connnection = await client.connect();
-      const sql = "SELECT * FROM orders WHERE userId=$1;";
-      const result = await connnection.query(sql, [userId]);
+      const sql =
+        "SELECT o_p.productId, u.id as userId, o.id as orderId, o.status, o_p.quantity FROM users u INNER JOIN orders o ON u.id = o.userId INNER JOIN orders_products o_p ON o.id = o_p.orderId WHERE u.id =$1;";
+      const result = await connnection.query(sql,[userId]);
       connnection.release();
       return result.rows;
     } catch (err: unknown) {
@@ -37,7 +38,10 @@ export class OrderModel {
     }
   }
 
-  async checkIfUserOwnThisOrder(userId: string, orderId: string): Promise<Order | void> {
+  async checkIfUserOwnThisOrder(
+    userId: string,
+    orderId: string
+  ): Promise<Order | void> {
     try {
       const connnection = await client.connect();
       const sql = "SELECT * FROM orders WHERE userId=$1 AND id=$2;";
@@ -47,7 +51,9 @@ export class OrderModel {
     } catch (err: unknown) {
       console.log("err");
       throw new Error(
-        `err in fetching order with orderId and userId ${userId}, err: ${err as string}`
+        `err in fetching order with orderId and userId ${userId}, err: ${
+          err as string
+        }`
       );
     }
   }

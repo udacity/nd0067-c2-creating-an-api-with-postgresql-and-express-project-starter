@@ -23,15 +23,15 @@ const createOrderHandler = async (
   }
 };
 
-const getAllOrdersHandlerByUserId = async (
+const getAllOrdersByUserIdHandler = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
   try {
     console.log("hit Orders/index");
     const Order = new OrderModel();
-    const Orders = await Order.getOrdersByUserId(res.locals.userIdInToken);
-    return res.send(Orders);
+    const orders = await Order.getOrdersByUserId(res.locals.userIdInToken);
+    return res.send(orders);
   } catch (err: unknown) {
     return res.send(`err in getting all Orders, err: ${err} `);
   }
@@ -43,27 +43,34 @@ const addProductToOrder = async (
 ): Promise<Response> => {
   try {
     //check if the user own this order and order exist
-    const orderInstance = new OrderModel()
-    const order = await orderInstance.checkIfUserOwnThisOrder(res.locals.userIdInToken, req.body.orderId)
+    const orderInstance = new OrderModel();
+    const order = await orderInstance.checkIfUserOwnThisOrder(
+      res.locals.userIdInToken,
+      req.body.orderId
+    );
 
     //add product to order
-    if(!order){
-        return res.send('this order doesn\'t exist or user don\'t own this order')
+    if (!order) {
+      return res.send("this order doesn't exist or user don't own this order");
     }
-    else if((order as Order).status === 'complete'){
-        return res.send('order is already completed')
+    //the order should be active to add more products to it (this how I think about it)
+    else if ((order as Order).status === "complete") {
+      return res.send("order is already completed");
     }
 
     //logic for adding product to order
-    const { productId, orderId, quantity} = req.body
-    const relationInstance = new OrdersProductsModel()
-    const result = await relationInstance.create({productId, orderId, quantity}) 
+    const { productId, orderId, quantity } = req.body;
+    const relationInstance = new OrdersProductsModel();
+    const result = await relationInstance.create({
+      productId,
+      orderId,
+      quantity,
+    });
     return res.send(result);
   } catch (err: unknown) {
     return res.send(`err in adding product to order, err: ${err} `);
   }
 };
-
 
 // const deleteOrderHandler = async (
 //   req: Request,
@@ -87,17 +94,16 @@ const addProductToOrder = async (
 //   }
 // };
 
-
 const OrderRouter = (app: Application): void => {
   app.post("/orders/create", authorizationMiddleWare, createOrderHandler);
   //index for one user
   app.get(
-    "/orders/indexforuser",
+    "/orders/get-orders-for-user",
     authorizationMiddleWare,
-    getAllOrdersHandlerByUserId
+    getAllOrdersByUserIdHandler
   );
-  app.post('/orders/addproduct', authorizationMiddleWare, addProductToOrder)
-    // app.post("/Orders/delete/:OrderId", authorizationMiddleWare, deleteOrderHandler);
+  app.post("/orders/addproduct", authorizationMiddleWare, addProductToOrder);
+  // app.post("/Orders/delete/:OrderId", authorizationMiddleWare, deleteOrderHandler);
   //   app.get("/Orders/show/:OrderId", getOneOrderByIdHandler);
   //   //[Optional]
   //   app.get("/Orders/categories/:category", getOneOrderByCategoryHandler);

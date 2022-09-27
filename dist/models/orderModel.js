@@ -79,7 +79,7 @@ var OrderModel = /** @class */ (function () {
                         return [4 /*yield*/, db_1["default"].connect()];
                     case 1:
                         connnection = _a.sent();
-                        sql = "SELECT * FROM orders WHERE userId=$1;";
+                        sql = "SELECT o_p.productId, u.id as userId, o.id as orderId, o.status, o_p.quantity FROM users u INNER JOIN orders o ON u.id = o.userId INNER JOIN orders_products o_p ON o.id = o_p.orderId WHERE u.id =$1;";
                         return [4 /*yield*/, connnection.query(sql, [userId])];
                     case 2:
                         result = _a.sent();
