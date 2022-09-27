@@ -5,8 +5,14 @@ export type Order = {
   userId: number;
   status?: string;
   // when fetching associated products to an order
-  products?: { productId: number; quantity: number }[];
 };
+type OrderWithProducts = {
+  orderId: number;
+  userId: number;
+  status: string;
+  productId: number;
+  quantity: number
+}
 
 export class OrderModel {
   async create(order: Order): Promise<Order | void> {
@@ -22,7 +28,7 @@ export class OrderModel {
     }
   }
 
-  async getOrdersByUserId(userId: string): Promise<Order[] | void> {
+  async getOrdersByUserId(userId: string): Promise<OrderWithProducts[] | void> {
     try {
       const connnection = await client.connect();
       const sql =
@@ -59,7 +65,7 @@ export class OrderModel {
   }
 
   //optional method
-  async getCompletedOrdersByUserId(userId: number): Promise<Order[] | void> {
+  async getCompletedOrdersByUserId(userId: number): Promise<OrderWithProducts[] | void> {
     try {
       const connnection = await client.connect();
       const sql = 

@@ -65,10 +65,10 @@ var createOrderHandler = function (req, res) { return __awaiter(void 0, void 0, 
             case 1:
                 order = _a.sent();
                 //give a token
-                return [2 /*return*/, res.send(__assign(__assign({}, order), { products: [] }))];
+                return [2 /*return*/, res.send(__assign({}, order))];
             case 2:
                 err_1 = _a.sent();
-                return [2 /*return*/, res.send("err in creating Order, ".concat(err_1, " "))];
+                return [2 /*return*/, res.send("err in creating order , ".concat(err_1, " "))];
             case 3: return [2 /*return*/];
         }
     });

@@ -17,9 +17,9 @@ const createOrderHandler = async (
       userId: res.locals.userIdInToken,
     });
     //give a token
-    return res.send({ ...order, products: [] });
+    return res.send({...order});
   } catch (err: unknown) {
-    return res.send(`err in creating Order, ${err} `);
+    return res.send(`err in creating order , ${err} `);
   }
 };
 
