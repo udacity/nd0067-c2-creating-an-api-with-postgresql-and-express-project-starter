@@ -33,7 +33,26 @@ const getAllOrdersByUserIdHandler = async (
     const orders = await Order.getOrdersByUserId(res.locals.userIdInToken);
     return res.send(orders);
   } catch (err: unknown) {
-    return res.send(`err in getting all Orders, err: ${err} `);
+    return res.send(
+      `err in getting all Orders with userId ${res.locals.userIdInToken}, err: ${err} `
+    );
+  }
+};
+const getCompletedOrdersByUserIdHandler = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    console.log("hit Orders/index");
+    const Order = new OrderModel();
+    const orders = await Order.getCompletedOrdersByUserId(
+      res.locals.userIdInToken
+    );
+    return res.send(orders);
+  } catch (err: unknown) {
+    return res.send(
+      `err in get completed orders by userId ${res.locals.userIdInToken}, err: ${err} `
+    );
   }
 };
 
@@ -51,7 +70,7 @@ const addProductToOrder = async (
 
     //add product to order
     if (!order) {
-      return res.send("this order doesn't exist or user don't own this order");
+      return res.send(`this order doesn't exist or user with id ${res.locals.userIdInToken} doesn't own this order`);
     }
     //the order should be active to add more products to it (this how I think about it)
     else if ((order as Order).status === "complete") {
@@ -69,6 +88,35 @@ const addProductToOrder = async (
     return res.send(result);
   } catch (err: unknown) {
     return res.send(`err in adding product to order, err: ${err} `);
+  }
+};
+
+const setOrderStatusByUserIdHandler = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const orderInstance = new OrderModel();
+    //check if user own this order in the first place
+    const orderCheck = await orderInstance.checkIfUserOwnThisOrder(
+      res.locals.userIdInToken,
+      req.body.orderId
+    );
+    if (!orderCheck) {
+      return res.send(`this order doesn't exist or user with id ${res.locals.userIdInToken} doesn't own this order`);
+    }
+    //get userId from the token
+    const { status, orderId } = req.body;
+    const order = await orderInstance.setOrderStatus(
+      orderId,
+      res.locals.userIdInToken,
+      status
+    );
+    return res.send('done');
+  } catch (err: unknown) {
+    return res.send(
+      `err in setting the status of the order with userId ${res.locals.userIdInToken}, err: ${err} `
+    );
   }
 };
 
@@ -101,6 +149,16 @@ const OrderRouter = (app: Application): void => {
     "/orders/get-orders-for-user",
     authorizationMiddleWare,
     getAllOrdersByUserIdHandler
+  );
+  app.post(
+    "/orders/set-status",
+    authorizationMiddleWare,
+    setOrderStatusByUserIdHandler
+  );
+  app.get(
+    "/orders/complete",
+    authorizationMiddleWare,
+    getCompletedOrdersByUserIdHandler
   );
   app.post("/orders/addproduct", authorizationMiddleWare, addProductToOrder);
   // app.post("/Orders/delete/:OrderId", authorizationMiddleWare, deleteOrderHandler);

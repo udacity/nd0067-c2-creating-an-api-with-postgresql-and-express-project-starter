@@ -119,8 +119,8 @@ var OrderModel = /** @class */ (function () {
             });
         });
     };
-    // [Extra] dangerous (ON DELETE CASCADE)
-    OrderModel.prototype["delete"] = function (orderId) {
+    //optional method
+    OrderModel.prototype.getCompletedOrdersByUserId = function (userId) {
         return __awaiter(this, void 0, void 0, function () {
             var connnection, sql, result, err_4;
             return __generator(this, function (_a) {
@@ -130,8 +130,8 @@ var OrderModel = /** @class */ (function () {
                         return [4 /*yield*/, db_1["default"].connect()];
                     case 1:
                         connnection = _a.sent();
-                        sql = "DELETE FROM orders where id=$1;";
-                        return [4 /*yield*/, connnection.query(sql, [orderId])];
+                        sql = "SELECT o_p.productId, u.id as userId, o.id as orderId, o.status, o_p.quantity FROM users u INNER JOIN orders o ON u.id = o.userId INNER JOIN orders_products o_p ON o.id = o_p.orderId WHERE u.id=$1 AND o.status='complete';";
+                        return [4 /*yield*/, connnection.query(sql, [userId])];
                     case 2:
                         result = _a.sent();
                         connnection.release();
@@ -139,27 +139,14 @@ var OrderModel = /** @class */ (function () {
                     case 3:
                         err_4 = _a.sent();
                         console.log("err");
-                        throw new Error("err in creating Order, err: ".concat(err_4));
+                        throw new Error("err in fetching order with userId ".concat(userId, ", err: ").concat(err_4));
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    // async addOrder(orderId: number, orderId: number, quantity: number): Promise<Order | void> {
-    //   try {
-    //     const connnection = await client.connect();
-    //     const sql =
-    //       "INSERT INTO orders_orders (orderId, orderId, quantity) VALUES ($1, $2, $3) RETURNING *;";
-    //     const result = await connnection.query(sql, [orderId, orderId, quantity]);
-    //     connnection.release();
-    //     return result.rows[0];
-    //   } catch (err: unknown) {
-    //     console.log("err");
-    //     throw new Error(`err in adding Order to an order, err: ${err as string}`);
-    //   }
-    // }
     //optional method
-    OrderModel.prototype.getCompletedOrdersByUserId = function (userId) {
+    OrderModel.prototype.setOrderStatus = function (orderId, userId, status) {
         return __awaiter(this, void 0, void 0, function () {
             var connnection, sql, result, err_5;
             return __generator(this, function (_a) {
@@ -169,42 +156,16 @@ var OrderModel = /** @class */ (function () {
                         return [4 /*yield*/, db_1["default"].connect()];
                     case 1:
                         connnection = _a.sent();
-                        sql = "SELECT * FROM orders WHERE userId=$1 AND status=complete;";
-                        return [4 /*yield*/, connnection.query(sql, [userId])];
-                    case 2:
-                        result = _a.sent();
-                        connnection.release();
-                        return [2 /*return*/, result.rows];
-                    case 3:
-                        err_5 = _a.sent();
-                        console.log("err");
-                        throw new Error("err in fetching order with userId ".concat(userId, ", err: ").concat(err_5));
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    //optional method
-    OrderModel.prototype.setOrderStatus = function (orderId, userId, status) {
-        return __awaiter(this, void 0, void 0, function () {
-            var connnection, sql, result, err_6;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, db_1["default"].connect()];
-                    case 1:
-                        connnection = _a.sent();
-                        sql = "UPDATE orders SET status=$1 WHERE orderId=$2 AND userId=$3;";
+                        sql = "UPDATE orders SET status=$1 WHERE id=$2 AND userId=$3;";
                         return [4 /*yield*/, connnection.query(sql, [status, orderId, userId])];
                     case 2:
                         result = _a.sent();
                         connnection.release();
                         return [2 /*return*/, result.rows[0]];
                     case 3:
-                        err_6 = _a.sent();
+                        err_5 = _a.sent();
                         console.log("err");
-                        throw new Error("err in fetching order with userId ".concat(userId, ", err: ").concat(err_6));
+                        throw new Error("err in fetching order with userId ".concat(userId, ", err: ").concat(err_5));
                     case 4: return [2 /*return*/];
                 }
             });
