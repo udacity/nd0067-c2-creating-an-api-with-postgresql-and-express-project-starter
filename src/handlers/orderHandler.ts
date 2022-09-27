@@ -1,5 +1,6 @@
 import { Application, Request, Response } from "express";
-import { OrderModel } from "../models/orderModel";
+import { Order, OrderModel } from "../models/orderModel";
+import { OrdersProductsModel } from "../models/ordersProductsModel";
 import { authorizationMiddleWare } from "../utilities/authorization";
 
 //needs return type
@@ -21,6 +22,48 @@ const createOrderHandler = async (
     return res.send(`err in creating Order, ${err} `);
   }
 };
+
+const getAllOrdersHandlerByUserId = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    console.log("hit Orders/index");
+    const Order = new OrderModel();
+    const Orders = await Order.getOrdersByUserId(res.locals.userIdInToken);
+    return res.send(Orders);
+  } catch (err: unknown) {
+    return res.send(`err in getting all Orders, err: ${err} `);
+  }
+};
+
+const addProductToOrder = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    //check if the user own this order and order exist
+    const orderInstance = new OrderModel()
+    const order = await orderInstance.checkIfUserOwnThisOrder(res.locals.userIdInToken, req.body.orderId)
+
+    //add product to order
+    if(!order){
+        return res.send('this order doesn\'t exist or user don\'t own this order')
+    }
+    else if((order as Order).status === 'complete'){
+        return res.send('order is already completed')
+    }
+
+    //logic for adding product to order
+    const { productId, orderId, quantity} = req.body
+    const relationInstance = new OrdersProductsModel()
+    const result = await relationInstance.create({productId, orderId, quantity}) 
+    return res.send(result);
+  } catch (err: unknown) {
+    return res.send(`err in adding product to order, err: ${err} `);
+  }
+};
+
 
 // const deleteOrderHandler = async (
 //   req: Request,
@@ -44,68 +87,17 @@ const createOrderHandler = async (
 //   }
 // };
 
-const getAllOrdersHandlerByUserId = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
-  try {
-    console.log("hit Orders/index");
-    const Order = new OrderModel();
-    const Orders = await Order.getOrderByUserId(res.locals.userIdInToken);
-    return res.send(Orders);
-  } catch (err: unknown) {
-    return res.send(`err in getting all Orders, err: ${err} `);
-  }
-};
-
-//[Optional]
-// const getOneOrderByIdHandler = async (
-//   req: Request,
-//   res: Response
-// ): Promise<Response> => {
-//   try {
-//     console.log("hit Orders/show/:OrderId");
-//     const Order = new OrderModel();
-//     const Order = await Order.show(req.params.OrderId);
-//     if (!Order) {
-//       return res.send("no Order found with this OrderId");
-//     }
-//     return res.send(Order);
-//   } catch (err: unknown) {
-//     return res.send(
-//       `err in getting Order with Id ${req.params.OrderId}, err: ${err} `
-//     );
-//   }
-// };
-
-// const getOneOrderByCategoryHandler = async (
-//   req: Request,
-//   res: Response
-// ): Promise<Response> => {
-//   try {
-//     console.log("hit Orders/categories/:category");
-//     const Order = new OrderModel();
-//     const Order = await Order.fetchByCategory(req.params.category);
-//     if (!Order) {
-//       return res.send("no Order found with this category");
-//     }
-//     return res.send(Order);
-//   } catch (err: unknown) {
-//     return res.send(
-//       `err in getting Order with category ${req.params.OrderId}, err: ${err} `
-//     );
-//   }
-// };
 
 const OrderRouter = (app: Application): void => {
   app.post("/orders/create", authorizationMiddleWare, createOrderHandler);
-  //   app.post("/Orders/delete/:OrderId", authorizationMiddleWare, deleteOrderHandler);
   //index for one user
   app.get(
     "/orders/indexforuser",
     authorizationMiddleWare,
     getAllOrdersHandlerByUserId
   );
+  app.post('/orders/addproduct', authorizationMiddleWare, addProductToOrder)
+    // app.post("/Orders/delete/:OrderId", authorizationMiddleWare, deleteOrderHandler);
   //   app.get("/Orders/show/:OrderId", getOneOrderByIdHandler);
   //   //[Optional]
   //   app.get("/Orders/categories/:category", getOneOrderByCategoryHandler);

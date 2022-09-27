@@ -48,6 +48,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var orderModel_1 = require("../models/orderModel");
+var ordersProductsModel_1 = require("../models/ordersProductsModel");
 var authorization_1 = require("../utilities/authorization");
 //needs return type
 var createOrderHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -72,6 +73,57 @@ var createOrderHandler = function (req, res) { return __awaiter(void 0, void 0, 
         }
     });
 }); };
+var getAllOrdersHandlerByUserId = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var Order, Orders, err_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                console.log("hit Orders/index");
+                Order = new orderModel_1.OrderModel();
+                return [4 /*yield*/, Order.getOrdersByUserId(res.locals.userIdInToken)];
+            case 1:
+                Orders = _a.sent();
+                return [2 /*return*/, res.send(Orders)];
+            case 2:
+                err_2 = _a.sent();
+                return [2 /*return*/, res.send("err in getting all Orders, err: ".concat(err_2, " "))];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+var addProductToOrder = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var orderInstance, order, _a, productId, orderId, quantity, relationInstance, result, err_3;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 3, , 4]);
+                orderInstance = new orderModel_1.OrderModel();
+                return [4 /*yield*/, orderInstance.checkIfUserOwnThisOrder(res.locals.userIdInToken, req.body.orderId)
+                    //add product to order
+                ];
+            case 1:
+                order = _b.sent();
+                //add product to order
+                if (!order) {
+                    return [2 /*return*/, res.send('this order doesn\'t exist or user don\'t own this order')];
+                }
+                else if (order.status === 'complete') {
+                    return [2 /*return*/, res.send('order is already completed')];
+                }
+                _a = req.body, productId = _a.productId, orderId = _a.orderId, quantity = _a.quantity;
+                relationInstance = new ordersProductsModel_1.OrdersProductsModel();
+                return [4 /*yield*/, relationInstance.create({ productId: productId, orderId: orderId, quantity: quantity })];
+            case 2:
+                result = _b.sent();
+                return [2 /*return*/, res.send(result)];
+            case 3:
+                err_3 = _b.sent();
+                return [2 /*return*/, res.send("err in adding product to order, err: ".concat(err_3, " "))];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
 // const deleteOrderHandler = async (
 //   req: Request,
 //   res: Response
@@ -93,67 +145,12 @@ var createOrderHandler = function (req, res) { return __awaiter(void 0, void 0, 
 //     );
 //   }
 // };
-var getAllOrdersHandlerByUserId = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var Order, Orders, err_2;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                console.log("hit Orders/index");
-                Order = new orderModel_1.OrderModel();
-                return [4 /*yield*/, Order.getOrderByUserId(res.locals.userIdInToken)];
-            case 1:
-                Orders = _a.sent();
-                return [2 /*return*/, res.send(Orders)];
-            case 2:
-                err_2 = _a.sent();
-                return [2 /*return*/, res.send("err in getting all Orders, err: ".concat(err_2, " "))];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
-//[Optional]
-// const getOneOrderByIdHandler = async (
-//   req: Request,
-//   res: Response
-// ): Promise<Response> => {
-//   try {
-//     console.log("hit Orders/show/:OrderId");
-//     const Order = new OrderModel();
-//     const Order = await Order.show(req.params.OrderId);
-//     if (!Order) {
-//       return res.send("no Order found with this OrderId");
-//     }
-//     return res.send(Order);
-//   } catch (err: unknown) {
-//     return res.send(
-//       `err in getting Order with Id ${req.params.OrderId}, err: ${err} `
-//     );
-//   }
-// };
-// const getOneOrderByCategoryHandler = async (
-//   req: Request,
-//   res: Response
-// ): Promise<Response> => {
-//   try {
-//     console.log("hit Orders/categories/:category");
-//     const Order = new OrderModel();
-//     const Order = await Order.fetchByCategory(req.params.category);
-//     if (!Order) {
-//       return res.send("no Order found with this category");
-//     }
-//     return res.send(Order);
-//   } catch (err: unknown) {
-//     return res.send(
-//       `err in getting Order with category ${req.params.OrderId}, err: ${err} `
-//     );
-//   }
-// };
 var OrderRouter = function (app) {
     app.post("/orders/create", authorization_1.authorizationMiddleWare, createOrderHandler);
-    //   app.post("/Orders/delete/:OrderId", authorizationMiddleWare, deleteOrderHandler);
     //index for one user
     app.get("/orders/indexforuser", authorization_1.authorizationMiddleWare, getAllOrdersHandlerByUserId);
+    app.post('/orders/addproduct', authorization_1.authorizationMiddleWare, addProductToOrder);
+    // app.post("/Orders/delete/:OrderId", authorizationMiddleWare, deleteOrderHandler);
     //   app.get("/Orders/show/:OrderId", getOneOrderByIdHandler);
     //   //[Optional]
     //   app.get("/Orders/categories/:category", getOneOrderByCategoryHandler);

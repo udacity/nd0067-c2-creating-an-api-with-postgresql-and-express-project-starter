@@ -69,7 +69,7 @@ var OrderModel = /** @class */ (function () {
             });
         });
     };
-    OrderModel.prototype.getOrderByUserId = function (userId) {
+    OrderModel.prototype.getOrdersByUserId = function (userId) {
         return __awaiter(this, void 0, void 0, function () {
             var connnection, sql, result, err_2;
             return __generator(this, function (_a) {
@@ -94,10 +94,35 @@ var OrderModel = /** @class */ (function () {
             });
         });
     };
+    OrderModel.prototype.checkIfUserOwnThisOrder = function (userId, orderId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var connnection, sql, result, err_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, db_1["default"].connect()];
+                    case 1:
+                        connnection = _a.sent();
+                        sql = "SELECT * FROM orders WHERE userId=$1 AND id=$2;";
+                        return [4 /*yield*/, connnection.query(sql, [userId, orderId])];
+                    case 2:
+                        result = _a.sent();
+                        connnection.release();
+                        return [2 /*return*/, result.rows[0]];
+                    case 3:
+                        err_3 = _a.sent();
+                        console.log("err");
+                        throw new Error("err in fetching order with orderId and userId ".concat(userId, ", err: ").concat(err_3));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     // [Extra] dangerous (ON DELETE CASCADE)
     OrderModel.prototype["delete"] = function (orderId) {
         return __awaiter(this, void 0, void 0, function () {
-            var connnection, sql, result, err_3;
+            var connnection, sql, result, err_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -112,9 +137,9 @@ var OrderModel = /** @class */ (function () {
                         connnection.release();
                         return [2 /*return*/, result.rows];
                     case 3:
-                        err_3 = _a.sent();
+                        err_4 = _a.sent();
                         console.log("err");
-                        throw new Error("err in creating Order, err: ".concat(err_3));
+                        throw new Error("err in creating Order, err: ".concat(err_4));
                     case 4: return [2 /*return*/];
                 }
             });
@@ -136,7 +161,7 @@ var OrderModel = /** @class */ (function () {
     //optional method
     OrderModel.prototype.getCompletedOrdersByUserId = function (userId) {
         return __awaiter(this, void 0, void 0, function () {
-            var connnection, sql, result, err_4;
+            var connnection, sql, result, err_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -151,9 +176,9 @@ var OrderModel = /** @class */ (function () {
                         connnection.release();
                         return [2 /*return*/, result.rows];
                     case 3:
-                        err_4 = _a.sent();
+                        err_5 = _a.sent();
                         console.log("err");
-                        throw new Error("err in fetching order with userId ".concat(userId, ", err: ").concat(err_4));
+                        throw new Error("err in fetching order with userId ".concat(userId, ", err: ").concat(err_5));
                     case 4: return [2 /*return*/];
                 }
             });
@@ -162,7 +187,7 @@ var OrderModel = /** @class */ (function () {
     //optional method
     OrderModel.prototype.setOrderStatus = function (orderId, userId, status) {
         return __awaiter(this, void 0, void 0, function () {
-            var connnection, sql, result, err_5;
+            var connnection, sql, result, err_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -177,9 +202,9 @@ var OrderModel = /** @class */ (function () {
                         connnection.release();
                         return [2 /*return*/, result.rows[0]];
                     case 3:
-                        err_5 = _a.sent();
+                        err_6 = _a.sent();
                         console.log("err");
-                        throw new Error("err in fetching order with userId ".concat(userId, ", err: ").concat(err_5));
+                        throw new Error("err in fetching order with userId ".concat(userId, ", err: ").concat(err_6));
                     case 4: return [2 /*return*/];
                 }
             });
