@@ -4,14 +4,18 @@
 -add delete to each model
 -add file in models/table in database 
 -I should provide a flow for the review in the app
-
--then get orders of a user with it's products
-
+-update readme and requirement file
 
 //tests to make
 -for each endpoint
 -for models and their methods
 -add cors
+
+/////problems 
+-needs to read databaes_test name from the script
+-set the env variable from script
+-didn't find the test folders
+
 
 
 
