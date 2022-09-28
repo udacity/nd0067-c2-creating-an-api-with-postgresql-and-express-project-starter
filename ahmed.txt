@@ -5,6 +5,7 @@
 -add file in models/table in database 
 -I should provide a flow for the review in the app
 -update readme and requirement file
+-make sure of all indentations in files 
 
 //tests to make
 -for each endpoint

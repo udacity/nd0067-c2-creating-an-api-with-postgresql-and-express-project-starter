@@ -4,16 +4,16 @@ import app from "../../server";
 import { createToken } from "../../utilities/authentication";
 
 describe("Suite for products endpoints:",  (): void => {
-  beforeAll(() => {
-    client.connect();
-  });
+  // beforeAll(() => {
+  //   client.connect();
+  // });
   
   const newProduct = {
     name: "ball",
     price: 100,
     category: 'play'
   };
-  //this will be passed to the second test
+
   it("create product: POST products/create", async (): Promise<void> => {
     const token = createToken(1)
     const response = await request(app).post("/products/create").set('authorization', `Bearer ${token}`).send(newProduct);

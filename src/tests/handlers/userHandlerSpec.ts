@@ -4,15 +4,15 @@ import app from "../../server";
 import { createToken } from "../../utilities/authentication";
 
 describe("Suite for users endpoints:",  (): void => {
-  beforeAll(() => {
-    client.connect();
-  });
+  // beforeAll(() => {
+  //   client.connect();
+  // });
   const newUser = {
     firstname: "ahmed",
     lastname: "hisham",
     password: "password123",
   };
-  //this will be passed to the second test
+
   it("create user: POST users/signup", async (): Promise<void> => {
     const response = await request(app).post("/users/signup").send(newUser);
     expect(response.status).toEqual(200);

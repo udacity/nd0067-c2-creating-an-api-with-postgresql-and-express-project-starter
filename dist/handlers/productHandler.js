@@ -5,7 +5,7 @@ const authorization_1 = require("../utilities/authorization");
 //needs return type
 const createProductHandler = async (req, res) => {
     try {
-        console.log("hit products/signup");
+        // console.log("hit products/signup");
         const { name, price, category } = req.body;
         const Product = new productModel_1.ProductModel();
         const product = await Product.create({
@@ -43,7 +43,7 @@ const createProductHandler = async (req, res) => {
 // };
 const getAllProductsHandler = async (req, res) => {
     try {
-        console.log("hit products/index");
+        // console.log("hit products/index");
         const product = new productModel_1.ProductModel();
         const products = await product.index();
         return res.send(products);
@@ -55,7 +55,7 @@ const getAllProductsHandler = async (req, res) => {
 //[Optional]
 const getOneProductByIdHandler = async (req, res) => {
     try {
-        console.log("hit products/show/:productId");
+        // console.log("hit products/show/:productId");
         const Product = new productModel_1.ProductModel();
         const product = await Product.show(req.params.productId);
         if (!product) {
@@ -69,9 +69,8 @@ const getOneProductByIdHandler = async (req, res) => {
 };
 const getOneProductByCategoryHandler = async (req, res) => {
     try {
-        console.log("hit products/categories/:category");
+        // console.log("hit products/categories/:category");
         const Product = new productModel_1.ProductModel();
-        console.log('category ', req.params.category);
         const product = await Product.fetchByCategory(req.params.category);
         if (!product) {
             return res.send("no product found with this category");

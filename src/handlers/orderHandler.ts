@@ -9,7 +9,7 @@ const createOrderHandler = async (
   res: Response
 ): Promise<Response> => {
   try {
-    console.log("hit Orders/signup");
+    // console.log("hit Orders/create");
     // const { userId }: Order = req.body;
     //we should get the userId from the token not the body (for more security)
     const Order = new OrderModel();
@@ -28,7 +28,7 @@ const getAllOrdersByUserIdHandler = async (
   res: Response
 ): Promise<Response> => {
   try {
-    console.log("hit Orders/index");
+    // console.log("hit Orders/index");
     const Order = new OrderModel();
     const orders = await Order.getOrdersByUserId(res.locals.userIdInToken);
     return res.send(orders);
@@ -43,7 +43,6 @@ const getCompletedOrdersByUserIdHandler = async (
   res: Response
 ): Promise<Response> => {
   try {
-    console.log("hit Orders/index");
     const Order = new OrderModel();
     const orders = await Order.getCompletedOrdersByUserId(
       res.locals.userIdInToken

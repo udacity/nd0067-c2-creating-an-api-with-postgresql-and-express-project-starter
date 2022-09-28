@@ -15,8 +15,7 @@ export class OrdersProductsModel {
     quantity,
   }: ProductsOrdersType): Promise<ProductsOrdersType | void> {
     try {
-      const connnection = await client.connect();
-      const sql =
+      const connnection = await client.connect(); const sql =
         "INSERT INTO orders_products(orderId, productId, quantity) VALUES ($1, $2, $3) RETURNING *;";
       const result = await connnection.query(sql, [
         orderId,
