@@ -5,7 +5,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 
-#### Products (done)
+#### Products 
 
 - Index
 - Show

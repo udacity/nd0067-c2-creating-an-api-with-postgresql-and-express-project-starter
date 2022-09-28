@@ -1,5 +1,6 @@
 import { Application, Request, Response } from "express";
-import { OrderModel } from "../models/orderModel";
+import { Order, OrderModel } from "../models/orderModel";
+import { OrdersProductsModel } from "../models/ordersProductsModel";
 import { authorizationMiddleWare } from "../utilities/authorization";
 
 //needs return type
@@ -8,7 +9,7 @@ const createOrderHandler = async (
   res: Response
 ): Promise<Response> => {
   try {
-    console.log("hit Orders/signup");
+    // console.log("hit Orders/create");
     // const { userId }: Order = req.body;
     //we should get the userId from the token not the body (for more security)
     const Order = new OrderModel();
@@ -16,9 +17,105 @@ const createOrderHandler = async (
       userId: res.locals.userIdInToken,
     });
     //give a token
-    return res.send({ ...order, products: [] });
+    return res.send({...order});
   } catch (err: unknown) {
-    return res.send(`err in creating Order, ${err} `);
+    return res.send(`err in creating order , ${err} `);
+  }
+};
+
+const getAllOrdersByUserIdHandler = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    // console.log("hit Orders/index");
+    const Order = new OrderModel();
+    const orders = await Order.getOrdersByUserId(res.locals.userIdInToken);
+    return res.send(orders);
+  } catch (err: unknown) {
+    return res.send(
+      `err in getting all Orders with userId ${res.locals.userIdInToken}, err: ${err} `
+    );
+  }
+};
+const getCompletedOrdersByUserIdHandler = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const Order = new OrderModel();
+    const orders = await Order.getCompletedOrdersByUserId(
+      res.locals.userIdInToken
+    );
+    return res.send(orders);
+  } catch (err: unknown) {
+    return res.send(
+      `err in get completed orders by userId ${res.locals.userIdInToken}, err: ${err} `
+    );
+  }
+};
+
+const addProductToOrder = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    //check if the user own this order and order exist
+    const orderInstance = new OrderModel();
+    const order = await orderInstance.checkIfUserOwnThisOrder(
+      res.locals.userIdInToken,
+      req.body.orderId
+    );
+
+    //add product to order
+    if (!order) {
+      return res.send(`this order doesn't exist or user with id ${res.locals.userIdInToken} doesn't own this order`);
+    }
+    //the order should be active to add more products to it (this how I think about it)
+    else if ((order as Order).status === "complete") {
+      return res.send("order is already completed");
+    }
+
+    //logic for adding product to order
+    const { productId, orderId, quantity } = req.body;
+    const relationInstance = new OrdersProductsModel();
+    const result = await relationInstance.create({
+      productId,
+      orderId,
+      quantity,
+    });
+    return res.send(result);
+  } catch (err: unknown) {
+    return res.send(`err in adding product to order, err: ${err} `);
+  }
+};
+
+const setOrderStatusByUserIdHandler = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const orderInstance = new OrderModel();
+    //check if user own this order in the first place
+    const orderCheck = await orderInstance.checkIfUserOwnThisOrder(
+      res.locals.userIdInToken,
+      req.body.orderId
+    );
+    if (!orderCheck) {
+      return res.send(`this order doesn't exist or user with id ${res.locals.userIdInToken} doesn't own this order`);
+    }
+    //get userId from the token
+    const { status, orderId } = req.body;
+    const order = await orderInstance.setOrderStatus(
+      orderId,
+      res.locals.userIdInToken,
+      status
+    );
+    return res.send('done');
+  } catch (err: unknown) {
+    return res.send(
+      `err in setting the status of the order with userId ${res.locals.userIdInToken}, err: ${err} `
+    );
   }
 };
 
@@ -44,68 +141,26 @@ const createOrderHandler = async (
 //   }
 // };
 
-const getAllOrdersHandlerByUserId = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
-  try {
-    console.log("hit Orders/index");
-    const Order = new OrderModel();
-    const Orders = await Order.getOrderByUserId(res.locals.userIdInToken);
-    return res.send(Orders);
-  } catch (err: unknown) {
-    return res.send(`err in getting all Orders, err: ${err} `);
-  }
-};
-
-//[Optional]
-// const getOneOrderByIdHandler = async (
-//   req: Request,
-//   res: Response
-// ): Promise<Response> => {
-//   try {
-//     console.log("hit Orders/show/:OrderId");
-//     const Order = new OrderModel();
-//     const Order = await Order.show(req.params.OrderId);
-//     if (!Order) {
-//       return res.send("no Order found with this OrderId");
-//     }
-//     return res.send(Order);
-//   } catch (err: unknown) {
-//     return res.send(
-//       `err in getting Order with Id ${req.params.OrderId}, err: ${err} `
-//     );
-//   }
-// };
-
-// const getOneOrderByCategoryHandler = async (
-//   req: Request,
-//   res: Response
-// ): Promise<Response> => {
-//   try {
-//     console.log("hit Orders/categories/:category");
-//     const Order = new OrderModel();
-//     const Order = await Order.fetchByCategory(req.params.category);
-//     if (!Order) {
-//       return res.send("no Order found with this category");
-//     }
-//     return res.send(Order);
-//   } catch (err: unknown) {
-//     return res.send(
-//       `err in getting Order with category ${req.params.OrderId}, err: ${err} `
-//     );
-//   }
-// };
-
 const OrderRouter = (app: Application): void => {
   app.post("/orders/create", authorizationMiddleWare, createOrderHandler);
-  //   app.post("/Orders/delete/:OrderId", authorizationMiddleWare, deleteOrderHandler);
   //index for one user
   app.get(
-    "/orders/indexforuser",
+    "/orders/get-orders-for-user",
     authorizationMiddleWare,
-    getAllOrdersHandlerByUserId
+    getAllOrdersByUserIdHandler
   );
+  app.post(
+    "/orders/set-status",
+    authorizationMiddleWare,
+    setOrderStatusByUserIdHandler
+  );
+  app.get(
+    "/orders/complete",
+    authorizationMiddleWare,
+    getCompletedOrdersByUserIdHandler
+  );
+  app.post("/orders/addproduct", authorizationMiddleWare, addProductToOrder);
+  // app.post("/Orders/delete/:OrderId", authorizationMiddleWare, deleteOrderHandler);
   //   app.get("/Orders/show/:OrderId", getOneOrderByIdHandler);
   //   //[Optional]
   //   app.get("/Orders/categories/:category", getOneOrderByCategoryHandler);

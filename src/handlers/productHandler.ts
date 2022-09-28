@@ -1,10 +1,5 @@
 import { Application, Request, Response } from "express";
 import { Product, ProductModel } from "../models/productModel";
-import {
-  compareHash,
-  createHash,
-  createToken,
-} from "../utilities/authentication";
 import { authorizationMiddleWare } from "../utilities/authorization";
 
 //needs return type
@@ -13,7 +8,7 @@ const createProductHandler = async (
   res: Response
 ): Promise<Response> => {
   try {
-    console.log("hit products/signup");
+    // console.log("hit products/signup");
     const { name, price, category }: Product = req.body;
     const Product = new ProductModel();
     const product = await Product.create({
@@ -55,7 +50,7 @@ const getAllProductsHandler = async (
   res: Response
 ): Promise<Response> => {
   try {
-    console.log("hit products/index");
+    // console.log("hit products/index");
     const product = new ProductModel();
     const products = await product.index();
     return res.send(products);
@@ -70,7 +65,7 @@ const getOneProductByIdHandler = async (
   res: Response
 ): Promise<Response> => {
   try {
-    console.log("hit products/show/:productId");
+    // console.log("hit products/show/:productId");
     const Product = new ProductModel();
     const product = await Product.show(req.params.productId);
     if (!product) {
@@ -89,7 +84,7 @@ const getOneProductByCategoryHandler = async (
   res: Response
 ): Promise<Response> => {
   try {
-    console.log("hit products/categories/:category");
+    // console.log("hit products/categories/:category");
     const Product = new ProductModel();
     const product = await Product.fetchByCategory(req.params.category);
     if (!product) {

@@ -13,7 +13,7 @@ const createUserHandler = async (
   res: Response
 ): Promise<Response> => {
   try {
-    console.log("hit users/signup");
+    // console.log("hit users/signup");
     const { firstname, lastname, password }: User = req.body;
     const User = new UserModel();
     const hash = createHash(password as string);
@@ -35,14 +35,14 @@ const userLoginHandler = async (
   res: Response
 ): Promise<Response> => {
   try {
-    console.log("hit users/login");
+    // console.log("hit users/login");
     const { password, userId } = req.body;
     const User = new UserModel();
     const user = await User.show(userId);
     if (!user) {
       return res.send("err: user with this id doesn't exist");
     }
-    console.log("user", user);
+    // console.log("user", user);
     const result = await compareHash(password, user.hash as string);
     if (!result) {
       return res.send("password is not correct");
@@ -66,7 +66,7 @@ const deleteUserHandler = async (
   res: Response
 ): Promise<Response> => {
   try {
-    console.log("hit users/delete/:userId");
+    // console.log("hit users/delete/:userId");
     //I could have just deleted the user with userId in the token, but I wrote the function this way (with if statement)
     //to allow for future if-else statements (like: if customer service decided to delete the user account)
     if (res.locals.useridintoken != req.params.userid) {
@@ -90,7 +90,7 @@ const getAllUsersHandler = async (
   res: Response
 ): Promise<Response> => {
   try {
-    console.log("hit users/index");
+    // console.log("hit users/index");
     const User = new UserModel();
     const users = await User.index();
     return res.send(users);
@@ -104,7 +104,7 @@ const getOneUserByIdHandler = async (
   res: Response
 ): Promise<Response> => {
   try {
-    console.log("hit users/show/:userId");
+    // console.log("hit users/show/:userId");
     if (res.locals.userIdInToken != req.params.userId) {
       return res.send(
         `you don\'t have the authority to view the user with id ${req.params.userId}`
@@ -127,6 +127,7 @@ const getOneUserByIdHandler = async (
 const userRouter = (app: Application): void => {
   app.post("/users/signup", createUserHandler);
   app.post("/users/login", userLoginHandler);
+  //this is an extra endpoint (don't have a test)
   app.post("/users/delete/:userId", authorizationMiddleWare, deleteUserHandler);
   app.get("/users/index", authorizationMiddleWare, getAllUsersHandler);
   //note (I made the user not allowed to view other users data in this route specifically, but I let him to do so 

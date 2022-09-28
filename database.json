@@ -1,24 +1,24 @@
 {
   "dev": {
     "driver": "pg",
-    "user": "postgres",
+    "user": { "ENV": "DB_USERNAME" },
     "password": { "ENV": "PASSWORD" },
-    "host": "localhost",
-    "database": "udacity_store",
+    "database": { "ENV": "DATABASE" },
+    "host": { "ENV": "localhost" },
     "port": 5432,
     "schema": "public"
   },
   "test": {
     "driver": "pg",
-    "user": "postgres",
+    "user": { "ENV": "DB_USERNAME" },
     "password": { "ENV": "PASSWORD" },
-    "host": "localhost",
-    "database": "udacity_store_test",
+    "database": { "ENV": "DATABASE_TEST" },
+    "host": { "ENV": "localhost" },
     "port": 5432,
     "schema": "public"
   },
   "prod": {
-    "user": "postgres",
+    "user": { "ENV": "DB_USERNAME" },
     "password": { "ENV": "PASSWORD" },
     "host": { "ENV": "localhost" },
     "database": { "ENV": "DATABASE" },
@@ -26,7 +26,7 @@
     "driver": "pg"
   },
   "pg": {
-    "user": { "ENV": "USERNAME" },
+    "user": { "ENV": "DB_USERNAME" },
     "password": { "ENV": "PASSWORD" },
     "host": { "ENV": "localhost" },
     "database": { "ENV": "DATABASE" },

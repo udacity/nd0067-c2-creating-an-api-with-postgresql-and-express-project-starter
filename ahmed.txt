@@ -3,13 +3,21 @@
 -env problem (not recognizing username) for db.ts and db.json
 -add delete to each model
 -add file in models/table in database 
-
--first related order to products
+-I should provide a flow for the review in the app
+-update readme and requirement file
+-make sure of all indentations in files 
 
 //tests to make
 -for each endpoint
 -for models and their methods
 -add cors
+-tell him that I didn't create tests for extra endpoints I have created
+
+/////problems 
+-needs to read databaes_test name from the script
+-set the env variable from script
+-didn't find the test folders
+
 
 
 
