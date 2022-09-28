@@ -71,6 +71,7 @@ const getOneProductByCategoryHandler = async (req, res) => {
     try {
         console.log("hit products/categories/:category");
         const Product = new productModel_1.ProductModel();
+        console.log('category ', req.params.category);
         const product = await Product.fetchByCategory(req.params.category);
         if (!product) {
             return res.send("no product found with this category");
