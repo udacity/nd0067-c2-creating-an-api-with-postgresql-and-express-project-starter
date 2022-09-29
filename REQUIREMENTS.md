@@ -11,6 +11,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 - Index: [GET] '/products/index',  [no token required] 
 
 
+
 - Show [GET] '/products/show/:productId', [no token required]
 
 
