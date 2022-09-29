@@ -10,7 +10,6 @@
 //tests to make
 -for each endpoint
 -for models and their methods
--add cors
 -tell him that I didn't create tests for extra endpoints I have created
 
 /////problems 

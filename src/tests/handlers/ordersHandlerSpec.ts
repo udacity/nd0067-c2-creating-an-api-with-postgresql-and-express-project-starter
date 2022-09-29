@@ -16,7 +16,7 @@ describe("Suite for orders endpoints:", (): void => {
   const newUser = {
     firstname: "ahmed",
     lastname: "hisham",
-    hash: "password123",
+    hash: "passwordHash",
   };
 
   //to make of orders shorter I will run them all in one spec

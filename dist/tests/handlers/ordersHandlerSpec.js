@@ -18,7 +18,7 @@ describe("Suite for orders endpoints:", () => {
     const newUser = {
         firstname: "ahmed",
         lastname: "hisham",
-        hash: "password123",
+        hash: "passwordHash",
     };
     //to make of orders shorter I will run them all in one spec
     it("create order: POST orders/create", async () => {
@@ -80,11 +80,11 @@ describe("Suite for orders endpoints:", () => {
         });
         const product = await new productModel_1.ProductModel().create(newProduct);
         const token = (0, authentication_1.createToken)(user.id);
-        console.log({
-            productId: product.id,
-            orderId: order.id,
-            quantity: 2,
-        });
+        // console.log({
+        //     productId: (product as Product).id,
+        //     orderId: (order as Order).id,
+        //     quantity: 2,
+        //   })
         const response = await (0, supertest_1.default)(server_1.default)
             .post("/orders/addproduct")
             .set("authorization", `Bearer ${token}`)
@@ -93,7 +93,7 @@ describe("Suite for orders endpoints:", () => {
             orderId: order.id,
             quantity: 2,
         });
-        console.log(response.body);
+        // console.log(response.body)
         expect(response.status).toEqual(200);
         expect(response.body.orderid).toEqual(order.id);
     });

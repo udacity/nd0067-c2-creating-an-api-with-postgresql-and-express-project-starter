@@ -8,9 +8,10 @@ const db_1 = __importDefault(require("../db/db"));
 class OrderModel {
     async create(order) {
         try {
+            const { userId } = order;
             const connnection = await db_1.default.connect();
             const sql = "INSERT INTO orders (userId) VALUES ($1) RETURNING *;";
-            const result = await connnection.query(sql, [order.userId]);
+            const result = await connnection.query(sql, [userId]);
             connnection.release();
             return result.rows[0];
         }
@@ -22,7 +23,7 @@ class OrderModel {
     async getOrdersByUserId(userId) {
         try {
             const connnection = await db_1.default.connect();
-            const sql = "SELECT o_p.productId, u.id as userId, o.id as orderId, o.status, o_p.quantity FROM users u INNER JOIN orders o ON u.id = o.userId INNER JOIN orders_products o_p ON o.id = o_p.orderId WHERE u.id =$1;";
+            const sql = "SELECT o_p.productId, u.id as userId, o.id as orderId, o.status, o_p.quantity FROM users u INNER JOIN orders o ON u.id = o.userId LEFT JOIN orders_products o_p ON o.id = o_p.orderId WHERE u.id =$1;";
             const result = await connnection.query(sql, [userId]);
             connnection.release();
             return result.rows;
@@ -49,7 +50,7 @@ class OrderModel {
     async getCompletedOrdersByUserId(userId) {
         try {
             const connnection = await db_1.default.connect();
-            const sql = "SELECT o_p.productId, u.id as userId, o.id as orderId, o.status, o_p.quantity FROM users u INNER JOIN orders o ON u.id = o.userId INNER JOIN orders_products o_p ON o.id = o_p.orderId WHERE u.id=$1 AND o.status='complete';";
+            const sql = "SELECT o_p.productId, u.id as userId, o.id as orderId, o.status, o_p.quantity FROM users u INNER JOIN orders o ON u.id = o.userId LEFT JOIN orders_products o_p ON o.id = o_p.orderId WHERE u.id=$1 AND o.status='complete';";
             const result = await connnection.query(sql, [userId]);
             connnection.release();
             return result.rows;
