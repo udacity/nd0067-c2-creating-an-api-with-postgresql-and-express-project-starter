@@ -1,4 +1,5 @@
 import express, { Request, Response , Application} from 'express'
+import cors from 'cors'
 import bodyParser from 'body-parser'
 import userRouter from './handlers/userHanlder'
 const app: Application = express()
@@ -12,6 +13,7 @@ dotenv.config()
 
 
 
+app.use(cors())
 userRouter(app);
 productRouter(app)
 OrderRouter(app)

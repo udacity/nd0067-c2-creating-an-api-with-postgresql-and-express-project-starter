@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const userHanlder_1 = __importDefault(require("./handlers/userHanlder"));
 const app = (0, express_1.default)();
@@ -14,6 +15,7 @@ const productHandler_1 = __importDefault(require("./handlers/productHandler"));
 const orderHandler_1 = __importDefault(require("./handlers/orderHandler"));
 dotenv_1.default.config();
 // createHash('1');
+app.use((0, cors_1.default)());
 (0, userHanlder_1.default)(app);
 (0, productHandler_1.default)(app);
 (0, orderHandler_1.default)(app);
