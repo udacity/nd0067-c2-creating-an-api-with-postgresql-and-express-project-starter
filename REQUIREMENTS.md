@@ -7,13 +7,13 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 #### Products 
 
-- Index [GET /products/index] [don't require a token]
+- Index: [GET] '/products/index',  [don't require a token] 
 
 
-- Show [GET /products/show/:productId] [don't require a token]
+- Show [GET] '/products/show/:productId', [don't require a token]
 
 
-- Create [POST /products/create] [token required] 
+- Create [POST] '/products/create', [token required] => token should be provided via authorization header: 'Bearer token' + body should be: {name: value, price: value, category}
 
 
 - [OPTIONAL] Top 5 most popular products  
