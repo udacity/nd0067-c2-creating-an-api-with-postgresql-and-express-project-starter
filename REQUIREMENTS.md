@@ -4,30 +4,37 @@ The company stakeholders want to create an online storefront to showcase their g
 These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application.
 
 ## API Endpoints
+* any required token should be provided via authorization header: 'Bearer tokenValue'
 
 #### Products 
 
-- Index: [GET] '/products/index',  [don't require a token] 
+- Index: [GET] '/products/index',  [no token required] 
 
 
-- Show [GET] '/products/show/:productId', [don't require a token]
+
+- Show [GET] '/products/show/:productId', [no token required]
 
 
-- Create [POST] '/products/create', [token required] => token should be provided via authorization header: 'Bearer token' + body should be: {name: value, price: value, category}
+- Create [POST] '/products/create', [token required] => token  + body json shape: {name: value, price: value, category}
 
 
 - [OPTIONAL] Top 5 most popular products  
 
 
-- [OPTIONAL] Products by category (args: product category) [GET /products/categories/:category] [don't require a token]
-
+-[OPTIONAL] get products by category [GET] 'products/categories/:category', [no token required] 
 
 
 #### Users (done)
 
-- Index [token required]
-- Show [token required]
-- Create N[token required]
+- Index: [GET] '/users/index',  [token required]  
+
+
+- Show [GET] '/users/show/:userId', [token required] => note: userId should be the same used to create the token to make sure you are the owner or error will be returned
+
+
+- Create [POST] '/users/create', [no token required] => body json shape: {firstname: value, lastname: value, password: value}
+
+-[EXTRA] delete []
 
 #### Orders
 

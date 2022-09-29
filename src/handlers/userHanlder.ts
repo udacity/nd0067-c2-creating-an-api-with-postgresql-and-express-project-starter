@@ -128,7 +128,7 @@ const userRouter = (app: Application): void => {
   app.post("/users/signup", createUserHandler);
   app.post("/users/login", userLoginHandler);
   //this is an extra endpoint (don't have a test)
-  app.post("/users/delete/:userId", authorizationMiddleWare, deleteUserHandler);
+  app.delete("/users/delete/:userId", authorizationMiddleWare, deleteUserHandler);
   app.get("/users/index", authorizationMiddleWare, getAllUsersHandler);
   //note (I made the user not allowed to view other users data in this route specifically, but I let him to do so 
   //via the index route above -just for the proof of concept-)
