@@ -21,6 +21,13 @@ describe("Suite for products endpoints:",  (): void => {
     expect(response.body.id).toBeDefined();
   });
 
+  it("create product: POST products/create", async (): Promise<void> => {
+    const token = createToken(1)
+    const response = await request(app).post("/products/create").set('authorization', `Bearer ${token}`).send(newProduct);
+    expect(response.status).toEqual(200);
+    expect(response.body.id).toBeDefined();
+  });
+  
   it("All products: GET /products/index", async (): Promise<void> => {
     //to make this test independent from the above test 
     const response = await request(app)

@@ -3,10 +3,11 @@ import client from "../db/db";
 export type Order = {
   id?: number;
   userId: number;
+  userid?: number;
   status?: string;
   // when fetching associated products to an order
 };
-type OrderWithProducts = {
+export type OrderWithProducts = {
   orderId: number;
   userId: number;
   status: string;
@@ -17,9 +18,10 @@ type OrderWithProducts = {
 export class OrderModel {
   async create(order: Order): Promise<Order | void> {
     try {
+      const { userId } = order
       const connnection = await client.connect();
       const sql = "INSERT INTO orders (userId) VALUES ($1) RETURNING *;";
-      const result = await connnection.query(sql, [order.userId]);
+      const result = await connnection.query(sql, [userId]);
       connnection.release();
       return result.rows[0];
     } catch (err: unknown) {
@@ -32,7 +34,7 @@ export class OrderModel {
     try {
       const connnection = await client.connect();
       const sql =
-        "SELECT o_p.productId, u.id as userId, o.id as orderId, o.status, o_p.quantity FROM users u INNER JOIN orders o ON u.id = o.userId INNER JOIN orders_products o_p ON o.id = o_p.orderId WHERE u.id =$1;";
+        "SELECT o_p.productId, u.id as userId, o.id as orderId, o.status, o_p.quantity FROM users u INNER JOIN orders o ON u.id = o.userId LEFT JOIN orders_products o_p ON o.id = o_p.orderId WHERE u.id =$1;";
       const result = await connnection.query(sql,[userId]);
       connnection.release();
       return result.rows;
@@ -69,7 +71,7 @@ export class OrderModel {
     try {
       const connnection = await client.connect();
       const sql = 
-        "SELECT o_p.productId, u.id as userId, o.id as orderId, o.status, o_p.quantity FROM users u INNER JOIN orders o ON u.id = o.userId INNER JOIN orders_products o_p ON o.id = o_p.orderId WHERE u.id=$1 AND o.status='complete';";
+        "SELECT o_p.productId, u.id as userId, o.id as orderId, o.status, o_p.quantity FROM users u INNER JOIN orders o ON u.id = o.userId LEFT JOIN orders_products o_p ON o.id = o_p.orderId WHERE u.id=$1 AND o.status='complete';";
       const result = await connnection.query(sql, [userId]);
       connnection.release();
       return result.rows;
