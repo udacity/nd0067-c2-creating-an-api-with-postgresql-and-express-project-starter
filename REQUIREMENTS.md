@@ -7,11 +7,21 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 #### Products 
 
-- Index
-- Show
-- Create [token required]
-- [OPTIONAL] Top 5 most popular products
-- [OPTIONAL] Products by category (args: product category)
+- Index [GET /products/index] [don't require a token]
+
+
+- Show [GET /products/show/:productId] [don't require a token]
+
+
+- Create [POST /products/create] [token required] 
+
+
+- [OPTIONAL] Top 5 most popular products  
+
+
+- [OPTIONAL] Products by category (args: product category) [GET /products/categories/:category] [don't require a token]
+
+
 
 #### Users (done)
 
