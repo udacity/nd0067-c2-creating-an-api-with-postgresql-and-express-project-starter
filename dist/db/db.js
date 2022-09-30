@@ -2,22 +2,22 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const pg_1 = require("pg");
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
+exports.__esModule = true;
+var pg_1 = require("pg");
+var dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1["default"].config();
 // console.log('process.env',process.env)
-const { DB_USERNAME, HOST, DATABASE, DATABASE_TEST, PASSWORD, ENV } = process.env;
-let usedDatabase = DATABASE;
+var _a = process.env, DB_USERNAME = _a.DB_USERNAME, HOST = _a.HOST, DATABASE = _a.DATABASE, DATABASE_TEST = _a.DATABASE_TEST, PASSWORD = _a.PASSWORD, ENV = _a.ENV;
+var usedDatabase = DATABASE;
 if (ENV === "TEST") {
     usedDatabase = DATABASE_TEST;
 }
 // let usedDatabase = DATABASE_TEST;
-const client = new pg_1.Pool({
+var client = new pg_1.Pool({
     user: DB_USERNAME,
     host: HOST,
     database: usedDatabase,
     password: PASSWORD,
-    port: 5432,
+    port: 5432
 });
-exports.default = client;
+exports["default"] = client;

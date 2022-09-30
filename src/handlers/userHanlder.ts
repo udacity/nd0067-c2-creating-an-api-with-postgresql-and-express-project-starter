@@ -71,7 +71,7 @@ const deleteUserHandler = async (
     //to allow for future if-else statements (like: if customer service decided to delete the user account)
     if (res.locals.userIdInToken != req.params.userId) {
       return res.send(
-        `you don\'t have the authority to delete the user with id ${req.params.userid}`
+        `you don\'t have the authority to delete the user with id ${req.params.userId}`
       );
     }
     const User = new UserModel();

@@ -6,6 +6,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 ## API Endpoints
 * any required token should be provided via authorization header: 'Bearer tokenValue'
 
+
 #### Products 
 
 - Index: [GET] '/products/index',  [no token required] 
@@ -24,7 +25,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 -[OPTIONAL] get products by category [GET] 'products/categories/:category', [no token required] 
 
 
-#### Users (done)
+#### Users 
 
 - Index: [GET] '/users/index',  [token required]  
 
@@ -34,12 +35,65 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 - Create [POST] '/users/create', [no token required] => body json shape: {firstname: value, lastname: value, password: value}
 
--[EXTRA] delete []
+-[EXTRA] [delete] '/users/delete/:userId' [token required] => userId should be the same of one provided in the token 
+
+-[EXTRA] [POST] '/users/login' [no token required] => body json shape: {userId: value, password: value}
+
+
 
 #### Orders
 
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+- Create [POST] '/orders/create', [token required] => order will be created for the user with the id in the token
+
+- Index(get orders for a user): [GET] '/orders/get-orders-for-user',  [token required] 
+
+
+- add product [POST] '/orders/addproduct', [token required] => body json shape: {orderId: value, productId: value, quantity: value} 
+
+
+-[EXTRA] set status for order [POST] '/orders/set-status' [token required] => body json shape: {orderId: value, status: value (either complete or active)}
+
+-[OPTIONAL] get complete orders [GET] '/orders/complete' [token required] => returned data will be for the userId provided in the token 
+
+
+## database schema
+#### users:
+- CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    firstname VARCHAR(100) NOT NULL,
+    lastname VARCHAR(100) NOT NULL,
+    hash TEXT NOT NULL
+);
+
+#### products:
+- CREATE TABLE products (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    price INT NOT NULL,
+    category VARCHAR(100) NOT NULL
+);
+
+#### orders:
+- CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    status VARCHAR(20) NOT NULL DEFAULT 'active',
+    userId INT NOT NULL,
+    FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
+);
+
+
+#### orders_products:
+- CREATE TABLE orders_products (
+    id SERIAL UNIQUE,
+    orderId INT NOT NULL,
+    productId INT NOT NULL,
+    quantity INT NOT NULL,
+    FOREIGN KEY (orderId) REFERENCES orders(id) ON DELETE CASCADE,
+    FOREIGN KEY (productId) REFERENCES products(id) ON DELETE CASCADE,
+    PRIMARY KEY(orderId, productId)
+);
+
+
 
 ## Data Shapes
 
