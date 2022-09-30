@@ -1,7 +1,3 @@
-import client from "../../db/db";
-import request from "supertest";
-import app from "../../server";
-import { createToken } from "../../utilities/authentication";
 import { User, UserModel } from "../../models/userModel";
 
 describe("Suite for user model:",  (): void => {

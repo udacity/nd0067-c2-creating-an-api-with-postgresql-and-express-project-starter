@@ -69,7 +69,7 @@ const deleteUserHandler = async (
     // console.log("hit users/delete/:userId");
     //I could have just deleted the user with userId in the token, but I wrote the function this way (with if statement)
     //to allow for future if-else statements (like: if customer service decided to delete the user account)
-    if (res.locals.useridintoken != req.params.userid) {
+    if (res.locals.userIdInToken != req.params.userId) {
       return res.send(
         `you don\'t have the authority to delete the user with id ${req.params.userid}`
       );

@@ -19,6 +19,7 @@
 -when running test from the script it works ok but when doing npx jasmine, it doesn't (check which you are right now)
 -delete this file
 
+-problem of not showing the test logs in master branch
 
 
 
