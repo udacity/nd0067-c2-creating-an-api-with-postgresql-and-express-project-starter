@@ -16,6 +16,8 @@
 -needs to read databaes_test name from the script
 -set the env variable from script
 -didn't find the test folders
+-when running test from the script it works ok but when doing npx jasmine, it doesn't (check which you are right now)
+-delete this file
 
 
 
