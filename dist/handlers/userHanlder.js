@@ -1,110 +1,193 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const userModel_1 = require("../models/userModel");
-const authentication_1 = require("../utilities/authentication");
-const authorization_1 = require("../utilities/authorization");
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+exports.__esModule = true;
+var userModel_1 = require("../models/userModel");
+var authentication_1 = require("../utilities/authentication");
+var authorization_1 = require("../utilities/authorization");
 //needs return type
-const createUserHandler = async (req, res) => {
-    try {
-        // console.log("hit users/signup");
-        const { firstname, lastname, password } = req.body;
-        const User = new userModel_1.UserModel();
-        const hash = (0, authentication_1.createHash)(password);
-        const user = await User.create({
-            firstname: firstname,
-            lastname: lastname,
-            hash,
-        });
-        //give a token
-        const accessToken = (0, authentication_1.createToken)(user.id);
-        return res.send({ ...user, accessToken });
-    }
-    catch (err) {
-        return res.send(`err in creating user, ${err} `);
-    }
-};
-const userLoginHandler = async (req, res) => {
-    try {
-        // console.log("hit users/login");
-        const { password, userId } = req.body;
-        const User = new userModel_1.UserModel();
-        const user = await User.show(userId);
-        if (!user) {
-            return res.send("err: user with this id doesn't exist");
+var createUserHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, firstname, lastname, password, User, hash, user, accessToken, err_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 2, , 3]);
+                _a = req.body, firstname = _a.firstname, lastname = _a.lastname, password = _a.password;
+                User = new userModel_1.UserModel();
+                hash = (0, authentication_1.createHash)(password);
+                return [4 /*yield*/, User.create({
+                        firstname: firstname,
+                        lastname: lastname,
+                        hash: hash
+                    })];
+            case 1:
+                user = _b.sent();
+                accessToken = (0, authentication_1.createToken)(user.id);
+                return [2 /*return*/, res.send(__assign(__assign({}, user), { accessToken: accessToken }))];
+            case 2:
+                err_1 = _b.sent();
+                return [2 /*return*/, res.send("err in creating user, ".concat(err_1, " "))];
+            case 3: return [2 /*return*/];
         }
-        // console.log("user", user);
-        const result = await (0, authentication_1.compareHash)(password, user.hash);
-        if (!result) {
-            return res.send("password is not correct");
+    });
+}); };
+var userLoginHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, password, userId, User, user, result, accessToken, id, firstname, lastname, err_2;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 3, , 4]);
+                _a = req.body, password = _a.password, userId = _a.userId;
+                User = new userModel_1.UserModel();
+                return [4 /*yield*/, User.show(userId)];
+            case 1:
+                user = _b.sent();
+                if (!user) {
+                    return [2 /*return*/, res.send("err: user with this id doesn't exist")];
+                }
+                return [4 /*yield*/, (0, authentication_1.compareHash)(password, user.hash)];
+            case 2:
+                result = _b.sent();
+                if (!result) {
+                    return [2 /*return*/, res.send("password is not correct")];
+                }
+                accessToken = (0, authentication_1.createToken)(userId);
+                id = user.id, firstname = user.firstname, lastname = user.lastname;
+                return [2 /*return*/, res.send({
+                        id: id,
+                        firstname: firstname,
+                        lastname: lastname,
+                        accessToken: accessToken
+                    })];
+            case 3:
+                err_2 = _b.sent();
+                return [2 /*return*/, res.send("err in creating user, ".concat(err_2, " "))];
+            case 4: return [2 /*return*/];
         }
-        //give a token
-        const accessToken = (0, authentication_1.createToken)(userId);
-        const { id, firstname, lastname } = user;
-        return res.send({
-            id,
-            firstname,
-            lastname,
-            accessToken,
-        });
-    }
-    catch (err) {
-        return res.send(`err in creating user, ${err} `);
-    }
-};
-const deleteUserHandler = async (req, res) => {
-    try {
-        // console.log("hit users/delete/:userId");
-        //I could have just deleted the user with userId in the token, but I wrote the function this way (with if statement)
-        //to allow for future if-else statements (like: if customer service decided to delete the user account)
-        if (res.locals.useridintoken != req.params.userid) {
-            return res.send(`you don\'t have the authority to delete the user with id ${req.params.userid}`);
+    });
+}); };
+var deleteUserHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var User, err_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                // console.log("hit users/delete/:userId");
+                //I could have just deleted the user with userId in the token, but I wrote the function this way (with if statement)
+                //to allow for future if-else statements (like: if customer service decided to delete the user account)
+                if (res.locals.userIdInToken != req.params.userId) {
+                    return [2 /*return*/, res.send("you don't have the authority to delete the user with id ".concat(req.params.userid))];
+                }
+                User = new userModel_1.UserModel();
+                return [4 /*yield*/, User["delete"](req.params.userId)];
+            case 1:
+                _a.sent();
+                //even if user doesn't exist this will return the deletion statement of the user like with userId=1000
+                return [2 /*return*/, res.send("user is deleted")];
+            case 2:
+                err_3 = _a.sent();
+                return [2 /*return*/, res.send("err in deleting user with id ".concat(req.params.userId, ", err: ").concat(err_3, " "))];
+            case 3: return [2 /*return*/];
         }
-        const User = new userModel_1.UserModel();
-        await User.delete(req.params.userId);
-        //even if user doesn't exist this will return the deletion statement of the user like with userId=1000
-        return res.send("user is deleted");
-    }
-    catch (err) {
-        return res.send(`err in deleting user with id ${req.params.userId}, err: ${err} `);
-    }
-};
-const getAllUsersHandler = async (req, res) => {
-    try {
-        // console.log("hit users/index");
-        const User = new userModel_1.UserModel();
-        const users = await User.index();
-        return res.send(users);
-    }
-    catch (err) {
-        return res.send(`err in getting all users, err: ${err} `);
-    }
-};
-const getOneUserByIdHandler = async (req, res) => {
-    try {
-        // console.log("hit users/show/:userId");
-        if (res.locals.userIdInToken != req.params.userId) {
-            return res.send(`you don\'t have the authority to view the user with id ${req.params.userId}`);
+    });
+}); };
+var getAllUsersHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var User, users, err_4;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                User = new userModel_1.UserModel();
+                return [4 /*yield*/, User.index()];
+            case 1:
+                users = _a.sent();
+                return [2 /*return*/, res.send(users)];
+            case 2:
+                err_4 = _a.sent();
+                return [2 /*return*/, res.send("err in getting all users, err: ".concat(err_4, " "))];
+            case 3: return [2 /*return*/];
         }
-        const User = new userModel_1.UserModel();
-        const user = await User.show(req.params.userId);
-        if (!user) {
-            return res.send("no user found with this userId");
+    });
+}); };
+var getOneUserByIdHandler = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var User, user, id, firstname, lastname, err_5;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                // console.log("hit users/show/:userId");
+                if (res.locals.userIdInToken != req.params.userId) {
+                    return [2 /*return*/, res.send("you don't have the authority to view the user with id ".concat(req.params.userId))];
+                }
+                User = new userModel_1.UserModel();
+                return [4 /*yield*/, User.show(req.params.userId)];
+            case 1:
+                user = _a.sent();
+                if (!user) {
+                    return [2 /*return*/, res.send("no user found with this userId")];
+                }
+                id = user.id, firstname = user.firstname, lastname = user.lastname;
+                return [2 /*return*/, res.send({ id: id, firstname: firstname, lastname: lastname })];
+            case 2:
+                err_5 = _a.sent();
+                return [2 /*return*/, res.send("err in getting user with Id ".concat(req.params.userId, ", err: ").concat(err_5, " "))];
+            case 3: return [2 /*return*/];
         }
-        const { id, firstname, lastname } = user;
-        return res.send({ id, firstname, lastname });
-    }
-    catch (err) {
-        return res.send(`err in getting user with Id ${req.params.userId}, err: ${err} `);
-    }
-};
-const userRouter = (app) => {
+    });
+}); };
+var userRouter = function (app) {
     app.post("/users/signup", createUserHandler);
     app.post("/users/login", userLoginHandler);
     //this is an extra endpoint (don't have a test)
-    app.delete("/users/delete/:userId", authorization_1.authorizationMiddleWare, deleteUserHandler);
+    app["delete"]("/users/delete/:userId", authorization_1.authorizationMiddleWare, deleteUserHandler);
     app.get("/users/index", authorization_1.authorizationMiddleWare, getAllUsersHandler);
     //note (I made the user not allowed to view other users data in this route specifically, but I let him to do so 
     //via the index route above -just for the proof of concept-)
     app.get("/users/show/:userId", authorization_1.authorizationMiddleWare, getOneUserByIdHandler);
 };
-exports.default = userRouter;
+exports["default"] = userRouter;

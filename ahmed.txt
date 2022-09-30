@@ -17,6 +17,7 @@
 -set the env variable from script
 -didn't find the test folders
 
+-problem of not showing the test logs in master branch
 
 
 
