@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-
 export const createToken = (userId: number): string => {
   try {
     // console.log("token secret", process.env.TOKEN_SECRET_KEY);
@@ -27,10 +26,13 @@ export const createHash = (password: string): string => {
   }
 };
 
-export const compareHash = async (password: string, hash: string): Promise<boolean> => {
+export const compareHash = async (
+  password: string,
+  hash: string
+): Promise<boolean> => {
   try {
     const { PEPPER } = process.env;
-    const result = bcrypt.compareSync(password+PEPPER as string, hash);
+    const result = bcrypt.compareSync((password + PEPPER) as string, hash);
     // console.log("result = ", result);
     return result;
   } catch (err: unknown) {

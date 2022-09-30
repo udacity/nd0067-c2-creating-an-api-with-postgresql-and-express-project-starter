@@ -17,7 +17,7 @@ const createOrderHandler = async (
       userId: res.locals.userIdInToken,
     });
     //give a token
-    return res.send({...order});
+    return res.send({ ...order });
   } catch (err: unknown) {
     return res.send(`err in creating order , ${err} `);
   }
@@ -69,7 +69,9 @@ const addProductToOrder = async (
 
     //add product to order
     if (!order) {
-      return res.send(`this order doesn't exist or user with id ${res.locals.userIdInToken} doesn't own this order`);
+      return res.send(
+        `this order doesn't exist or user with id ${res.locals.userIdInToken} doesn't own this order`
+      );
     }
     //the order should be active to add more products to it (this how I think about it)
     else if ((order as Order).status === "complete") {
@@ -102,7 +104,9 @@ const setOrderStatusByUserIdHandler = async (
       req.body.orderId
     );
     if (!orderCheck) {
-      return res.send(`this order doesn't exist or user with id ${res.locals.userIdInToken} doesn't own this order`);
+      return res.send(
+        `this order doesn't exist or user with id ${res.locals.userIdInToken} doesn't own this order`
+      );
     }
     //get userId from the token
     const { status, orderId } = req.body;
@@ -111,7 +115,7 @@ const setOrderStatusByUserIdHandler = async (
       res.locals.userIdInToken,
       status
     );
-    return res.send('done');
+    return res.send("done");
   } catch (err: unknown) {
     return res.send(
       `err in setting the status of the order with userId ${res.locals.userIdInToken}, err: ${err} `

@@ -3,7 +3,7 @@ import client from "../db/db";
 export type User = {
   //id will not be provided in request in signup process so this is why i put (?) (but we could be more specific and create a user response type
   // along with a user request type)
-  id?: number ;
+  id?: number;
   firstname: string;
   lastname: string;
   password?: string;
@@ -22,7 +22,7 @@ export class UserModel {
         user.hash,
       ]);
       connnection.release();
-      return result.rows[0]
+      return result.rows[0];
     } catch (err: unknown) {
       console.log("err");
       throw new Error(`err in creating user, err: ${err as string}`);
@@ -35,7 +35,7 @@ export class UserModel {
       const sql = "DELETE FROM users where id=$1;";
       const result = await connnection.query(sql, [userId]);
       connnection.release();
-      console.log('user delete result rows', result.rows.length)
+      console.log("user delete result rows", result.rows.length);
       return result.rows;
     } catch (err: unknown) {
       console.log("err");
@@ -50,8 +50,7 @@ export class UserModel {
       const result = await connnection.query(sql);
       connnection.release();
       return result.rows;
-    }
-     catch (err: unknown) {
+    } catch (err: unknown) {
       console.log(err);
       throw new Error(`err in fetching all usres, err: ${err as string}`);
     }

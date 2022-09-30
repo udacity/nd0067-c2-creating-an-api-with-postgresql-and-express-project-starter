@@ -96,7 +96,7 @@ describe("Suite for orders endpoints:", (): void => {
         orderId: (order as Order).id,
         quantity: 2,
       });
-      // console.log(response.body)
+    // console.log(response.body)
     expect(response.status).toEqual(200);
     expect(response.body.orderid).toEqual((order as Order).id);
   });

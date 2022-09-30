@@ -98,7 +98,6 @@ const getOneProductByCategoryHandler = async (
   }
 };
 
-
 const productRouter = (app: Application): void => {
   app.post("/products/create", authorizationMiddleWare, createProductHandler);
   //   app.post("/products/delete/:productId", authorizationMiddleWare, deleteproductHandler);

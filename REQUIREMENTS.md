@@ -11,33 +11,27 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 - Index: [GET] '/products/index',  [no token required] 
 
-
-
 - Show [GET] '/products/show/:productId', [no token required]
-
 
 - Create [POST] '/products/create', [token required] => token  + body json shape: {name: value, price: value, category}
 
-
 - [OPTIONAL] Top 5 most popular products  
-
 
 -[OPTIONAL] get products by category [GET] 'products/categories/:category', [no token required] 
 
 
 #### Users 
 
-- Index: [GET] '/users/index',  [token required]  
+- Create [POST] '/users/signup', [no token required] => body json shape: {firstname: value, lastname: value, password: value}
 
+-[EXTRA] login [POST] '/users/login' [no token required] => body json shape: {userId: value, password: value}
+
+- Index: [GET] '/users/index',  [token required]  
 
 - Show [GET] '/users/show/:userId', [token required] => note: userId should be the same used to create the token to make sure you are the owner or error will be returned
 
-
-- Create [POST] '/users/create', [no token required] => body json shape: {firstname: value, lastname: value, password: value}
-
 -[EXTRA] [delete] '/users/delete/:userId' [token required] => userId should be the same of one provided in the token 
 
--[EXTRA] [POST] '/users/login' [no token required] => body json shape: {userId: value, password: value}
 
 
 

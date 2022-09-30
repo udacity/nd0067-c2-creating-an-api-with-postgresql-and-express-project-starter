@@ -1,5 +1,8 @@
 import { Order, OrderModel, OrderWithProducts } from "../../models/orderModel";
-import { OrdersProductsModel, ProductsOrdersType } from "../../models/ordersProductsModel";
+import {
+  OrdersProductsModel,
+  ProductsOrdersType,
+} from "../../models/ordersProductsModel";
 import { Product, ProductModel } from "../../models/productModel";
 import { User, UserModel } from "../../models/userModel";
 
@@ -48,6 +51,8 @@ describe("Suite for orders_products model:", (): void => {
       (userCreated as User).id as number
     );
     // console.log("completedOrders", completedOrders);
-    expect((relationInstance as ProductsOrdersType).quantity).toEqual(addProductObj.quantity);
+    expect((relationInstance as ProductsOrdersType).quantity).toEqual(
+      addProductObj.quantity
+    );
   });
 });

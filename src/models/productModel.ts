@@ -58,8 +58,7 @@ export class ProductModel {
   async delete(productId: string): Promise<Product[] | void> {
     try {
       const connnection = await client.connect();
-      const sql =
-        "DELETE FROM products where id=$1;";
+      const sql = "DELETE FROM products where id=$1;";
       const result = await connnection.query(sql, [productId]);
       connnection.release();
       return result.rows;
@@ -69,7 +68,7 @@ export class ProductModel {
     }
   }
 
-  //[Optional] 
+  //[Optional]
   async fetchByCategory(category: string): Promise<Product[] | void> {
     try {
       const connnection = await client.connect();
@@ -79,21 +78,23 @@ export class ProductModel {
       return result.rows;
     } catch (err: unknown) {
       console.log("err");
-      throw new Error(`err in fetching products by category, err: ${err as string}`);
+      throw new Error(
+        `err in fetching products by category, err: ${err as string}`
+      );
     }
   }
   //limit products fetch by certain number
   //needs order in process
-//   async fetchMostPopularByNumber(numberLimit: number): Promise<Product[] | void> {
-//     try {
-//       const connnection = await client.connect();
-//       const sql = "SELECT * FROM products WHERE category=$1;";
-//       const result = await connnection.query(sql, [numberLimit]);
-//       connnection.release();
-//       return result.rows[0];
-//     } catch (err) {
-//       console.log("err");
-//       throw new Error(`err in fetching products by category, err: ${err as string}`);
-//     }
-//   }
+  //   async fetchMostPopularByNumber(numberLimit: number): Promise<Product[] | void> {
+  //     try {
+  //       const connnection = await client.connect();
+  //       const sql = "SELECT * FROM products WHERE category=$1;";
+  //       const result = await connnection.query(sql, [numberLimit]);
+  //       connnection.release();
+  //       return result.rows[0];
+  //     } catch (err) {
+  //       console.log("err");
+  //       throw new Error(`err in fetching products by category, err: ${err as string}`);
+  //     }
+  //   }
 }

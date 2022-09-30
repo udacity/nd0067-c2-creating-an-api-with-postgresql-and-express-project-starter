@@ -43,6 +43,6 @@ describe("Suite for order model:", (): void => {
     expect((indexResult as Order[])[0].userid).toEqual(
       (userCreated as User).id
     );
-    expect((completedOrders as OrderWithProducts[])).toEqual([]);
+    expect(completedOrders as OrderWithProducts[]).toEqual([]);
   });
 });

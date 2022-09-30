@@ -3,7 +3,7 @@ import request from "supertest";
 import app from "../../server";
 import { createToken } from "../../utilities/authentication";
 
-describe("Suite for users endpoints:",  (): void => {
+describe("Suite for users endpoints:", (): void => {
   // beforeAll(() => {
   //   client.connect();
   // });
@@ -20,7 +20,7 @@ describe("Suite for users endpoints:",  (): void => {
   });
 
   it("User login: POST users/login", async (): Promise<void> => {
-    //to make this test independent from the above test 
+    //to make this test independent from the above test
     const response1 = await request(app).post("/users/signup").send(newUser);
     const userLoginData = {
       userId: response1.body.id,
@@ -55,5 +55,5 @@ describe("Suite for users endpoints:",  (): void => {
     // console.log(response.body)
     expect(response.status).toEqual(200);
     expect(response.body).toBeDefined();
-  }); 
+  });
 });

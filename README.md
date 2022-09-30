@@ -20,4 +20,3 @@
 * 2- run [npm run create_DB_test] 
 * 3- run [npm run test]
 * note: after running the test, test_DB will be dropped automatically. so you need to create the test_DB every time before running a test
-

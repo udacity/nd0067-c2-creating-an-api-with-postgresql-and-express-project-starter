@@ -12,13 +12,13 @@ export type OrderWithProducts = {
   userId: number;
   status: string;
   productId: number;
-  quantity: number
-}
+  quantity: number;
+};
 
 export class OrderModel {
   async create(order: Order): Promise<Order | void> {
     try {
-      const { userId } = order
+      const { userId } = order;
       const connnection = await client.connect();
       const sql = "INSERT INTO orders (userId) VALUES ($1) RETURNING *;";
       const result = await connnection.query(sql, [userId]);
@@ -35,7 +35,7 @@ export class OrderModel {
       const connnection = await client.connect();
       const sql =
         "SELECT o_p.productId, u.id as userId, o.id as orderId, o.status, o_p.quantity FROM users u INNER JOIN orders o ON u.id = o.userId LEFT JOIN orders_products o_p ON o.id = o_p.orderId WHERE u.id =$1;";
-      const result = await connnection.query(sql,[userId]);
+      const result = await connnection.query(sql, [userId]);
       connnection.release();
       return result.rows;
     } catch (err: unknown) {
@@ -67,10 +67,12 @@ export class OrderModel {
   }
 
   //optional method
-  async getCompletedOrdersByUserId(userId: number): Promise<OrderWithProducts[] | void> {
+  async getCompletedOrdersByUserId(
+    userId: number
+  ): Promise<OrderWithProducts[] | void> {
     try {
       const connnection = await client.connect();
-      const sql = 
+      const sql =
         "SELECT o_p.productId, u.id as userId, o.id as orderId, o.status, o_p.quantity FROM users u INNER JOIN orders o ON u.id = o.userId LEFT JOIN orders_products o_p ON o.id = o_p.orderId WHERE u.id=$1 AND o.status='complete';";
       const result = await connnection.query(sql, [userId]);
       connnection.release();
@@ -129,5 +131,4 @@ export class OrderModel {
   //     throw new Error(`err in adding Order to an order, err: ${err as string}`);
   //   }
   // }
-
 }

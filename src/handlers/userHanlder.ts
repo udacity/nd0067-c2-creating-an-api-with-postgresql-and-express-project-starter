@@ -116,7 +116,7 @@ const getOneUserByIdHandler = async (
       return res.send("no user found with this userId");
     }
     const { id, firstname, lastname } = user;
-    return res.send({ id, firstname, lastname});
+    return res.send({ id, firstname, lastname });
   } catch (err: unknown) {
     return res.send(
       `err in getting user with Id ${req.params.userId}, err: ${err} `
@@ -128,9 +128,13 @@ const userRouter = (app: Application): void => {
   app.post("/users/signup", createUserHandler);
   app.post("/users/login", userLoginHandler);
   //this is an extra endpoint (don't have a test)
-  app.delete("/users/delete/:userId", authorizationMiddleWare, deleteUserHandler);
+  app.delete(
+    "/users/delete/:userId",
+    authorizationMiddleWare,
+    deleteUserHandler
+  );
   app.get("/users/index", authorizationMiddleWare, getAllUsersHandler);
-  //note (I made the user not allowed to view other users data in this route specifically, but I let him to do so 
+  //note (I made the user not allowed to view other users data in this route specifically, but I let him to do so
   //via the index route above -just for the proof of concept-)
   app.get(
     "/users/show/:userId",
