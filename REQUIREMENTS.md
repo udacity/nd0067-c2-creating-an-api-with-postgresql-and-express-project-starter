@@ -21,7 +21,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 - [OPTIONAL] Completed Orders by user (args: user id)[token required]
 
 ## Data Shapes
-#### Product
+#### ProductModel
 -  id
 - name
 - price
