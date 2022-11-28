@@ -1,4 +1,4 @@
-import {ProductIndex} from "../models/productModel";
+import {ProductIndex} from "../../models/productModel";
 import express, {Request, Response} from "express";
 
 const store = new ProductIndex();
@@ -10,7 +10,7 @@ const single = async (req: Request, res: Response) => {
 }
 
 const productSingleRoutes = (app: express.Application) => {
-    app.get('/product', single)
+    app.get('/show', single)
 }
 
 export default productSingleRoutes;

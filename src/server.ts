@@ -1,8 +1,9 @@
 import express, { Request, Response } from 'express'
 import bodyParser from 'body-parser'
 import {ProductIndex} from "./models/productModel";
-import productIndexRoutes from "./routes/productIndex";
-import productSingleRoutes from "./routes/productSingle";
+import productIndexRoutes from "./routes/products/productIndex";
+import productSingleRoutes from "./routes/products/productSingle";
+import userIndexRoutes from "./routes/users/userIndex";
 
 const app: express.Application = express()
 const address: string = "0.0.0.0:3000"
@@ -22,6 +23,8 @@ app.get('/', function (req: Request, res: Response) {
 
 productIndexRoutes(app);
 productSingleRoutes(app);
+userIndexRoutes(app);
+
 
 app.listen(3000, function () {
     console.log(`starting app on: ${address}`)

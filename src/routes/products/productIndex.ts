@@ -1,4 +1,4 @@
-import {ProductIndex} from "../models/productModel";
+import {ProductIndex} from "../../models/productModel";
 import express, {Request, Response} from "express";
 
 const store = new ProductIndex();
