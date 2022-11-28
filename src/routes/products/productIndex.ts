@@ -1,7 +1,7 @@
-import {ProductIndex} from "../../models/productModel";
+import {ProductStore} from "../../models/productModel";
 import express, {Request, Response} from "express";
 
-const store = new ProductIndex();
+const store = new ProductStore();
 
 const index = async (_req: Request, res: Response) => {
     const products = await store.index();

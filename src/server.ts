@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express'
 import bodyParser from 'body-parser'
-import {ProductIndex} from "./models/productModel";
+import {ProductStore} from "./models/productModel";
 import productIndexRoutes from "./routes/products/productIndex";
 import productSingleRoutes from "./routes/products/productSingle";
 import userIndexRoutes from "./routes/users/userIndex";
@@ -16,7 +16,7 @@ const address: string = "0.0.0.0:3000"
 app.use(bodyParser.json())
 
 app.get('/', function (req: Request, res: Response) {
-    const productIndex = new ProductIndex();
+    const productIndex = new ProductStore();
     const resp = productIndex.index();
     res.send('Hello World!')
 })

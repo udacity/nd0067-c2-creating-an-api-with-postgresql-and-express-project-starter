@@ -6,7 +6,7 @@ export type Product = {
     price: number;
 }
 
-export class ProductIndex {
+export class ProductStore {
     async index(): Promise<Product[]> {
         try {
             const conn = await Client.connect();

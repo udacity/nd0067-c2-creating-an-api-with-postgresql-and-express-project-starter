@@ -1,6 +1,6 @@
-import { Product, ProductIndex } from "../models/productModel";
+import { Product, ProductStore } from "../models/productModel";
 
-const store = new ProductIndex();
+const store = new ProductStore();
 
 describe('Product model', () => {
     it('should have an index method', () => {

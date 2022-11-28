@@ -7,7 +7,7 @@ export type User = {
     password: string;
 }
 
-export class UserIndex {
+export class UserStore {
     async index(): Promise<User[]> {
         try {
             const conn = await Client.connect();
@@ -27,6 +27,23 @@ export class UserIndex {
             const result = await conn.query(sql);
             conn.release();
             return result.rows;
+        } catch (err) {
+            throw new Error(`Cannot get user ${err}`);
+        }
+    }
+
+    async authenticate(firstName: string, lastName: string, password: string): Promise<string> {
+        try {
+            const conn = await Client.connect();
+            const sql = `// SELECT * FROM users WHERE firstName = '${firstName}' AND lastName = '${lastName}' AND password = '${password}'`;
+
+            const result = await conn.query(sql);
+            conn.release();
+            if (result.rows) {
+                return 'true';
+            } else {
+                return 'false';
+            }
         } catch (err) {
             throw new Error(`Cannot get user ${err}`);
         }

@@ -1,7 +1,7 @@
-import {ProductIndex} from "../../models/productModel";
+import {ProductStore} from "../../models/productModel";
 import express, {Request, Response} from "express";
 
-const store = new ProductIndex();
+const store = new ProductStore();
 
 const single = async (req: Request, res: Response) => {
     const productId: number = parseInt(<string>req.query.id);
