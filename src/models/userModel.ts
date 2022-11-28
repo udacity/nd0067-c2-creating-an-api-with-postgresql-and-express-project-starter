@@ -32,10 +32,10 @@ export class UserStore {
         }
     }
 
-    async authenticate(firstName: string, lastName: string, password: string): Promise<string> {
+    async login(firstName: string, lastName: string, password: string): Promise<string> {
         try {
             const conn = await Client.connect();
-            const sql = `// SELECT * FROM users WHERE firstName = '${firstName}' AND lastName = '${lastName}' AND password = '${password}'`;
+            const sql = `SELECT * FROM users WHERE firstName = '${firstName}' AND lastName = '${lastName}' AND password = '${password}'`;
 
             const result = await conn.query(sql);
             conn.release();

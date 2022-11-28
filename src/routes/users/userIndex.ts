@@ -1,10 +1,11 @@
 import express, {Request, Response} from "express";
 import {UserStore} from "../../models/userModel";
+import {authJWT, loginCheck} from "../../handlers/handleAuth";
 
 const store = new UserStore();
 
 const index = async (_req: Request, res: Response) => {
-    const auth = await store.authenticate('kovax', 'richards', 'bark');
+    const auth = await loginCheck();
 
     if (auth) {
         const users = await store.index();
