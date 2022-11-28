@@ -2,7 +2,6 @@ import express, { Request, Response } from 'express'
 import bodyParser from 'body-parser'
 import {ProductStore} from "./models/productModel";
 import productIndexRoutes from "./routes/products/productIndex";
-import productSingleRoutes from "./routes/products/productSingle";
 import userIndexRoutes from "./routes/users/userIndex";
 import {authJWT} from "./handlers/handleAuth";
 
@@ -24,7 +23,6 @@ app.get('/', function (req: Request, res: Response) {
 })
 
 productIndexRoutes(app);
-productSingleRoutes(app);
 userIndexRoutes(app);
 
 

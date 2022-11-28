@@ -5,7 +5,14 @@ import {authJWT, loginCheck} from "../../handlers/handleAuth";
 const store = new UserStore();
 
 const index = async (_req: Request, res: Response) => {
-    const auth = await loginCheck();
+    const authData = {
+        firstName: 'kovax',
+        lastName: 'richards',
+        password: 'bark',
+
+    }
+
+    const auth = await loginCheck(authData);
 
     if (auth) {
         const users = await store.index();
@@ -15,7 +22,14 @@ const index = async (_req: Request, res: Response) => {
     }
 }
 
+const create = async (req: Request, res: Response) => {
+    const body = req.body;
+    console.log(`this is the req msg ${body.msg}`)
+    res.json(body);
+}
+
 const userIndexRoutes = (app: express.Application) => {
+    app.post('/users', create);
     app.get('/users', index);
 }
 

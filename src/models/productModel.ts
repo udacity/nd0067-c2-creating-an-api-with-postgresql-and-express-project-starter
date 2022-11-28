@@ -30,4 +30,15 @@ export class ProductStore {
             throw new Error(`Cannot get product ${err}`);
         }
     }
+
+    async create({name, price}: {name: string, price: number}):  Promise<any[]> {
+        try {
+            const conn = await Client.connect();
+            const sql = `INSERT INTO products VALES (firstName: '${name}', price: '${price}')`;
+            const results = await conn.query(sql);
+            return results.rows;
+        } catch (err) {
+            throw new Error(`Cannot create product ${err}`);
+        }
+    }
 }
