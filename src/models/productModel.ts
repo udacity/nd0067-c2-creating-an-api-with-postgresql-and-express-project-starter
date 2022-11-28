@@ -19,10 +19,10 @@ export class ProductIndex {
         }
     }
 
-    async single(): Promise<Product[]> {
+    async single(productId: number): Promise<Product[]> {
         try {
             const conn = await Client.connect();
-            const sql = 'SELECT * FROM products WHERE id = 1';
+            const sql = `SELECT * FROM products WHERE id = ${productId}`;
             const result = await conn.query(sql);
             conn.release();
             return result.rows;

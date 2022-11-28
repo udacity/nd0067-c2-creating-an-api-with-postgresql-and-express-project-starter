@@ -3,8 +3,9 @@ import express, {Request, Response} from "express";
 
 const store = new ProductIndex();
 
-const single = async (_req: Request, res: Response) => {
-    const product = await store.single();
+const single = async (req: Request, res: Response) => {
+    const productId: number = parseInt(<string>req.query.id);
+    const product = await store.single(productId);
     await res.json(product);
 }
 
