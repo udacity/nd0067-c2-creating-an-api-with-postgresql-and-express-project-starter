@@ -8,7 +8,7 @@ export const loginCheck = async ({
                                      lastName,
                                      password
                                  }: { firstName: string, lastName: string, password: string }) => {
-    const verify = await authJWT('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoia292YXgiLCJpYXQiOjE2Njk2NjY2MjZ9.oZkO7UuhdAdCj_KVT3yZ13oznspAECIrP9v1osbl0DM')
+    const verify = await authJWT('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZGF2aWQiLCJpYXQiOjE2Njk3NDMxMjd9.XISGVLkut860DV-5-pNjwXkPjIIksaiC8ZuJWmd3fkc')
     if (!verify) {
         return false
     }
@@ -22,8 +22,10 @@ export const loginCheck = async ({
 
 export const authJWT = (token: string) => {
     const secretKey = process.env.JWT_KEY!;
-
+    // const copyToken = jsonwebtoken.sign({user:'david'}, secretKey);
+    // console.log(`--> valid toke ${copyToken}`);
     const verifyResult = jsonwebtoken.verify(token, secretKey);
+    // console.log(`--> verify result resp ${verifyResult}`);
     if (verifyResult) {
         return true;
     } else {

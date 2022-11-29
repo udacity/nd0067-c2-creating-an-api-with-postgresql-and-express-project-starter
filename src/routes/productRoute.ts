@@ -1,5 +1,6 @@
 import {ProductStore} from "../models/productModel";
 import express, {Request, Response} from "express";
+import {authJWT} from "../handlers/handleAuth";
 
 const store = new ProductStore();
 
@@ -15,12 +16,19 @@ const single = async (req: Request, res: Response) => {
 }
 
 const create = async (req: Request, res: Response) => {
-    const name = req.body.name;
-    const price = req.body.price;
-    if (name && price) {
-       const resp = await store.create(name, price);
-       console.log(`----> this is the resp ${resp}`);
-       res.json(resp);
+    const tokenHeader = req.headers['authorization'];
+    const token = tokenHeader!.split(' ');
+    const authCheck = authJWT(token[1]!);
+    if (authCheck) {
+        const name = req.body.name;
+        const price = req.body.price;
+        if (name && price) {
+            const resp = await store.create(name, price);
+            console.log(`----> this is the resp ${resp}`);
+            res.json({msg: 'success'});
+        }
+    } else {
+        res.json({msg: 'auth fail'});
     }
 }
 

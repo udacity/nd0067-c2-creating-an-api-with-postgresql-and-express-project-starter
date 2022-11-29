@@ -17,7 +17,7 @@ export class OrderStore {
     async index(): Promise<Order[]> {
         try {
             const conn = await Client.connect();
-            const sql = 'SELECT * FROM products';
+            const sql = 'SELECT * FROM orders';
             const result = await conn.query(sql);
             conn.release();
             return result.rows;
@@ -38,13 +38,13 @@ export class OrderStore {
         }
     }
 
-    async create(productIds: number[], productQuantity: number[], userId: number, status: orderStatus):  Promise<any[]> {
+    async create(productIds: number[], productQuantity: number[], userId: number, status: orderStatus):  Promise<number> {
         try {
             const conn = await Client.connect();
             const sql = `INSERT INTO orders (productIds, productQuantity, userId, status) VALUES ('${productIds}', '${productQuantity}', '${userId}', '${status}')`;
             const results = await conn.query(sql);
-            console.log(`---> create sql response ${JSON.stringify(results)}`);
-            return results.rows;
+            console.log(`---> create sql response ${JSON.stringify(results.rowCount)}`);
+            return results.rowCount;
         } catch (err) {
             throw new Error(`Cannot create product ${err}`);
         }
