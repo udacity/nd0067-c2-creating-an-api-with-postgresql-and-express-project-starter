@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "description": "",
   "main": "server.ts",
+  "type": "module",
   "scripts": {
-    "start": "node src/server.ts",
+    "start": "node src/output/server.js",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
     "test": "tsc && ENV=test jasmine-ts",
     "tsc": "tsc"
