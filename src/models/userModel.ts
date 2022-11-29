@@ -1,4 +1,5 @@
 import Client from '../database';
+import bcrypt from "bcrypt";
 
 export type User = {
     id: number;
@@ -34,12 +35,13 @@ export class UserStore {
 
     async login(firstName: string, lastName: string, password: string): Promise<string> {
         try {
+            const hashedPassword = bcrypt.hashSync(password, 10);
             const conn = await Client.connect();
-            const sql = `SELECT * FROM users WHERE firstName = '${firstName}' AND lastName = '${lastName}' AND password = '${password}'`;
-
+            const sql = `SELECT * FROM users WHERE firstName = '${firstName}' AND lastName = '${lastName}' AND password = '${hashedPassword}'`;
             const result = await conn.query(sql);
             conn.release();
             if (result.rows) {
+
                 return 'true';
             } else {
                 return 'false';
@@ -54,7 +56,7 @@ export class UserStore {
             const conn = await Client.connect();
             const sql = `INSERT INTO users (firstName, lastName, password) VALUES ('${firstName}', '${lastName}', '${password}')`;
             const results = await conn.query(sql);
-            console.log(`---> create sql response ${JSON.stringify(results.rowCount)}`);
+            console.log(`---> create sql response ${results.rowCount}`);
             return results.rowCount;
         } catch (err) {
             throw new Error(`Cannot create product ${err}`);

@@ -22,10 +22,7 @@ export const loginCheck = async ({
 
 export const authJWT = (token: string) => {
     const secretKey = process.env.JWT_KEY!;
-    // const copyToken = jsonwebtoken.sign({user:'david'}, secretKey);
-    // console.log(`--> valid toke ${copyToken}`);
     const verifyResult = jsonwebtoken.verify(token, secretKey);
-    // console.log(`--> verify result resp ${verifyResult}`);
     if (verifyResult) {
         return true;
     } else {
