@@ -1,4 +1,4 @@
-import {ProductStore} from "../../models/productModel";
+import {ProductStore} from "../models/productModel";
 import express, {Request, Response} from "express";
 
 const store = new ProductStore();
@@ -28,8 +28,6 @@ const productIndexRoutes = (app: express.Application) => {
     app.post('/products', create)
     app.get('/products/show', single)
     app.get('/products', index)
-
-
 }
 
 export default productIndexRoutes;

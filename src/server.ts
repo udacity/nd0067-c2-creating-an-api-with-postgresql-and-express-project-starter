@@ -1,9 +1,8 @@
 import express, { Request, Response } from 'express'
 import bodyParser from 'body-parser'
-import {ProductStore} from "./models/productModel";
-import productIndexRoutes from "./routes/products/productModel";
-import userIndexRoutes from "./routes/users/userModel";
-import {authJWT} from "./handlers/handleAuth";
+import productIndexRoutes from "./routes/productRoute";
+import userIndexRoutes from "./routes/userRoute";
+import orderIndexRoutes from "./routes/orderRoute";
 
 const app: express.Application = express()
 const address: string = "0.0.0.0:3000"
@@ -23,6 +22,7 @@ app.post('/', function (req: Request, res: Response) {
 
 productIndexRoutes(app);
 userIndexRoutes(app);
+orderIndexRoutes(app)
 
 
 app.listen(3000, function () {

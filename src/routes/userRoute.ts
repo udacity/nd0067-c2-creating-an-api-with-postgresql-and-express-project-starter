@@ -1,6 +1,6 @@
 import express, {Request, Response} from "express";
-import {UserStore} from "../../models/userModel";
-import {authJWT, loginCheck} from "../../handlers/handleAuth";
+import {UserStore} from "../models/userModel";
+import {authJWT, loginCheck} from "../handlers/handleAuth";
 
 const store = new UserStore();
 
