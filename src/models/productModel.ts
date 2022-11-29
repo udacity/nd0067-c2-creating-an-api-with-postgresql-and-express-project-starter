@@ -31,11 +31,12 @@ export class ProductStore {
         }
     }
 
-    async create({name, price}: {name: string, price: number}):  Promise<any[]> {
+    async create(name: string, price: number):  Promise<any[]> {
         try {
             const conn = await Client.connect();
-            const sql = `INSERT INTO products VALES (firstName: '${name}', price: '${price}')`;
+            const sql = `INSERT INTO products (name, price) VALUES ('${name}', '${price}')`;
             const results = await conn.query(sql);
+            console.log(`---> create sql response ${JSON.stringify(results)}`);
             return results.rows;
         } catch (err) {
             throw new Error(`Cannot create product ${err}`);

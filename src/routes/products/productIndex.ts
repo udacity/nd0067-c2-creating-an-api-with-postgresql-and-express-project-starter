@@ -14,8 +14,14 @@ const single = async (req: Request, res: Response) => {
     await res.json(product);
 }
 
-const create = async (_req: Request, res: Response) => {
-    console.log('hey this is the create method');
+const create = async (req: Request, res: Response) => {
+    const name = req.body.name;
+    const price = req.body.price;
+    if (name && price) {
+       const resp = await store.create(name, price);
+       console.log(`----> this is the resp ${resp}`);
+       res.json(resp);
+    }
 }
 
 const productIndexRoutes = (app: express.Application) => {

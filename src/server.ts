@@ -15,10 +15,12 @@ const address: string = "0.0.0.0:3000"
 
 app.use(bodyParser.json())
 
-app.get('/', function (req: Request, res: Response) {
-    // const productIndex = new ProductStore();
-    // const resp = authJWT('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoia292YXgiLCJpYXQiOjE2Njk2NjY2MjZ9.oZkO7UuhdAdCj_KVT3yZ13oznspAECIrP9v1osbl0DM');
-    // console.log(resp);
+app.post('/', function (req: Request, res: Response) {
+    const store = new ProductStore();
+
+    const resp = store.create('cake', 58);
+    console.log(`---> the creat resp is ${JSON.stringify(resp)}`);
+
     res.send('Hello World!')
 })
 
