@@ -7,17 +7,16 @@ import orderIndexRoutes from "./routes/orderRoute";
 const app: express.Application = express()
 const address: string = "0.0.0.0:3000"
 
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 app.post('/', function (req: Request, res: Response) {
     // const store = new ProductStore();
     res.send('Hello World!')
-})
+});
 
 productIndexRoutes(app);
 userIndexRoutes(app);
-orderIndexRoutes(app)
-
+orderIndexRoutes(app);
 
 app.listen(3000, function () {
     console.log(`starting app on: ${address}`)

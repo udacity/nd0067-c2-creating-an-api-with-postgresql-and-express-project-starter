@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "main": "server.ts",
-  "type": "module",
+  "type": "CommonJS",
   "scripts": {
     "start": "node src/output/server.js",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",

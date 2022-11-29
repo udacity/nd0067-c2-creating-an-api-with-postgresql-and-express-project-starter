@@ -29,7 +29,7 @@ export class OrderStore {
     async single(productId: number): Promise<Order[]> {
         try {
             const conn = await Client.connect();
-            const sql = `SELECT * FROM orders WHERE id = ${productId}`;
+            const sql = `SELECT * FROM orders WHERE userId = ${productId} AND status = '${'active'}'`;
             const result = await conn.query(sql);
             conn.release();
             return result.rows;
