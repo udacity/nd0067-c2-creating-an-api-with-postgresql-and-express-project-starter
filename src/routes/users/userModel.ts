@@ -9,7 +9,6 @@ const index = async (_req: Request, res: Response) => {
         firstName: 'kovax',
         lastName: 'richards',
         password: 'bark',
-
     }
 
     const auth = await loginCheck(authData);
@@ -23,9 +22,12 @@ const index = async (_req: Request, res: Response) => {
 }
 
 const create = async (req: Request, res: Response) => {
-    const body = req.body;
-    console.log(`this is the req msg ${body.msg}`)
-    res.json(body);
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const password = req.body.password;
+    const resp = store.create(firstName, lastName, password);
+    console.log(`this is the user create resp ${resp}`)
+    res.json(resp);
 }
 
 const userIndexRoutes = (app: express.Application) => {

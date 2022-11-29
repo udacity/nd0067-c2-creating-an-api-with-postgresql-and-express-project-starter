@@ -48,4 +48,16 @@ export class UserStore {
             throw new Error(`Cannot get user ${err}`);
         }
     }
+
+    async create(firstName: string, lastName: string, password: string):  Promise<any[]> {
+        try {
+            const conn = await Client.connect();
+            const sql = `INSERT INTO users (firstName, lastName, password) VALUES ('${firstName}', '${lastName}', '${password}')`;
+            const results = await conn.query(sql);
+            console.log(`---> create sql response ${JSON.stringify(results)}`);
+            return results.rows;
+        } catch (err) {
+            throw new Error(`Cannot create product ${err}`);
+        }
+    }
 }

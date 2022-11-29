@@ -1,8 +1,8 @@
 import express, { Request, Response } from 'express'
 import bodyParser from 'body-parser'
 import {ProductStore} from "./models/productModel";
-import productIndexRoutes from "./routes/products/productIndex";
-import userIndexRoutes from "./routes/users/userIndex";
+import productIndexRoutes from "./routes/products/productModel";
+import userIndexRoutes from "./routes/users/userModel";
 import {authJWT} from "./handlers/handleAuth";
 
 const app: express.Application = express()
@@ -16,10 +16,7 @@ const address: string = "0.0.0.0:3000"
 app.use(bodyParser.json())
 
 app.post('/', function (req: Request, res: Response) {
-    const store = new ProductStore();
-
-    const resp = store.create('cake', 58);
-    console.log(`---> the creat resp is ${JSON.stringify(resp)}`);
+    // const store = new ProductStore();
 
     res.send('Hello World!')
 })
