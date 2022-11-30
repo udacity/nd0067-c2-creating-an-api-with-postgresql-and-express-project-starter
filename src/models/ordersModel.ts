@@ -2,15 +2,10 @@ import Client from '../database';
 
 export type Order = {
     id: number;
-    productIds: number[];
-    productQuantity: number[];
-    userId: number;
-    status: orderStatus;
-}
-
-enum orderStatus {
-    active,
-    complete
+    productids: number[];
+    productquantity: number[];
+    userid: number;
+    status: string;
 }
 
 export class OrderStore {
@@ -35,18 +30,6 @@ export class OrderStore {
             return result.rows;
         } catch (err) {
             throw new Error(`Cannot get product ${err}`);
-        }
-    }
-
-    async create(productIds: number[], productQuantity: number[], userId: number, status: orderStatus):  Promise<number> {
-        try {
-            const conn = await Client.connect();
-            const sql = `INSERT INTO orders (productIds, productQuantity, userId, status) VALUES ('${productIds}', '${productQuantity}', '${userId}', '${status}')`;
-            const results = await conn.query(sql);
-            console.log(`---> create sql response ${JSON.stringify(results.rowCount)}`);
-            return results.rowCount;
-        } catch (err) {
-            throw new Error(`Cannot create product ${err}`);
         }
     }
 }

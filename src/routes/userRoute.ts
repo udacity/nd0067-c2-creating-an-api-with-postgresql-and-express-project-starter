@@ -6,12 +6,6 @@ import bcrypt from 'bcrypt';
 const store = new UserStore();
 
 const index = async (req: Request, res: Response) => {
-    const authData = {
-        firstName: 'kovax',
-        lastName: 'richards',
-        password: 'bark',
-    }
-
     const tokenHeader = req.headers['authorization'];
     const token = tokenHeader!.split(' ');
     const authCheck = authJWT(token[1]!);

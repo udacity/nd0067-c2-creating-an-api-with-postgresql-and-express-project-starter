@@ -5,7 +5,7 @@ import userIndexRoutes from "./routes/userRoute";
 import orderIndexRoutes from "./routes/orderRoute";
 import jsonwebtoken from "jsonwebtoken";
 
-const app: express.Application = express()
+export const app: express.Application = express()
 const address: string = "0.0.0.0:3000"
 
 app.use(bodyParser.json());
