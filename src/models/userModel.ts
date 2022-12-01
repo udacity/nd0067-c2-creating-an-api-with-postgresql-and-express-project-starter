@@ -56,7 +56,6 @@ export class UserStore {
             const conn = await Client.connect();
             const sql = `INSERT INTO users (firstName, lastName, password) VALUES ('${firstName}', '${lastName}', '${password}')`;
             const results = await conn.query(sql);
-            console.log(`---> create sql response ${results.rowCount}`);
             return results.rowCount;
         } catch (err) {
             throw new Error(`Cannot create product ${err}`);

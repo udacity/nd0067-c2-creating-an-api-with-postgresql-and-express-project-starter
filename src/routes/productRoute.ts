@@ -24,7 +24,6 @@ const create = async (req: Request, res: Response) => {
         const price = req.body.price;
         if (name && price) {
             const resp = await store.create(name, price);
-            console.log(`----> this is the resp ${resp}`);
             res.json({msg: 'success'});
         }
     } else {

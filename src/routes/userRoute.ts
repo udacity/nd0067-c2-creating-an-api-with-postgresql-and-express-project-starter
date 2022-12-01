@@ -44,7 +44,6 @@ const create = async (req: Request, res: Response) => {
                 res.json({msg: 'hash fail'});
             } else {
                 const resp = store.create(firstName, lastName, hashedPassword!);
-                console.log(`this is the user create resp ${resp}`)
                 res.json(resp);
             }
         }
