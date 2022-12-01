@@ -6,7 +6,7 @@
   "scripts": {
     "start": "tsc && node ./dist/server.js",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
-    "test": "tsc && ENV=test jasmine-ts",
+    "test": "tsc && jasmine-ts",
     "tsc": "tsc"
   },
   "author": "Udacity",

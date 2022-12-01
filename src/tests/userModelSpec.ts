@@ -7,9 +7,9 @@ describe('User model', () => {
         const result = await store.index();
         expect(result).toContain({
             "id": 1,
-            "firstname": "matt",
+            "firstname": "kovax",
             "lastname": "richards",
-            "password": "1234"
+            "password": "bark"
         });
     });
 
@@ -17,9 +17,9 @@ describe('User model', () => {
         const result = await store.single(1);
         expect(result).toContain({
             "id": 1,
-            "firstname": "matt",
+            "firstname": "kovax",
             "lastname": "richards",
-            "password": "1234"
+            "password": "bark"
         });
     });
 

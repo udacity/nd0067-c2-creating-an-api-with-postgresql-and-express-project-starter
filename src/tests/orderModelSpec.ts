@@ -8,16 +8,10 @@ describe('Order model', () => {
         expect(result).toContain({
             id: 1,
             productids: [
-                1,
-                2,
-                3,
-                4
+                1,2
             ],
             productquantity: [
-                2,
-                5,
-                1,
-                1
+                1,2
             ],
             userid: 1,
             status: "active"
