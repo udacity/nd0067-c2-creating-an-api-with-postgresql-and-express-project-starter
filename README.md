@@ -2,7 +2,19 @@
 
 ## Instructions
 
-
+* install required technologies
+* clone repo `git clone https://github.com/drichards188/udacity-storefront-backend.git`
+* run `npm install` in repo
+* create `.env` file at root. copy this into it `POSTGRES_HOST=127.0.0.1
+  POSTGRES_DB=storefront
+  POSTGRES_USER=drich
+  POSTGRES_PASSWORD=password
+  JWT_KEY=1234`
+* run `db-migrate db:create storefront`
+* run `db-migrate up`
+* start the project on port 3000 by running `npm start`
+* or test the project by running `npm test`
+* GET to `/` to receive token for protected routes or use this one `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoidXNlciIsImlhdCI6MTY2OTkxMjcwOX0.M8g7AKXIrQQAF-aud3p15RRRN3f363Vu9W8YRqN5Ml0`
 
 ## Getting Started
 
