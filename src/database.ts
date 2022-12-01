@@ -1,4 +1,5 @@
-import dotenv from 'dotenv'
+// @ts-ignore
+import dotenv from 'dotenv';
 import { Pool } from "pg";
 
 dotenv.config()

@@ -1,16 +1,11 @@
 import express, {Request, Response} from "express";
 import {UserStore} from "../models/userModel";
-import {authJWT, loginCheck} from "../handlers/handleAuth";
+import {authJWT} from "../handlers/handleAuth";
+import bcrypt from 'bcrypt';
 
 const store = new UserStore();
 
 const index = async (req: Request, res: Response) => {
-    const authData = {
-        firstName: 'kovax',
-        lastName: 'richards',
-        password: 'bark',
-    }
-
     const tokenHeader = req.headers['authorization'];
     const token = tokenHeader!.split(' ');
     const authCheck = authJWT(token[1]!);
@@ -43,11 +38,19 @@ const create = async (req: Request, res: Response) => {
         const firstName = req.body.firstName;
         const lastName = req.body.lastName;
         const password = req.body.password;
-        const resp = store.create(firstName, lastName, password);
-        console.log(`this is the user create resp ${resp}`)
-        res.json(resp);
-    } else {
-        res.json({msg: 'auth fail'});
+        if (firstName && lastName && password) {
+            const hashedPassword = bcrypt.hashSync(password, 10);
+            if (hashedPassword! === 'fail') {
+                res.json({msg: 'hash fail'});
+            } else {
+                const resp = store.create(firstName, lastName, hashedPassword!);
+                res.json(resp);
+            }
+        }
+    else
+        {
+            res.json({msg: 'auth fail'});
+        }
     }
 }
 

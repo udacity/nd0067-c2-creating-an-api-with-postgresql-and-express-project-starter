@@ -36,7 +36,6 @@ export class ProductStore {
             const conn = await Client.connect();
             const sql = `INSERT INTO products (name, price) VALUES ('${name}', '${price}')`;
             const results = await conn.query(sql);
-            console.log(`---> create sql response ${JSON.stringify(results.rowCount)}`);
             return results.rowCount;
         } catch (err) {
             throw new Error(`Cannot create product ${err}`);
