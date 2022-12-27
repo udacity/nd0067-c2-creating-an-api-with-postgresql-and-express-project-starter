@@ -1,0 +1,16 @@
+{
+    "dev": {
+      "driver": "pg",
+      "host": "127.0.0.1",
+      "database": "node_storefront",
+      "user": "postgres",
+      "password": "0000"
+    },
+    "test": {
+      "driver": "pg",
+      "host": "127.0.0.1",
+      "database": "node_storefront_test",
+      "user": "postgres",
+      "password": "0000"
+    }
+  }
