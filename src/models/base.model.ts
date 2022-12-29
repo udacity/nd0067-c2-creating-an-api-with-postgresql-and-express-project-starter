@@ -55,4 +55,5 @@ export abstract class BaseModel<T> {
     abstract create(b: T): Promise<T>;
 
     abstract edit(id: number,b: T): Promise<T>;
+    
 }

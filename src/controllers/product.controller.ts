@@ -1,5 +1,7 @@
 import express,{Router} from 'express'
 import { Product, ProductModel } from '../models/product.model';
+import { AuthMiddleware } from '../middlewares/AuthMiddleware';
+
 class ProductController{
 
     public static async index(req:express.Request,res:express.Response){
@@ -77,9 +79,9 @@ class ProductController{
 const productRouter:Router = Router()
 
 productRouter.get('/',ProductController.index);
-productRouter.post('/',ProductController.create);
+productRouter.post('/',AuthMiddleware,ProductController.create);
 productRouter.get('/:id',ProductController.show);
-productRouter.put('/:id',ProductController.update);
+productRouter.put('/:id',AuthMiddleware,ProductController.update);
 
 export {
     ProductController,

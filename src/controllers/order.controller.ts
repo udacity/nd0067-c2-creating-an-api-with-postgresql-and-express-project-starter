@@ -1,4 +1,5 @@
 import express,{Router} from 'express'
+import { AuthMiddleware } from '../middlewares/AuthMiddleware';
 
 class OrderController{
 
