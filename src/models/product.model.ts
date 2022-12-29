@@ -15,10 +15,10 @@ export class ProductModel extends BaseModel<Product> {
     async create(p: Product): Promise<Product> {
         try {
             const sql = `INSERT INTO ${this.tableName} (name,price ,category) VALUES($1, $2, $3) RETURNING *`
-        
+            // @ts-ignore
             const db = await Client.connect()
 
-            const result = await db.query(sql, [p.name,p.price,p.category])
+            const result = await db.query(sql, [p.name, p.price, p.category])
 
             const row = result.rows[0]
 
@@ -30,13 +30,13 @@ export class ProductModel extends BaseModel<Product> {
         }
     }
 
-    async edit(id:number,p: Product): Promise<Product> {
+    async edit(id: number, p: Product): Promise<Product> {
         try {
             const sql = `UPDATE ${this.tableName} SET name = $1, category = $2, price = $3 where id = ${id} RETURNING *`
-            
+            // @ts-ignore
             const db = await Client.connect()
-            
-            const result = await db.query(sql, [p.name,p.price,p.category])
+
+            const result = await db.query(sql, [p.name, p.price, p.category])
             console.log(sql)
             console.log(result)
             const row = result.rows[0]

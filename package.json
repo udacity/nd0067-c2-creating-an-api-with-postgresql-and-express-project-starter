@@ -7,7 +7,7 @@
     "build": "npx tsc",
     "start": "node src/server.ts",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
-    "test": "jasmine-ts",
+    "test": "set 'NODE_ENV=TEST' && npx tsc && db-migrate --env test reset && db-migrate --env test up && jasmine && db-migrate db:drop test",
     "tsc": "tsc"
   },
   "author": "Udacity",
@@ -31,9 +31,11 @@
     "@types/jasmine": "^3.6.3",
     "@types/jsonwebtoken": "^9.0.0",
     "@types/pg": "^7.14.7",
+    "@types/supertest": "^2.0.12",
     "jasmine": "^3.6.4",
     "jasmine-spec-reporter": "^6.0.0",
-    "jasmine-ts": "^0.3.0",
+    "jasmine-ts": "^0.4.0",
+    "supertest": "^6.3.3",
     "ts-node": "^9.1.1",
     "tsc-watch": "^4.2.9"
   }

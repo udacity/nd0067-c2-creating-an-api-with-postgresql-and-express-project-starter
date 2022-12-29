@@ -18,7 +18,7 @@ export class UserModel extends BaseModel<User> {
     async create(u: User): Promise<User> {
         try {
             const sql = `INSERT INTO ${this.tableName} (firstName,lastName,username ,password) VALUES($1, $2, $3, $4) RETURNING *`
-
+            // @ts-ignore
             const db = await Client.connect()
 
             const pepper = process.env.BCRYPT_PASSWORD
@@ -41,10 +41,10 @@ export class UserModel extends BaseModel<User> {
         }
     }
 
-    async attempt(username: string, password: string): Promise<User|string> {
+    async attempt(username: string, password: string): Promise<User | string> {
         try {
             const sql = `select * from ${this.tableName} where username = $1`
-
+            // @ts-ignore
             const db = await Client.connect()
             const result = await db.query(sql, [username])
 
@@ -57,12 +57,12 @@ export class UserModel extends BaseModel<User> {
 
             db.release()
 
-            if(bcrypt.compareSync(
+            if (bcrypt.compareSync(
                 password + pepper,
                 user.password
-            )){
+            )) {
                 return user
-            }else{
+            } else {
                 return ''
             }
         } catch (err) {

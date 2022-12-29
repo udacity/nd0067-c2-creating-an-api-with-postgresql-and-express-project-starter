@@ -8,12 +8,13 @@ export abstract class BaseModel<T> {
     async index(): Promise<T[]> {
         try {
             const db = await Client.connect()
-            db.connect();
+        
             const sql = `select * from ${this.tableName};`
             const result = await db.query(sql)
             db.release()
             return result.rows;
         } catch (err) {
+            console.log(err)
             throw new Error(`Could not get ${this.tableName}`)
         }
     }
@@ -55,5 +56,4 @@ export abstract class BaseModel<T> {
     abstract create(b: T): Promise<T>;
 
     abstract edit(id: number,b: T): Promise<T>;
-    
 }
