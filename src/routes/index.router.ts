@@ -6,6 +6,7 @@ import { userRouter } from '../controllers/user.controller'
 
 const router:express.Router = express.Router()
 
+
 router.use('/products',productRouter)
 router.use('/users',userRouter)
 router.use('/orders',orderRouter)

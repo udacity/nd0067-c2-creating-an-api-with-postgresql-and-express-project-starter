@@ -37,4 +37,4 @@ console.log('ENV : ',NODE_ENV)
 
 
 
-export default Client
+export default Client as Pool
