@@ -8,7 +8,8 @@
     "build": "tsc --build",
     "clean": "tsc --build --clean",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
-    "test": "jasmine-ts",
+    "migrate": "db-migrate --env test up && db-migrate up",
+    "test": "ENV=test db-migrate --env test up && jasmine-ts && db-migrate db:drop test",
     "tsc": "tsc",
     "lint": "eslint 'src/*.ts'",
     "linth": "eslint 'src/handlers/*.ts'",
@@ -16,6 +17,7 @@
     "prettier": "prettier --config .prettierrc 'src/*.ts' --write",
     "prettierh": "prettier --config .prettierrc 'src/handlers/*.ts' --write",
     "prettierm": "prettier --config .prettierrc 'src/models/*.ts' --write"
+
   },
   "author": "Udacity",
   "license": "ISC",
