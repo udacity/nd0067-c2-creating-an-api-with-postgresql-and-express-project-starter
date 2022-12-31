@@ -104,13 +104,12 @@ var MyUserStore = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        sql = 'INSERT INTO users (first_name, last_name, password) VALUES($1, $2, $3) RETURNING *';
+                        sql = 'INSERT INTO users (first_name, last_name, login_name, password) VALUES($1, $2, $3, $4) RETURNING *';
                         hash = bcrypt_1["default"].hashSync(b.password + pepper, parseInt(saltRound));
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
-                        return [4 /*yield*/, conn
-                                .query(sql, [b.firstName, b.lastName, hash])];
+                        return [4 /*yield*/, conn.query(sql, [b.firstName, b.lastName, b.loginName, hash])];
                     case 2:
                         result = _a.sent();
                         user = result.rows[0];

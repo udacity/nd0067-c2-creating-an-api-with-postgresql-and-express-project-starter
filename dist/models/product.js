@@ -103,8 +103,7 @@ var MyProductStore = /** @class */ (function () {
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
-                        return [4 /*yield*/, conn
-                                .query(sql, [b.name, b.price, b.category])];
+                        return [4 /*yield*/, conn.query(sql, [b.name, b.price, b.category])];
                     case 2:
                         result = _a.sent();
                         product = result.rows[0];
