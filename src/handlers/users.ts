@@ -32,13 +32,12 @@ const show = async (req: Request, res: Response) => {
 const create = async (req: Request, res: Response) => {
   try {
     const user: User = {
-      firstName: req.body.first_name,
-      lastName: req.body.last_name,
-      loginName: req.body.login_name,
-      password: req.body.password,
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      login_name: req.body.login_name,
     };
 
-    const newUser = await store.create(user);
+    const newUser = await store.create(user, req.body.password);
     res.json(newUser);
   } catch (err) {
     res.status(400);

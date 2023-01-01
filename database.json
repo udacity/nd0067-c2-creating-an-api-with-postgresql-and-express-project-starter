@@ -5,5 +5,13 @@
       "database": "storefront-db",
       "user": "storefrontuser",
       "password": "storefrontpassword"
+    },
+    "test": {
+      "driver": "pg",
+      "host": "127.0.0.1",
+      "database": "storefront-db-test",
+      "user": "storefrontuser",
+      "password": "storefrontpassword"
     }
+
   }

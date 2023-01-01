@@ -33,7 +33,7 @@ const create = async (req: Request, res: Response) => {
   try {
     const order: Order = {
       status: req.body.status,
-      userId: req.body.user_id,
+      user_id: req.body.user_id,
     };
 
     const newOrder = await store.create(order);

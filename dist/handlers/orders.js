@@ -93,7 +93,7 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 _a.trys.push([0, 2, , 3]);
                 order = {
                     status: req.body.status,
-                    userId: req.body.user_id
+                    user_id: req.body.user_id
                 };
                 return [4 /*yield*/, store.create(order)];
             case 1:

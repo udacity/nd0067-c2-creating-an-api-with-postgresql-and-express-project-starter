@@ -1,9 +1,10 @@
 import client from '../database';
+ 
 
 export type Order = {
   id?: number;
   status: string;
-  userId: number;
+  user_id: string;
 };
 
 export class MyOrderStore {
@@ -23,6 +24,7 @@ export class MyOrderStore {
       const sql = 'SELECT * FROM orders WHERE id=($1)';
       const conn = await client.connect();
       const result = await conn.query(sql, [id]);
+      console.log(result.rows[0]);
       conn.release();
       return result.rows[0];
     } catch (err) {
@@ -34,7 +36,7 @@ export class MyOrderStore {
       const sql =
         'INSERT INTO orders (status, user_id) VALUES($1, $2) RETURNING *';
       const conn = await client.connect();
-      const result = await conn.query(sql, [b.status, b.userId]);
+      const result = await conn.query(sql, [b.status, b.user_id]);
       const user = result.rows[0];
       conn.release();
       return user;

@@ -8,19 +8,20 @@ const saltRound = process.env.SALT_ROUND as string;
 
 export type User = {
   id?: number;
-  firstName: string;
-  lastName: string;
-  loginName: string;
-  password: string;
+  first_name: string;
+  last_name: string;
+  login_name: string;
+  //password: string;
 };
 
 export class MyUserStore {
   async index(): Promise<User[]> {
     try {
       const conn = await client.connect();
-      const sql = 'SELECT * FROM users';
+      const sql = 'SELECT id, first_name, last_name, login_name FROM users';
       const result = await client.query(sql);
       conn.release();
+      console.log(result.rows);
       return result.rows;
     } catch (err) {
       throw new Error('Can not get Users ${err}');
@@ -28,7 +29,7 @@ export class MyUserStore {
   }
   async show(id: string): Promise<User> {
     try {
-      const sql = 'SELECT * FROM users WHERE id=($1)';
+      const sql = 'SELECT id, first_name, last_name, login_name FROM users WHERE id=($1)';
       const conn = await client.connect();
       const result = await conn.query(sql, [id]);
       conn.release();
@@ -37,14 +38,14 @@ export class MyUserStore {
       throw new Error(`Could not find user ${id}. Error: ${err}`);
     }
   }
-  async create(b: User): Promise<User> {
+  async create(b: User, password: string): Promise<User> {
     try {
       const sql =
-        'INSERT INTO users (first_name, last_name, login_name, password) VALUES($1, $2, $3, $4) RETURNING *';
-      const hash = bcrypt.hashSync(b.password + pepper, parseInt(saltRound));
+        'INSERT INTO users (first_name, last_name, login_name, password) VALUES($1, $2, $3, $4) RETURNING id, first_name, last_name, login_name';
+      const hash = bcrypt.hashSync(password + pepper, parseInt(saltRound));
 
       const conn = await client.connect();
-      const result = await conn.query(sql, [b.firstName, b.lastName,b.loginName, hash]);
+      const result = await conn.query(sql, [b.first_name, b.last_name,b.login_name, hash]);
       const user = result.rows[0];
       conn.release();
       return user;

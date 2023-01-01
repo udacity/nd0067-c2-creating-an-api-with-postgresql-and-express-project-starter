@@ -92,12 +92,11 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 user = {
-                    firstName: req.body.first_name,
-                    lastName: req.body.last_name,
-                    loginName: req.body.login_name,
-                    password: req.body.password
+                    first_name: req.body.first_name,
+                    last_name: req.body.last_name,
+                    login_name: req.body.login_name
                 };
-                return [4 /*yield*/, store.create(user)];
+                return [4 /*yield*/, store.create(user, req.body.password)];
             case 1:
                 newUser = _a.sent();
                 res.json(newUser);
