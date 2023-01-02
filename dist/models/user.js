@@ -110,7 +110,12 @@ var MyUserStore = /** @class */ (function () {
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
-                        return [4 /*yield*/, conn.query(sql, [b.first_name, b.last_name, b.login_name, hash])];
+                        return [4 /*yield*/, conn.query(sql, [
+                                b.first_name,
+                                b.last_name,
+                                b.login_name,
+                                hash,
+                            ])];
                     case 2:
                         result = _a.sent();
                         user = result.rows[0];

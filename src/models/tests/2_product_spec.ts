@@ -1,8 +1,8 @@
-import { MyProductStore } from '../product';
+import {MyProductStore} from '../product';
 
-const store = new MyProductStore()
+const store = new MyProductStore();
 
-describe("Product Model", () => {
+describe('Product Model', () => {
   it('should have an index method', () => {
     expect(store.index).toBeDefined();
   });
@@ -19,46 +19,50 @@ describe("Product Model", () => {
     expect(store.filter).toBeDefined();
   });
 
-
   it('create method should add a product', async () => {
     console.log('------------ product create');
     const result = await store.create({
-        name: "Product Name",
-        price: 10,
-        category: "cat1"
-      });
+      name: 'Product Name',
+      price: 10,
+      category: 'cat1',
+    });
     expect(result).toEqual({
-        id: 1,
-        name: "Product Name",
-        price: 10,
-        category: "cat1"
-      });
-      
+      id: 2,
+      name: 'Product Name',
+      price: 10,
+      category: 'cat1',
+    });
   });
 });
 
-describe("Product Model 2", () => {
+describe('Product Model 2', () => {
   it('index method should return a list of products', async () => {
     const result = await store.index();
     console.log('------------ product index');
-    expect(result).toEqual([{
+    expect(result).toEqual([
+      {
         id: 1,
-        name: "Product Name",
+        name: 'Product Name',
         price: 10,
-        category: "cat1"
-      }]);
+        category: 'cat1',
+      },
+      {
+        id: 2,
+        name: 'Product Name',
+        price: 10,
+        category: 'cat1',
+      },
+    ]);
   });
 
   it('show method should return the correct product', async () => {
     console.log('------------ product show');
-    const result = await store.show("1");
+    const result = await store.show('2');
     expect(result).toEqual({
-        id: 1,
-        name: "Product Name",
-        price: 10,
-        category: "cat1"
-      });
+      id: 2,
+      name: 'Product Name',
+      price: 10,
+      category: 'cat1',
+    });
   });
-
-
 });

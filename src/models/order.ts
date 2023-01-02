@@ -1,5 +1,4 @@
 import client from '../database';
- 
 
 export type Order = {
   id?: number;
@@ -45,8 +44,7 @@ export class MyOrderStore {
   }
   async currentUserOrder(userId: string): Promise<Order> {
     try {
-      const sql =
-        "SELECT * FROM orders WHERE user_id=$1 and status = 'active'";
+      const sql = "SELECT * FROM orders WHERE user_id=$1 and status = 'active'";
       const conn = await client.connect();
       const result = await conn.query(sql, [userId]);
       conn.release();
