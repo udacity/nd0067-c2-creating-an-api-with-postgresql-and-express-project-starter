@@ -24,7 +24,6 @@ export class MyOrderStore {
       const sql = 'SELECT * FROM orders WHERE id=($1)';
       const conn = await client.connect();
       const result = await conn.query(sql, [id]);
-      console.log(result.rows[0]);
       conn.release();
       return result.rows[0];
     } catch (err) {
@@ -47,7 +46,7 @@ export class MyOrderStore {
   async currentUserOrder(userId: string): Promise<Order> {
     try {
       const sql =
-        'SELECT * FROM orders WHERE user_id=($1) and status = "active"';
+        "SELECT * FROM orders WHERE user_id=$1 and status = 'active'";
       const conn = await client.connect();
       const result = await conn.query(sql, [userId]);
       conn.release();

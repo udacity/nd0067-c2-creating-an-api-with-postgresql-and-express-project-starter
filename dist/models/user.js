@@ -81,7 +81,7 @@ var MyUserStore = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        sql = 'SELECT id, first_name, last_name, login_name FROM users WHERE id=($1)';
+                        sql = 'SELECT id, first_name, last_name, login_name FROM users WHERE id=$1';
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();

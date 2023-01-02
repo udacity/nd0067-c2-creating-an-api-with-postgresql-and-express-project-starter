@@ -21,7 +21,7 @@ export class MyProductStore {
   }
   async show(id: string): Promise<Product> {
     try {
-      const sql = 'SELECT * FROM products WHERE id=($1)';
+      const sql = 'SELECT * FROM products WHERE id=$1';
       const conn = await client.connect();
       const result = await conn.query(sql, [id]);
       conn.release();
@@ -46,12 +46,23 @@ export class MyProductStore {
   async filter(category: string): Promise<Product[]> {
     try {
       const conn = await client.connect();
-      const sql = 'SELECT * FROM products where category = $1';
-      const result = await client.query(sql, [category]);
+      const sql = "SELECT * FROM products where category = '" +category+"'";
+      const result = await client.query(sql);
       conn.release();
       return result.rows;
     } catch (err) {
       throw new Error('Can not get Products ${err}');
+    }
+  }
+
+  async delete(id: string) {
+    try {
+      const conn = await client.connect();
+      const sql = "delete FROM products where id = "+id;
+      const result = await client.query(sql);
+      conn.release();
+    } catch (err) {
+      throw new Error('Can not delete ${err}');
     }
   }
 }

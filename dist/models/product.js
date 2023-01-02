@@ -75,7 +75,7 @@ var MyProductStore = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        sql = 'SELECT * FROM products WHERE id=($1)';
+                        sql = 'SELECT * FROM products WHERE id=$1';
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
@@ -127,8 +127,8 @@ var MyProductStore = /** @class */ (function () {
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = 'SELECT * FROM products where category = $1';
-                        return [4 /*yield*/, database_1["default"].query(sql, [category])];
+                        sql = "SELECT * FROM products where category = '" + category + "'";
+                        return [4 /*yield*/, database_1["default"].query(sql)];
                     case 2:
                         result = _a.sent();
                         conn.release();
@@ -136,6 +136,30 @@ var MyProductStore = /** @class */ (function () {
                     case 3:
                         err_4 = _a.sent();
                         throw new Error('Can not get Products ${err}');
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    MyProductStore.prototype["delete"] = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result, err_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = "delete FROM products where id = " + id;
+                        return [4 /*yield*/, database_1["default"].query(sql)];
+                    case 2:
+                        result = _a.sent();
+                        conn.release();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_5 = _a.sent();
+                        throw new Error('Can not delete ${err}');
                     case 4: return [2 /*return*/];
                 }
             });

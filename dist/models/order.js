@@ -82,7 +82,6 @@ var MyOrderStore = /** @class */ (function () {
                         return [4 /*yield*/, conn.query(sql, [id])];
                     case 2:
                         result = _a.sent();
-                        console.log(result.rows[0]);
                         conn.release();
                         return [2 /*return*/, result.rows[0]];
                     case 3:
@@ -125,7 +124,7 @@ var MyOrderStore = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        sql = 'SELECT * FROM orders WHERE user_id=($1) and status = "active"';
+                        sql = "SELECT * FROM orders WHERE user_id=$1 and status = 'active'";
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
