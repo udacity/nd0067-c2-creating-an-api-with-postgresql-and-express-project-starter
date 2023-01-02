@@ -45,6 +45,8 @@ GRANT USAGE ON SCHEMA public TO storefrontuser;
 - before running the test 
 set ENV = test
 to start the DB run (docker compose up)
+listen to the server:port using:
+npm run watch
 db-migrate reset --env test
 npm run test
 
