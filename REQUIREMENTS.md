@@ -5,20 +5,22 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 #### Products
-- Index 
-- Show
-- Create [token required]
-- [OPTIONAL] Top 5 most popular products 
+- Index : ``[GET] : /products``
+- Show : ``[GET] : /products/:id_product``
+- Create [token required] : 
+    ``[POST] : /products  | {name: string, category: price:number} ``
+- [OPTIONAL] Top 5 most popular products :  ``[GET] : /products/most_popular``
 - [OPTIONAL] Products by category (args: product category)
 
 #### Users
-- Index [token required]
-- Show [token required]
-- Create N[token required]
+- Index [token required] : ``[GET] : /users``
+- Show [token required] : ``[GET] : /users/:user_id``
+- Create N[token required] : ``[POST] : /users``
 
 #### Orders
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+- [New] Create new order[token requied] : ``[POST]: /orders | {firstname: string, lastname: string, username: string, password: string}``
+- Current Order by user (args: user id)[token required] : ``[GET] : /orders/currents_by_user/:user_id``
+- [OPTIONAL] Completed Orders by user (args: user id)[token required] : ``/orders/completeds_by_user/:user_id``
 
 ## Data Shapes
 #### Product
@@ -31,6 +33,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 - id
 - firstName
 - lastName
+- username
 - password
 
 #### Orders

@@ -93,3 +93,12 @@ This command will install all the dependencies of the project.
 - ``yarn test`` : To run the application testing
 - ``yarn build`` : To generate builded javascript in the ``/dist`` folder  
 
+## Folder Architecture
+
+- Readme file: ``/README.md``
+- Requirement file: ``/REQUIREMENTS.md``
+- Model folder: ``/src/models``
+- Handler folder: ``/src/controllers``
+- Migrations folder: ``/migrations``
+
+

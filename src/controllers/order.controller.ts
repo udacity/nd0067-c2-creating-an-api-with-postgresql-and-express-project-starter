@@ -68,7 +68,7 @@ class OrderController{
 
 const orderRouter:Router = Router()
 
-orderRouter.get('/',AuthMiddleware,OrderController.index);
+orderRouter.get('/',OrderController.index);
 orderRouter.post('/',AuthMiddleware,OrderController.create);
 orderRouter.get('/currents_by_user/:user_id',AuthMiddleware,OrderController.currentsByUser);
 orderRouter.get('/completeds_by_user/:user_id',AuthMiddleware,OrderController.completedsByUser);
