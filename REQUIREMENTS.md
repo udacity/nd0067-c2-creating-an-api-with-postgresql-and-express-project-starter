@@ -21,6 +21,8 @@ These are the notes from a meeting with the frontend developer that describe wha
 - [New] Create new order[token requied] : ``[POST]: /orders | {firstname: string, lastname: string, username: string, password: string}``
 - Current Order by user (args: user id)[token required] : ``[GET] : /orders/currents_by_user/:user_id``
 - [OPTIONAL] Completed Orders by user (args: user id)[token required] : ``/orders/completeds_by_user/:user_id``
+- To generate new token : ``[POST] : /users/verify {username: string, password: string}``
+
 
 ## Data Shapes
 #### Product
