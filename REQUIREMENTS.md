@@ -28,7 +28,18 @@ These are the notes from a meeting with the frontend developer that describe wha
 -  id
 - name
 - price
-- [OPTIONAL] category
+- [OPTIONAL] category 
+
+Product Data type is like in this SQL request:
+
+```
+create table products (
+    id serial primary key,
+    name varchar(255) not null,
+    price numeric not null,
+    category varchar(255)
+);
+```
 
 #### User
 - id
@@ -37,6 +48,18 @@ These are the notes from a meeting with the frontend developer that describe wha
 - username
 - password
 
+User Data type is like in this SQL request:
+
+````
+create table users (
+    id serial primary key,
+    firstName varchar(255),
+    lastName varchar(255),
+    username varchar(255),
+    password varchar
+);
+````
+
 #### Orders
 - id
 - id of each product in the order
@@ -44,3 +67,13 @@ These are the notes from a meeting with the frontend developer that describe wha
 - user_id
 - status of order (active or complete)
 
+Orders Data type is like in this SQL request:
+````
+create table orders (
+    id serial primary key,
+    product_id integer not null,
+    user_id integer not null,
+    quantity numeric not null,
+    status varchar(255)
+);
+````
