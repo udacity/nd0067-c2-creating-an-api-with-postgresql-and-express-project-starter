@@ -36,9 +36,8 @@ export class ProductModel extends BaseModel<Product> {
             // @ts-ignore
             const db = await Client.connect()
 
-            const result = await db.query(sql, [p.name, p.price, p.category])
-            console.log(sql)
-            console.log(result)
+            const result = await db.query(sql, [p.name, p.category,  p.price])
+           
             const row = result.rows[0]
 
             db.release()

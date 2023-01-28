@@ -9,7 +9,7 @@ export const  AuthMiddleware = (req:express.Request,res:express.Response,next:ex
             const token = authorizationHeader.split(' ')[1]
             const decoded = <{user:object}>jwt.verify(token, process.env.TOKEN_SECRET as string)
     
-            console.log('DECODED ',decoded,typeof decoded)
+            // console.log('DECODED ',decoded,typeof decoded)
             req.body.user = decoded.user
             next()
         }else{

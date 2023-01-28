@@ -35,7 +35,23 @@ export abstract class BaseModel<T> {
         }
     }
 
-    async delete(id: string): Promise<T> {
+    async get_last(): Promise<T> {
+        try {
+            const sql = `SELECT * FROM ${this.tableName} order by id desc limit 1`
+            
+            const conn = await Client.connect()
+
+            const result = await conn.query(sql)
+
+            conn.release()
+
+            return result.rows[0]
+        } catch (err) {
+            throw new Error(`There is no record on ${this.tableName} . Error: ${err}`)
+        }
+    }
+
+    async delete(id: number): Promise<T> {
         try {
       const sql = `DELETE FROM ${this.tableName} WHERE id=($1)`
       // @ts-ignore

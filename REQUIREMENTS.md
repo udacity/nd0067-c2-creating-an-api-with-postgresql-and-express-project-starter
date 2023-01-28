@@ -7,8 +7,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 #### Products
 - Index : ``[GET] : /products``
 - Show : ``[GET] : /products/:id_product``
-- Create [token required] : 
-    ``[POST] : /products  | {name: string, category: price:number} ``
+- Create [token required] : ``[POST] : /products  | {name: string, category: price:number} ``
 - [OPTIONAL] Top 5 most popular products :  ``[GET] : /products/most_popular``
 - [OPTIONAL] Products by category (args: product category)
 

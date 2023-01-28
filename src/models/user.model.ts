@@ -3,10 +3,10 @@ import { BaseModel } from "./base.model"
 import bcrypt from 'bcrypt'
 
 
-export type User = {
+export interface User  {
     id: number,
-    firstName: string,
-    lastName: string,
+    firstname: string,
+    lastname: string,
     username: string,
     password: string,
 }
@@ -17,7 +17,7 @@ export class UserModel extends BaseModel<User> {
 
     async create(u: User): Promise<User> {
         try {
-            const sql = `INSERT INTO ${this.tableName} (firstName,lastName,username ,password) VALUES($1, $2, $3, $4) RETURNING *`
+            const sql = `INSERT INTO ${this.tableName} (firstname,lastname,username ,password) VALUES($1, $2, $3, $4) RETURNING *`
             // @ts-ignore
             const db = await Client.connect()
 
@@ -29,7 +29,7 @@ export class UserModel extends BaseModel<User> {
                 saltRounds
             );
 
-            const result = await db.query(sql, [u.firstName, u.lastName, u.username, hash])
+            const result = await db.query(sql, [u.firstname, u.lastname, u.username, hash])
 
             const row = result.rows[0]
 
@@ -37,7 +37,7 @@ export class UserModel extends BaseModel<User> {
 
             return row
         } catch (err) {
-            throw new Error(`Could not add new ${this.tableName} ${u.firstName}. Error: ${err}`)
+            throw new Error(`Could not add new ${this.tableName} ${u.firstname}. Error: ${err}`)
         }
     }
 
@@ -72,7 +72,21 @@ export class UserModel extends BaseModel<User> {
 
 
 
-    edit(id: number, b: User): Promise<User> {
-        throw new Error("Method not implemented.");
+    async edit(id: number, u: User): Promise<User> {
+        try {
+            const sql = `UPDATE ${this.tableName} SET firstname = $1 ,lastname = $2 ,username = $3 where id = ${id} RETURNING *`
+            // @ts-ignore
+            const db = await Client.connect()
+
+            const result = await db.query(sql, [u.firstname, u.lastname, u.username ])
+          
+            const row = result.rows[0]
+            
+            db.release()
+
+            return row
+        } catch (err) {
+            throw new Error(`Could not edit ${this.tableName} with id ${id}. Error: ${err}`)
+        }
     }
 }

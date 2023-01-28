@@ -16,14 +16,15 @@ class UserController {
         const model: UserModel = new UserModel
 
         try {
-            if (req.body.firstName != undefined && req.body.lastName != undefined && req.body.username != undefined && req.body.password != undefined) {
+            if (req.body.firstname != undefined && req.body.lastname != undefined && req.body.username != undefined && req.body.password != undefined) {
                 let user: User = {
                     id: 0,
-                    firstName: req.body.firstName,
-                    lastName: req.body.lastName,
+                    firstname: req.body.firstname,
+                    lastname: req.body.lastname,
                     username: req.body.username,
                     password: req.body.password
                 }
+                // console.log(user)
                 user = await model.create(user);
                 res.status(200).json(user);
             } else {
@@ -58,7 +59,7 @@ class UserController {
 
         try {
             let result = await user.attempt(req.body.username,req.body.password)
-            console.log('RESULT',result)
+            
             if(result !== '' && result){
                 // Create token
                 const tokenSecret = process.env.TOKEN_SECRET as string
@@ -83,8 +84,8 @@ class UserController {
 const userRouter: Router = Router()
 
 userRouter.get('/', UserController.index);
-userRouter.post('/', UserController.create);
-userRouter.get('/:id', UserController.show);
+userRouter.post('/',AuthMiddleware, UserController.create);
+userRouter.get('/:id',AuthMiddleware, UserController.show);
 userRouter.post('/verify', UserController.verify);
 
 export {

@@ -52,7 +52,7 @@ class ProductController{
 
     public static async update(req:express.Request,res:express.Response){
         const model:ProductModel = new ProductModel
-        console.log(req.params)
+        // console.log(req.params)
         try{
             
             if(req.params.id != undefined && req.body.name != undefined && req.body.price != undefined){
