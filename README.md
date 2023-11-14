@@ -1,54 +1,101 @@
-# Storefront Backend Project
+# Storefront Backend
 
-## Getting Started
+This project is part of the Udacity Full-Stack Javascript Nanodegree
 
-This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
+It provides an express application serving several API endpoints for storing and accessing data, located in a postgres database. It serves routes for users, orders and products. It uses JWT Token for authorization.
 
-## Required Technologies
-Your application must make use of the following libraries:
-- Postgres for the database
-- Node/Express for the application logic
-- dotenv from npm for managing environment variables
-- db-migrate from npm for migrations
-- jsonwebtoken from npm for working with JWTs
-- jasmine from npm for testing
+## API Reference
 
-## Steps to Completion
+Go to the `REQUIREMENTS.md` file for the API Endpoint reference and data shape documentation.
 
-### 1. Plan to Meet Requirements
+## Scripts
 
-In this repo there is a `REQUIREMENTS.md` document which outlines what this API needs to supply for the frontend, as well as the agreed upon data shapes to be passed between front and backend. This is much like a document you might come across in real life when building or extending an API. 
+Run prettier
 
-Your first task is to read the requirements and update the document with the following:
-- Determine the RESTful route for each endpoint listed. Add the RESTful route and HTTP verb to the document so that the frontend developer can begin to build their fetch requests.    
-**Example**: A SHOW route: 'blogs/:id' [GET] 
+```bash
+  yarn prettier
+```
 
-- Design the Postgres database tables based off the data shape requirements. Add to the requirements document the database tables and columns being sure to mark foreign keys.   
-**Example**: You can format this however you like but these types of information should be provided
-Table: Books (id:varchar, title:varchar, author:varchar, published_year:varchar, publisher_id:string[foreign key to publishers table], pages:number)
+Run lint
 
-**NOTE** It is important to remember that there might not be a one to one ratio between data shapes and database tables. Data shapes only outline the structure of objects being passed between frontend and API, the database may need multiple tables to store a single shape. 
+```bash
+  yarn lint
+```
 
-### 2.  DB Creation and Migrations
+Run tests
 
-Now that you have the structure of the databse outlined, it is time to create the database and migrations. Add the npm packages dotenv and db-migrate that we used in the course and setup your Postgres database. If you get stuck, you can always revisit the database lesson for a reminder. 
+```bash
+  yarn test
+```
 
-You must also ensure that any sensitive information is hashed with bcrypt. If any passwords are found in plain text in your application it will not pass.
+Start the dev server
 
-### 3. Models
+```bash
+  yarn dev
+```
 
-Create the models for each database table. The methods in each model should map to the endpoints in `REQUIREMENTS.md`. Remember that these models should all have test suites and mocks.
+Build the project
 
-### 4. Express Handlers
+```bash
+  yarn build
+```
 
-Set up the Express handlers to route incoming requests to the correct model method. Make sure that the endpoints you create match up with the enpoints listed in `REQUIREMENTS.md`. Endpoints must have tests and be CORS enabled. 
+Run the application
 
-### 5. JWTs
+```bash
+  yarn start
+```
 
-Add JWT functionality as shown in the course. Make sure that JWTs are required for the routes listed in `REQUIUREMENTS.md`.
+## Run Locally
 
-### 6. QA and `README.md`
+Clone the project
 
-Before submitting, make sure that your project is complete with a `README.md`. Your `README.md` must include instructions for setting up and running your project including how you setup, run, and connect to your database. 
+```bash
+  git clone https://github.com/sangpham27/nd0067-c2-creating-an-api-with-postgresql-and-express.git
+```
 
-Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
+Go to the project directory
+
+```bash
+  cd nd0067-c2-creating-an-api-with-postgresql-and-express/
+```
+
+Install dependencies
+
+```bash
+  yarn install
+```
+
+Set up the `.env` file for connecting to the database and a working authorization. `.env.example` file is provided with needed keys
+
+Run the migrations
+
+```bash
+  db-migrate up
+```
+
+Start the dev server
+
+```bash
+  yarn dev
+```
+
+Start the docker postgres container
+
+```bash
+  docker-compose up -d
+```
+
+Application will run on port 3000
+
+## Running Tests
+
+To run tests, run the following command
+
+```bash
+  yarn test
+```
+
+## Author
+
+SangPT4 ([@sangpham27](https://github.com/sangpham27))
