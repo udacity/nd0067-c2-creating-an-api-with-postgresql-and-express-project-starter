@@ -29,10 +29,6 @@ describe('GET /users', () => {
 })
 
 describe('POST /users/register', () => {
-  it('should respond with 401 if called without auth token', (done): void => {
-    request(app).post('/users/register').expect(401, done)
-  })
-
   it('should create a user', (done): void => {
     request(app)
       .post('/users/register')

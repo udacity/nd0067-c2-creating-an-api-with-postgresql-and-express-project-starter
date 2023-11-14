@@ -3,7 +3,7 @@ import UserControllers from '../handler/user.controllers'
 import verifyAuthToken from '~/middleware/verifyAuthToken'
 const userRouter = express.Router()
 userRouter.get('/', verifyAuthToken, UserControllers.getAllUsers)
-userRouter.post('/register', verifyAuthToken, UserControllers.create)
+userRouter.post('/register', UserControllers.create)
 userRouter.post('/demoUser', UserControllers.addDemoUser)
 userRouter.post('/login', UserControllers.authenticateUser)
 userRouter.get('/:id', verifyAuthToken, UserControllers.getUser)

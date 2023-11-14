@@ -65,9 +65,6 @@ class UserControllers {
   async create(req: Request, res: Response): Promise<void> {
     const user: UserType = req.body
     try {
-      if (!TOKEN_SECRET) {
-        throw new Error('Missing env variable: TOKEN_SECRET')
-      }
       const newUser: User = await userStore.create(user)
       const token = jwt.sign(
         {
@@ -78,7 +75,7 @@ class UserControllers {
             email: newUser.email
           }
         },
-        TOKEN_SECRET
+        TOKEN_SECRET as string
       )
       res.status(201).json(token)
     } catch (e) {
